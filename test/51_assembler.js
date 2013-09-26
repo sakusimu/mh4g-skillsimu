@@ -17,7 +17,7 @@ QUnit.test('assembleEquip', function () {
 
     // [ '攻撃力UP【大】', '業物' ] の組み合わせの一部
     actiCombs =
-        [ { head: { skillComb: { '攻撃': 9, '斬れ味': 0 }, equips: [ 'レウスＳキャップ' ] },
+        [ { head: { skillComb: { '攻撃': 19, '斬れ味': 0 }, equips: [ 'レウスＳキャップ' ] },
             body: { skillComb: { '攻撃': 0, '斬れ味': 0 }, equips: [ 'slot0' ] },
             arm: { skillComb: { '攻撃': 5, '斬れ味': 2 }, equips: [ 'ジンオウＳフォールド' ] },
             waist: { skillComb: { '攻撃': 5, '斬れ味': 2 }, equips: [ 'ジンオウＳフォールド' ] },
@@ -97,14 +97,14 @@ QUnit.test('assembleEquip: summary', function () {
     norCombsSet = n.normalize(skills);
     actiCombs = c.combine(skills, norCombsSet);
     got = a.assembleEquip(actiCombs);
-    exp = 10814;
+    exp = 12595;
     QUnit.deepEqual(got.length, exp, "[ '攻撃力UP【大】', '業物' ]");
 
     skills = [ '斬れ味レベル+1', '高級耳栓' ];
     norCombsSet = n.normalize(skills);
     actiCombs = c.combine(skills, norCombsSet);
     got = a.assembleEquip(actiCombs);
-    exp = 2513;
+    exp = 2623;
     QUnit.deepEqual(got.length, exp, "[ '斬れ味レベル+1', '高級耳栓' ]");
 
     skills = [ '攻撃力UP【大】', '業物', '集中', '見切り+1', '弱点特効' ];

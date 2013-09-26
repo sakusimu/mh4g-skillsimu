@@ -56,8 +56,6 @@ Equip.prototype.initialize = function (equip) {
 
     var model = make(equip, props, numProps);
     for (var prop in model) this[prop] = model[prop];
-
-    if (this.slot == null) console.log(this.name);
 };
 
 Equip.prototype.isEnabled = function (context) {
