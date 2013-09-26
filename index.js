@@ -7,9 +7,9 @@ simu.initialize = function () {
     this.engin = new Simulator();
 };
 
-simu.simulate = function (skillNames) {
+simu.simulate = function (skillNames, opts) {
     if (this.engin == null) this.initialize();
-    return this.engin.simulate(skillNames);
+    return this.engin.simulate(skillNames, opts);
 };
 
 return simu;
