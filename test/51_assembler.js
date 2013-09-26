@@ -104,7 +104,7 @@ QUnit.test('assembleEquip: summary', function () {
     norCombsSet = n.normalize(skills);
     actiCombs = c.combine(skills, norCombsSet);
     got = a.assembleEquip(actiCombs);
-    exp = 2623;
+    exp = 4184;
     QUnit.deepEqual(got.length, exp, "[ '斬れ味レベル+1', '高級耳栓' ]");
 
     skills = [ '攻撃力UP【大】', '業物', '集中', '見切り+1', '弱点特効' ];
@@ -125,13 +125,13 @@ QUnit.test('assembleEquip: weaponSlot', function () {
     // 装備を村のみにしぼる
     myapp.setup({ hr: 1, vs: 6 });
 
-    skills = [ '斬れ味レベル+1', '砥石使用高速化' ];
+    skills = [ '斬れ味レベル+1', '集中' ];
 
     n.weaponSlot = 2; // 武器スロ2
     norCombsSet = n.normalize(skills);
     actiCombs = c.combine(skills, norCombsSet);
     got = a.assembleEquip(actiCombs);
-    exp = 12;
+    exp = 18;
     QUnit.deepEqual(got.length, exp, 'weaponSlot: 2');
 });
 });

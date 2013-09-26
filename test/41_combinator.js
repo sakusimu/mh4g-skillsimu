@@ -86,7 +86,7 @@ QUnit.test('combine: summary', function () {
     skills = [ '斬れ味レベル+1', '高級耳栓' ];
     norCombsSet = n.normalize(skills);
     got = c.combine(skills, norCombsSet);
-    exp = 538;
+    exp = 986;
     QUnit.deepEqual(got.length, exp, "[ '斬れ味レベル+1', '高級耳栓' ]");
 
     skills = [ '攻撃力UP【大】', '業物', '集中', '見切り+1', '弱点特効' ];
@@ -105,13 +105,12 @@ QUnit.test('combine: weaponSlot', function () {
     // 装備を村のみにしぼる
     myapp.setup({ hr: 1, vs: 6 });
 
-    skills = [ '斬れ味レベル+1', '砥石使用高速化' ];
+    skills = [ '斬れ味レベル+1', '集中' ];
 
     n.weaponSlot = 2; // 武器スロ2
     norCombsSet = n.normalize(skills);
     got = c.combine(skills, norCombsSet);
-    exp = 8;
-    // 8件だが body のゴアメイルとディアブロを展開すると合計12件で、頑シミュさんと同じ件数
+    exp = 6;
     QUnit.deepEqual(got.length, exp, 'weaponSlot: 2');
 });
 });

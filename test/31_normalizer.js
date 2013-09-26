@@ -124,7 +124,7 @@ QUnit.test('normalize: selected equips', function () {
     // スキルポイントがマイナスの装備で固定
     names = [ 'アカムトウルンテ' ]; // 斬れ味-2, スロ1
     equips = myapp.equips('body', names);
-    if (equips.length !== 1) throw new Error('equips.length is not 1: ' + equips.length);
+    if (equips.length !== 1) throw new Error('error: equips.length=' + equips.length);
     data.equips.body = equips;
 
     got = n.normalize([ '攻撃力UP【大】', '業物' ]);
@@ -142,7 +142,7 @@ QUnit.test('normalize: selected equips', function () {
             , 'アカムトウルンテ' // 斬れ味-2, スロ1
     ];
     equips = myapp.equips('body', names);
-    if (equips.length !== 3) throw new Error('equips.length is not 3: ' + equips.length);
+    if (equips.length !== 3) throw new Error('error: equips.length=' + equips.length);
     data.equips.body = equips;
 
     got = n.normalize([ '攻撃力UP【大】', '業物' ]);
@@ -177,16 +177,16 @@ QUnit.test('normalize: summary', function () {
     QUnit.deepEqual(summary(got), exp, "[ '攻撃力UP【大】', '業物' ]");
 
     got = n.normalize([ '斬れ味レベル+1', '高級耳栓' ]);
-    exp = { head: 22, body: 17, arm: 20, waist: 20, leg: 21, weapon: 1 };
+    exp = { head: 22, body: 17, arm: 20, waist: 21, leg: 23, weapon: 1 };
     QUnit.deepEqual(summary(got), exp, "[ '斬れ味レベル+1', '高級耳栓' ]");
 
     // スキル系統で見ているので、高級耳栓も耳栓も結果は同じ
     got = n.normalize([ '斬れ味レベル+1', '耳栓' ]);
-    exp = { head: 22, body: 17, arm: 20, waist: 20, leg: 21, weapon: 1 };
+    exp = { head: 22, body: 17, arm: 20, waist: 21, leg: 23, weapon: 1 };
     QUnit.deepEqual(summary(got), exp, "[ '斬れ味レベル+1', '耳栓' ]");
 
     got = n.normalize([ '攻撃力UP【大】', '業物', '集中', '見切り+1', '弱点特効' ]);
-    exp = { head: 382, body: 209, arm: 269, waist: 300, leg: 249, weapon: 1 };
+    exp = { head: 383, body: 212, arm: 269, waist: 300, leg: 250, weapon: 1 };
     QUnit.deepEqual(summary(got), exp,
                     "[ '攻撃力UP【大】', '業物', '集中', '見切り+1', '弱点特効' ]");
 });
