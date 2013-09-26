@@ -23,115 +23,84 @@ QUnit.test('normalize', function () {
         n = new Normalizer();
 
     // 村のみに装備をしぼってスキルの組み合わせ
-    myapp.setup({ hr: 1 }); // 村のみ
+    myapp.setup({ hr: 1, vs: 6 });
 
     got = n.normalize([ '攻撃力UP【大】', '業物' ]);
-    exp = [ { skillComb: { '攻撃': 0, '斬れ味': 0, '胴系統倍化': 0 },
-              equips: [ 'slot0', '大和【胴当て】' ] },
-            { skillComb: { '攻撃': 1, '斬れ味': -1, '胴系統倍化': 0 },
-              equips: [ '大和【胴当て】' ] },
-            { skillComb: { '攻撃': 1, '斬れ味': 0, '胴系統倍化': 0 },
-              equips: [ 'slot1' ] },
-            { skillComb: { '攻撃': 0, '斬れ味': 1, '胴系統倍化': 0 },
-              equips: [ 'slot1' ] },
-            { skillComb: { '攻撃': 3, '斬れ味': -2, '胴系統倍化': 0 },
-              equips: [ '大和【胴当て】' ] },
-            { skillComb: { '攻撃': 1, '斬れ味': 1, '胴系統倍化': 0 },
-              equips: [ 'slot2', 'レウスメイル', 'ドボルメイル' ] },
-            { skillComb: { '攻撃': 0, '斬れ味': 2, '胴系統倍化': 0 },
-              equips: [ 'slot2', 'ジンオウメイル' ] },
-            { skillComb: { '攻撃': 2, '斬れ味': 0, '胴系統倍化': 0 },
-              equips: [ 'レウスメイル', 'ドボルメイル' ] },
-            { skillComb: { '攻撃': 3, '斬れ味': 0, '胴系統倍化': 0 },
-              equips: [ 'ジャギィメイル', 'slot2' ] },
-            { skillComb: { '攻撃': 2, '斬れ味': 1, '胴系統倍化': 0 },
-              equips: [ 'ジャギィメイル' ] },
-            { skillComb: { '攻撃': 1, '斬れ味': 2, '胴系統倍化': 0 },
-              equips: [ 'アグナメイル', 'ヴァイクメイル', 'slot3' ] },
-            { skillComb: { '攻撃': 0, '斬れ味': 3, '胴系統倍化': 0 },
-              equips: [ 'アグナメイル', 'ヴァイクメイル', 'slot3' ] },
-            { skillComb: { '攻撃': 4, '斬れ味': 0, '胴系統倍化': 0 },
-              equips: [ 'バギィメイル', 'slot3' ] },
-            { skillComb: { '攻撃': 3, '斬れ味': 1, '胴系統倍化': 0 },
-              equips: [ 'バギィメイル', 'slot3' ] },
-            { skillComb: { '攻撃': -1, '斬れ味': 0, '胴系統倍化': 0 },
-              equips: [ 'ブナハスーツ' ] },
-            { skillComb: { '攻撃': -2, '斬れ味': 1, '胴系統倍化': 0 },
-              equips: [ 'ブナハスーツ' ] },
-            { skillComb: { '攻撃': -2, '斬れ味': 0, '胴系統倍化': 0 },
-             equips: [ 'ナルガメイル', 'ユアミスガタ' ] },
-            { skillComb: { '攻撃': -3, '斬れ味': 1, '胴系統倍化': 0 },
-              equips: [ 'ユアミスガタ' ] } ];
-    // 胴のみなので胴系統倍化が 1 のものはない
-    //QUnit.deepEqual(sorter(got.body), sorter(exp), "[ '攻撃力UP【大】', '業物' ]");
-    QUnit.ok(true, 'skip');
+    exp = [ { skillComb: { '攻撃': 0, '斬れ味': 0 }, equips: [ 'slot0' ] },
+            { skillComb: { '攻撃': 1, '斬れ味': 0 }, equips: [ 'slot1' ] },
+            { skillComb: { '攻撃': 0, '斬れ味': 1 }, equips: [ 'slot1' ] },
+            { skillComb: { '攻撃': 1, '斬れ味': 1 }, equips: [ 'slot2' ] },
+            { skillComb: { '攻撃': 0, '斬れ味': 2 }, equips: [ 'slot2' ] },
+            { skillComb: { '攻撃': 3, '斬れ味': 0 },
+              equips: [ 'slot2', 'ランポスヘルム', 'クックヘルム', 'レウスヘルム' ] },
+            { skillComb: { '攻撃': 1, '斬れ味': 2 },
+              equips: [ 'slot3', 'ランポスキャップ', 'ギザミヘルム' ] },
+            { skillComb: { '攻撃': 0, '斬れ味': 3 },
+              equips: [ 'slot3', 'ギザミヘルム' ] },
+            { skillComb: { '攻撃': 2, '斬れ味': 1 },
+              equips: [ 'ランポスヘルム', 'ランポスキャップ', 'クックヘルム' ] },
+            { skillComb: { '攻撃': 4, '斬れ味': 0 },
+              equips: [ 'slot3', 'ランポスキャップ', 'ボロスヘルム', 'ボロスキャップ',
+                        'レックスヘルム', 'レウスキャップ' ] },
+            { skillComb: { '攻撃': 3, '斬れ味': 1 },
+              equips: [ 'slot3', 'バトルヘルム', 'バトルキャップ', 'クックキャップ',
+                        'ボロスヘルム', 'ボロスキャップ', 'レックスヘルム' ] },
+            { skillComb: { '攻撃': 2, '斬れ味': 2 },
+              equips: [ 'バトルヘルム', 'バトルキャップ', 'クックキャップ' ] },
+            { skillComb: { '攻撃': 1, '斬れ味': 3 }, equips: [ 'セルタスヘルム' ] },
+            { skillComb: { '攻撃': 0, '斬れ味': 4 }, equips: [ 'セルタスヘルム' ] },
+            { skillComb: { '攻撃': 5, '斬れ味': 0 },
+              equips: [ 'バトルヘルム', 'バトルキャップ', 'クックキャップ',
+                        'レックスキャップ', 'ドボルキャップ' ] },
+            { skillComb: { '攻撃': 4, '斬れ味': 1 },
+              equips: [ 'レックスキャップ', 'ドボルヘルム', 'ドボルキャップ' ] },
+            { skillComb: { '攻撃': 3, '斬れ味': 2 }, equips: [ 'ドボルヘルム' ] },
+            { skillComb: { '攻撃': 6, '斬れ味': 0 }, equips: [ 'ドボルヘルム' ] },
+            { skillComb: { '攻撃': -2, '斬れ味': 0 },
+              equips: [ 'ブナハハット', 'ブナハキャップ' ] } ];
+    QUnit.deepEqual(sorter(got.head), sorter(exp), "[ '攻撃力UP【大】', '業物' ]");
 
-    myapp.setup({ type: 'g', hr: 1 }); // ガンナー
+    myapp.setup({ type: 'g', hr: 1, vs: 6 }); // ガンナー
 
     got = n.normalize([ '攻撃力UP【大】', '通常弾・連射矢UP' ]);
-    exp = [ { skillComb: { '攻撃': 0, '通常弾強化': 0, '胴系統倍化': 0 },
-              equips: [ 'slot0' ] },
-            { skillComb: { '攻撃': 1, '通常弾強化': 0, '胴系統倍化': 0 },
-              equips: [ 'slot1' ] },
-            { skillComb: { '攻撃': 0, '通常弾強化': 1, '胴系統倍化': 0 },
-              equips: [ 'slot1', 'ジンオウレジスト' ] },
-            { skillComb: { '攻撃': 1, '通常弾強化': 1, '胴系統倍化': 0 },
-              equips: [ 'slot2', 'レウスレジスト' ] },
-            { skillComb: { '攻撃': 0, '通常弾強化': 2, '胴系統倍化': 0 },
-              equips: [ 'slot2' ] },
-            { skillComb: { '攻撃': 2, '通常弾強化': 0, '胴系統倍化': 0 },
-              equips: [ 'レウスレジスト' ] },
-            { skillComb: { '攻撃': 3, '通常弾強化': 0, '胴系統倍化': 0 },
-              equips: [ 'ジャギィレジスト', 'slot2' ] },
-            { skillComb: { '攻撃': 2, '通常弾強化': 1, '胴系統倍化': 0 },
-              equips: [ 'ジャギィレジスト' ] },
-            { skillComb: { '攻撃': 0, '通常弾強化': 3, '胴系統倍化': 0 },
-              equips: [ 'ボロスレジスト', 'アグナレジスト', 'ヴァイクレジスト', 'slot3' ] },
-            { skillComb: { '攻撃': 1, '通常弾強化': 2, '胴系統倍化': 0 },
-              equips: [ 'アグナレジスト', 'ヴァイクレジスト', 'slot3' ] },
-            { skillComb: { '攻撃': 4, '通常弾強化': 0, '胴系統倍化': 0 },
-              equips: [ 'バギィレジスト', 'slot3' ] },
-            { skillComb: { '攻撃': 3, '通常弾強化': 1, '胴系統倍化': 0 },
-              equips: [ 'バギィレジスト', 'slot3' ] },
-            { skillComb: { '攻撃': -1, '通常弾強化': 0, '胴系統倍化': 0 },
-              equips: [ 'ブナハベスト' ] },
-            { skillComb: { '攻撃': -2, '通常弾強化': 1, '胴系統倍化': 0 },
-              equips: [ 'ブナハベスト' ] },
-            { skillComb: { '攻撃': -3, '通常弾強化': 0, '胴系統倍化': 0 },
-              equips: [ 'ナルガレジスト' ] },
-            { skillComb: { '攻撃': -2, '通常弾強化': 0, '胴系統倍化': 0 },
-              equips: [ 'ユアミスガタ' ] },
-            { skillComb: { '攻撃': -3, '通常弾強化': 1, '胴系統倍化': 0 },
-              equips: [ 'ユアミスガタ' ] } ];
-    //QUnit.deepEqual(sorter(got.body), sorter(exp), "[ '攻撃力UP【大】', '通常弾・連射矢UP' ]");
-    QUnit.ok(true, 'skip');
+    exp = [ { skillComb: { '攻撃': 0, '通常弾強化': 0 }, equips: [ 'slot0' ] },
+            { skillComb: { '攻撃': 1, '通常弾強化': 0 },
+              equips: [ 'slot1', 'バトルレジスト', 'ボロスレジスト' ] },
+            { skillComb: { '攻撃': 0, '通常弾強化': 1 }, equips: [ 'slot1' ] },
+            { skillComb: { '攻撃': 2, '通常弾強化': 0 },
+              equips: [ 'ランポスレジスト', 'レウスレジスト' ] },
+            { skillComb: { '攻撃': 1, '通常弾強化': 1 }, equips: [ 'slot2' ] },
+            { skillComb: { '攻撃': 0, '通常弾強化': 2 }, equips: [ 'slot2' ] },
+            { skillComb: { '攻撃': 3, '通常弾強化': 0 },
+              equips: [ 'slot2', 'クックレジスト' ] },
+            { skillComb: { '攻撃': 2, '通常弾強化': 1 },
+              equips: [ 'クックレジスト', 'ドボルレジスト' ] },
+            { skillComb: { '攻撃': 1, '通常弾強化': 2 },
+              equips: [ 'ガンキンレジスト', 'ドボルレジスト' ] },
+            { skillComb: { '攻撃': 0, '通常弾強化': 3 }, equips: [ 'ガンキンレジスト' ] },
+            { skillComb: { '攻撃': 3, '通常弾強化': 1 }, equips: [ 'レックスレジスト' ] },
+            { skillComb: { '攻撃': 2, '通常弾強化': 2 }, equips: [ 'レックスレジスト' ] },
+            { skillComb: { '攻撃': 4, '通常弾強化': 0 }, equips: [ 'ドボルレジスト' ] },
+            { skillComb: { '攻撃': 5, '通常弾強化': 0 }, equips: [ 'レックスレジスト' ] },
+            { skillComb: { '攻撃': -2, '通常弾強化': 0 }, equips: [ 'ブナハベスト' ] } ];
+    QUnit.deepEqual(sorter(got.body), sorter(exp), "[ '攻撃力UP【大】', '通常弾・連射矢UP' ]");
 
     // 胴系統倍化
     got = n.normalize([ '集中', '弱点特効' ]);
-    exp = [ { skillComb: { '溜め短縮': 0, '痛撃': 0, '胴系統倍化': 0 },
-              equips: [ 'slot0' ] },
-            { skillComb: { '溜め短縮': 0, '痛撃': 0, '胴系統倍化': 1 },
-              equips: [ 'アシラレギンス', 'ラングロレギンス' ] },
-            { skillComb: { '溜め短縮': 0, '痛撃': 1, '胴系統倍化': 0 },
-              equips: [ 'slot1' ] },
-            { skillComb: { '溜め短縮': 1, '痛撃': 0, '胴系統倍化': 0 },
-              equips: [ 'slot1' ] },
-            { skillComb: { '溜め短縮': 0, '痛撃': 2, '胴系統倍化': 0 },
-              equips: [ 'slot2', 'レウスレギンス' ] },
-            { skillComb: { '溜め短縮': 1, '痛撃': 1, '胴系統倍化': 0 },
-              equips: [ 'slot2', 'レウスレギンス', '陸奥【具足】' ] },
-            { skillComb: { '溜め短縮': 2, '痛撃': 0, '胴系統倍化': 0 },
-              equips: [ 'slot2', '陸奥【具足】' ] },
-            { skillComb: { '溜め短縮': 2, '痛撃': 1, '胴系統倍化': 0 },
-              equips: [ 'マギュルヴルツェル', 'slot3' ] },
-            { skillComb: { '溜め短縮': 3, '痛撃': 0, '胴系統倍化': 0 },
-              equips: [ 'マギュルヴルツェル', 'slot3' ] },
-            { skillComb: { '溜め短縮': 0, '痛撃': 3, '胴系統倍化': 0 },
-              equips: [ 'slot3' ] },
-            { skillComb: { '溜め短縮': 1, '痛撃': 2, '胴系統倍化': 0 },
-              equips: [ 'slot3' ] } ];
-    //QUnit.deepEqual(sorter(got.leg), sorter(exp), "[ '集中', '弱点特効' ]");
-    QUnit.ok(true, 'skip');
+    exp = [ { skillComb: { '溜め短縮': 0, '痛撃': 0 }, equips: [ 'slot0' ] },
+            { skillComb: { '胴系統倍化': 1 }, equips: [ '胴系統倍化' ] },
+            { skillComb: { '溜め短縮': 0, '痛撃': 1 }, equips: [ 'slot1' ] },
+            { skillComb: { '溜め短縮': 1, '痛撃': 0 }, equips: [ 'slot1' ] },
+            { skillComb: { '溜め短縮': 0, '痛撃': 2 },
+              equips: [ 'slot2', 'ナルガレギンス' ] },
+            { skillComb: { '溜め短縮': 1, '痛撃': 1 }, equips: [ 'slot2' ] },
+            { skillComb: { '溜め短縮': 2, '痛撃': 0 }, equips: [ 'slot2' ] },
+            { skillComb: { '溜め短縮': 0, '痛撃': 3 }, equips: [ 'slot3' ] },
+            { skillComb: { '溜め短縮': 1, '痛撃': 2 }, equips: [ 'slot3' ] },
+            { skillComb: { '溜め短縮': 2, '痛撃': 1 }, equips: [ 'slot3' ] },
+            { skillComb: { '溜め短縮': 3, '痛撃': 0 },
+              equips: [ 'slot3', 'マギュルヴルツェル' ] } ];
+    QUnit.deepEqual(sorter(got.leg), sorter(exp), "[ '集中', '弱点特効' ]");
 
     got = n.normalize();
     QUnit.deepEqual(got, null, 'nothing in');
@@ -152,42 +121,32 @@ QUnit.test('normalize: selected equips', function () {
     var got, exp, names, equips,
         n = new Normalizer();
 
-    QUnit.ok(true, 'skip');
-    return;
-
     // スキルポイントがマイナスの装備で固定
-    names = [ 'ダマスクメイル' ]; // 斬れ味-4, スロ2
+    names = [ 'アカムトウルンテ' ]; // 斬れ味-2, スロ1
     equips = myapp.equips('body', names);
-    if (equips.length !== 1) throw new Error('equips.length is not 1');
+    if (equips.length !== 1) throw new Error('equips.length is not 1: ' + equips.length);
     data.equips.body = equips;
 
     got = n.normalize([ '攻撃力UP【大】', '業物' ]);
-    exp = [ { skillComb: { '攻撃': 1, '斬れ味': -3, '胴系統倍化': 0 },
-              equips: [ 'ダマスクメイル' ] },
-            { skillComb: { '攻撃': 0, '斬れ味': -2, '胴系統倍化': 0 },
-              equips: [ 'ダマスクメイル' ] },
-            { skillComb: { '攻撃': 3, '斬れ味': -4, '胴系統倍化': 0 },
-              equips: [ 'ダマスクメイル' ] } ];
+    exp = [ { skillComb: { '攻撃': 1, '斬れ味': -2 }, equips: [ 'アカムトウルンテ' ] },
+            { skillComb: { '攻撃': 0, '斬れ味': -1 }, equips: [ 'アカムトウルンテ' ] } ];
     QUnit.deepEqual(got.body, exp, 'fixed equip');
-    exp = { head: 37, body: 3, arm: 34, waist: 28, leg: 34, weapon: 1 };
+    exp = { head: 34, body: 2, arm: 30, waist: 28, leg: 32, weapon: 1 };
     QUnit.deepEqual(summary(got), exp, 'fixed equip: summary');
 
     myapp.initialize();
 
     // スキルポイントがマイナスの装備で固定
-    names = [ 'ユアミスガタ'   // 攻撃-3, スロ1
-            , 'ナルガメイル'   // 攻撃-2, スロ0
-            , 'ブナハＳスーツ' // 攻撃-2, スロ1
-            , '大和【胴当て】' // 斬れ味-2, スロ2
-            , 'ダマスクメイル' // 斬れ味-4, スロ2
-            , 'バンギスメイル' // 斬れ味-2, スロ0
+    names = [ 'ブナハＳスーツ'   // 攻撃-2, スロ0
+            , 'リベリオンメイル' // 攻撃-4, スロ1
+            , 'アカムトウルンテ' // 斬れ味-2, スロ1
     ];
     equips = myapp.equips('body', names);
-    if (equips.length !== 6) throw new Error('equips.length is not 6');
+    if (equips.length !== 3) throw new Error('equips.length is not 3: ' + equips.length);
     data.equips.body = equips;
 
     got = n.normalize([ '攻撃力UP【大】', '業物' ]);
-    exp = { head: 37, body: 10, arm: 34, waist: 28, leg: 34, weapon: 1 };
+    exp = { head: 34, body: 5, arm: 30, waist: 28, leg: 32, weapon: 1 };
     QUnit.deepEqual(summary(got), exp, 'selected equip');
 });
 
@@ -197,18 +156,16 @@ QUnit.test('normalize: weapon slot', function () {
 
     n.weaponSlot = 0;
     got = n.normalize([ '攻撃力UP【大】', '業物' ]);
-    exp = [ { skillComb: { '攻撃': 0, '斬れ味': 0, '胴系統倍化': 0 }, equips: [ 'slot0' ] } ];
+    exp = [ { skillComb: { '攻撃': 0, '斬れ味': 0 }, equips: [ 'slot0' ] } ];
     QUnit.deepEqual(got.weapon, exp, 'weaponSlot 0');
 
     n.weaponSlot = 3;
     got = n.normalize([ '攻撃力UP【大】', '業物' ]);
-    exp = [ { skillComb: { '攻撃': 1, '斬れ味': 2, '胴系統倍化': 0 }, equips: [ 'slot3' ] },
-            { skillComb: { '攻撃': 3, '斬れ味': 1, '胴系統倍化': 0 }, equips: [ 'slot3' ] },
-            { skillComb: { '攻撃': 5, '斬れ味': 0, '胴系統倍化': 0 }, equips: [ 'slot3' ] },
-            { skillComb: { '攻撃': 0, '斬れ味': 4, '胴系統倍化': 0 }, equips: [ 'slot3' ] } ];
-    //QUnit.deepEqual(got.weapon, exp, 'weaponSlot 3');
-    QUnit.ok(true, 'skip');
-
+    exp = [ { skillComb: { '攻撃': 1, '斬れ味': 2 }, equips: [ 'slot3' ] },
+            { skillComb: { '攻撃': 0, '斬れ味': 3 }, equips: [ 'slot3' ] },
+            { skillComb: { '攻撃': 3, '斬れ味': 1 }, equips: [ 'slot3' ] },
+            { skillComb: { '攻撃': 5, '斬れ味': 0 }, equips: [ 'slot3' ] } ];
+    QUnit.deepEqual(got.weapon, exp, 'weaponSlot 3');
 });
 
 QUnit.test('normalize: summary', function () {
@@ -216,27 +173,22 @@ QUnit.test('normalize: summary', function () {
         n = new Normalizer();
 
     got = n.normalize([ '攻撃力UP【大】', '業物' ]);
-    exp = { head: 37, body: 30, arm: 34, waist: 28, leg: 34, weapon: 1 };
-    //QUnit.deepEqual(summary(got), exp, "[ '攻撃力UP【大】', '業物' ]");
-    QUnit.ok(true, 'skip');
+    exp = { head: 34, body: 28, arm: 30, waist: 28, leg: 32, weapon: 1 };
+    QUnit.deepEqual(summary(got), exp, "[ '攻撃力UP【大】', '業物' ]");
 
     got = n.normalize([ '斬れ味レベル+1', '高級耳栓' ]);
-    exp = { head: 25, body: 17, arm: 21, waist: 25, leg: 26, weapon: 1 };
-    //QUnit.deepEqual(summary(got), exp, "[ '斬れ味レベル+1', '高級耳栓' ]");
-    QUnit.ok(true, 'skip');
+    exp = { head: 22, body: 17, arm: 19, waist: 20, leg: 21, weapon: 1 };
+    QUnit.deepEqual(summary(got), exp, "[ '斬れ味レベル+1', '高級耳栓' ]");
 
     // スキル系統で見ているので、高級耳栓も耳栓も結果は同じ
     got = n.normalize([ '斬れ味レベル+1', '耳栓' ]);
-    exp = { head: 25, body: 17, arm: 21, waist: 25, leg: 26, weapon: 1 };
-    //QUnit.deepEqual(summary(got), exp, "[ '斬れ味レベル+1', '耳栓' ]");
-    QUnit.ok(true, 'skip');
+    exp = { head: 22, body: 17, arm: 19, waist: 20, leg: 21, weapon: 1 };
+    QUnit.deepEqual(summary(got), exp, "[ '斬れ味レベル+1', '耳栓' ]");
 
     got = n.normalize([ '攻撃力UP【大】', '業物', '集中', '見切り+1', '弱点特効' ]);
-    exp = { head: 378, body: 243, arm: 301, waist: 280, leg: 301, weapon: 1 };
-    //QUnit.deepEqual(summary(got), exp,
-    //                 "[ '攻撃力UP【大】', '業物', '集中', '見切り+1', '弱点特効' ]");
-    QUnit.ok(true, 'skip');
-
+    exp = { head: 382, body: 209, arm: 268, waist: 300, leg: 249, weapon: 1 };
+    QUnit.deepEqual(summary(got), exp,
+                    "[ '攻撃力UP【大】', '業物', '集中', '見切り+1', '弱点特効' ]");
 });
 });
 })(typeof define !== 'undefined' ?
