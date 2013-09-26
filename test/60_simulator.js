@@ -28,7 +28,7 @@ QUnit.test('simulate', function () {
     QUnit.strictEqual(got.length, exp, "[ '攻撃力UP【大】', '業物' ]");
 
     got = simu.simulate([ '斬れ味レベル+1', '高級耳栓' ]);
-    exp = 2623;
+    exp = 4184;
     QUnit.strictEqual(got.length, exp, "[ '斬れ味レベル+1', '高級耳栓' ]");
 
     got = simu.simulate([ '攻撃力UP【大】', '業物', '集中', '見切り+1', '弱点特効' ]);

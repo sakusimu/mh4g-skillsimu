@@ -182,7 +182,7 @@ QUnit.test('_normalize1', function () {
             , 'シルバーソルメイル' // 斬れ味+2, スロ3
     ];
     equips = myapp.equips('body', names);
-    if (equips.length !== 7) throw new Error('equips.length is not 7: ' + equips.length);
+    if (equips.length !== 7) throw new Error('error: equips.length=' + equips.length);
 
     got = n._normalize1([ '攻撃', '斬れ味' ], equips);
     exp = { 'ジャギィＳメイル':
@@ -221,7 +221,7 @@ QUnit.test('_normalize1', function () {
             , 'ユクモノドウギ・天' // 匠+1, スロ2
     ];
     equips = myapp.equips('body', names);
-    if (equips.length !== 4) throw new Error('equips.length is not 4: ' + equips.length);
+    if (equips.length !== 4) throw new Error('error: equips.length=' + equips.length);
 
     got = n._normalize1([ '匠', '斬れ味' ], equips);
     exp = { 'ゴアメイル':
@@ -245,7 +245,7 @@ QUnit.test('_normalize1', function () {
             , 'バンギスグリーヴ' // 攻撃+1, 斬れ味+3, スロ3
     ];
     equips = myapp.equips('leg', names);
-    if (equips.length !== 5) throw new Error('equips.length is not 5: ' + equips.length);
+    if (equips.length !== 5) throw new Error('error: equips.length=' + equips.length);
 
     got = n._normalize1([ '攻撃', '斬れ味', '胴系統倍化' ], equips);
     exp = { 'クックＳグリーヴ':
