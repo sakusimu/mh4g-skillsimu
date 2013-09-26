@@ -24,51 +24,47 @@ QUnit.test('simulate', function () {
         simu = new Simulator();
 
     got = simu.simulate([ '攻撃力UP【大】', '業物' ]);
-    exp = 2788;
-    //QUnit.strictEqual(got.length, exp, "[ '攻撃力UP【大】', '業物' ]");
-    QUnit.ok(true, 'skip');
+    exp = 12595;
+    QUnit.strictEqual(got.length, exp, "[ '攻撃力UP【大】', '業物' ]");
 
     got = simu.simulate([ '斬れ味レベル+1', '高級耳栓' ]);
-    exp = 13;
-    //QUnit.strictEqual(got.length, exp, "[ '斬れ味レベル+1', '高級耳栓' ]");
-    QUnit.ok(true, 'skip');
+    exp = 2623;
+    QUnit.strictEqual(got.length, exp, "[ '斬れ味レベル+1', '高級耳栓' ]");
 
     got = simu.simulate([ '攻撃力UP【大】', '業物', '集中', '見切り+1', '弱点特効' ]);
     exp = 0;
-    //QUnit.strictEqual(got.length, exp,
-    //                   "[ '攻撃力UP【大】', '業物', '集中', '見切り+1', '弱点特効' ]");
-    QUnit.ok(true, 'skip');
+    QUnit.strictEqual(got.length, exp,
+                      "[ '攻撃力UP【大】', '業物', '集中', '見切り+1', '弱点特効' ]");
 });
 
 QUnit.test('simulate: dupli', function () {
     var got, exp, equips,
         simu = new Simulator();
 
-    myapp.setup({ sex: 'g' });
+    myapp.setup({ sex: 'w' });
 
     equips = data.equips;
-    equips.head  = myapp.equips('head', '天城・覇【鉢金】');
+    equips.head  = myapp.equips('head', 'ユクモノカサ・天');
     equips.body  = myapp.equips('body', '三眼の首飾り');
-    equips.arm   = myapp.equips('arm', 'ダマスクアーム');
+    equips.arm   = myapp.equips('arm', 'ユクモノコテ・天');
     var waists   = [ 'レザーベルト', 'バンギスコイル', 'シルバーソルコイル' ];
     equips.waist = myapp.equips('waist', waists);
-    equips.leg   = myapp.equips('leg', '日向【袴】');
+    equips.leg   = myapp.equips('leg', 'ユクモノハカマ・天');
 
-    got = simu.simulate([ '斬れ味レベル+1', '集中' ]);
-    exp = [ { head: '天城・覇【鉢金】',
+    got = simu.simulate([ '斬れ味レベル+1', '砥石使用高速化' ]);
+    exp = [ { head: 'ユクモノカサ・天',
               body: 'slot3',
-              arm: 'ダマスクアーム',
-              waist: 'slot2',
-              leg: '日向【袴】',
+              arm: 'ユクモノコテ・天',
+              waist: '胴系統倍化',
+              leg: 'ユクモノハカマ・天',
               weapon: 'slot0' },
-            { head: '天城・覇【鉢金】',
+            { head: 'ユクモノカサ・天',
               body: 'slot3',
-              arm: 'ダマスクアーム',
-              waist: 'バンギスコイル',
-              leg: '日向【袴】',
+              arm: 'ユクモノコテ・天',
+              waist: 'slot2',
+              leg: 'ユクモノハカマ・天',
               weapon: 'slot0' } ];
-    //QUnit.deepEqual(got, exp, "[ '斬れ味レベル+1', '集中' ]");
-    QUnit.ok(true, 'skip');
+    QUnit.deepEqual(got, exp, "[ '斬れ味レベル+1', '砥石使用高速化' ]");
 });
 });
 })(typeof define !== 'undefined' ?

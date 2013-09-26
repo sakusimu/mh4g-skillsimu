@@ -17,62 +17,62 @@ QUnit.test('assembleEquip', function () {
 
     // [ '攻撃力UP【大】', '業物' ] の組み合わせの一部
     actiCombs =
-        [ { head: { skillComb: { '攻撃': 5, '斬れ味': 0 },
-                    equips: [ 'バギィキャップ', 'レウスヘルム', 'slot3',
-                              'レウスＳヘルム', 'シルバーソルキャップ' ] },
-            body: { skillComb: { '攻撃': 1, '斬れ味': 0 },
-                    equips: [ 'slot1' ] },
-             arm: { skillComb: { '攻撃': 7, '斬れ味': 1 },
-                    equips: [ 'シルバーソルアーム' ] },
-           waist: { skillComb: { '攻撃': 5, '斬れ味': 3 },
-                    equips: [ 'シルバーソルコイル' ] },
-             leg: { skillComb: { '攻撃': 2, '斬れ味': 6 },
-                    equips: [ 'シルバーソルグリーヴ' ] },
-          weapon: { skillComb: { '攻撃': 0, '斬れ味': 0 },
-                    equips: [ 'slot0' ] } },
+        [ { head: { skillComb: { '攻撃': 19, '斬れ味': 0 }, equips: [ 'レウスＳキャップ' ] },
+            body: { skillComb: { '攻撃': 0, '斬れ味': 0 }, equips: [ 'slot0' ] },
+            arm: { skillComb: { '攻撃': 5, '斬れ味': 2 }, equips: [ 'ジンオウＳフォールド' ] },
+            waist: { skillComb: { '攻撃': 5, '斬れ味': 2 }, equips: [ 'ジンオウＳフォールド' ] },
+            leg: { skillComb: { '攻撃': 1, '斬れ味': 6 }, equips: [ 'バンギスグリーヴ' ] },
+            weapon: { skillComb: { '攻撃': 0, '斬れ味': 0 }, equips: [ 'slot0' ] } },
           { head: { skillComb: { '攻撃': 5, '斬れ味': 0 },
-                    equips: [ 'バギィキャップ', 'レウスヘルム', 'slot3',
-                              'レウスＳヘルム', 'シルバーソルキャップ' ] },
-            body: { skillComb: { '攻撃': 1, '斬れ味': 0 },
-                    equips: [ 'slot1' ] },
-             arm: { skillComb: { '攻撃': 2, '斬れ味': 5 },
-                    equips: [ 'シルバーソルアーム' ] },
-           waist: { skillComb: { '攻撃': 5, '斬れ味': 3 },
-                    equips: [ 'シルバーソルコイル' ] },
-             leg: { skillComb: { '攻撃': 7, '斬れ味': 2 },
-                    equips: [ 'シルバーソルグリーヴ' ] },
-          weapon: { skillComb: { '攻撃': 0, '斬れ味': 0 },
-                    equips: [ 'slot0' ] } } ];
+                    equips: [ 'slot3', 'バトルヘルム', 'バトルキャップ', 'クックキャップ',
+                              'レックスキャップ', 'ドボルキャップ' ] },
+            body: { skillComb: { '攻撃': 5, '斬れ味': 2 }, equips: [ 'シルバーソルメイル' ] },
+            arm: { skillComb: { '攻撃': 7, '斬れ味': 0 }, equips: [ 'ランポスＳアーム' ] },
+            waist: { skillComb: { '胴系統倍化': 1 }, equips: [ '胴系統倍化' ] },
+            leg: { skillComb: { '攻撃': 1, '斬れ味': 6 }, equips: [ 'バンギスグリーヴ' ] },
+            weapon: { skillComb: { '攻撃': 0, '斬れ味': 0 }, equips: [ 'slot0' ] } } ];
     got = a.assembleEquip(actiCombs);
-    exp = [ { head: 'バギィキャップ',
-              body: 'slot1',
-              arm: 'シルバーソルアーム',
-              waist: 'シルバーソルコイル',
-              leg: 'シルバーソルグリーヴ',
-              weapon: 'slot0' },
-            { head: 'レウスヘルム',
-              body: 'slot1',
-              arm: 'シルバーソルアーム',
-              waist: 'シルバーソルコイル',
-              leg: 'シルバーソルグリーヴ',
+    exp = [ { head: 'レウスＳキャップ',
+              body: 'slot0',
+              arm: 'ジンオウＳフォールド',
+              waist: 'ジンオウＳフォールド',
+              leg: 'バンギスグリーヴ',
               weapon: 'slot0' },
             { head: 'slot3',
-              body: 'slot1',
-              arm: 'シルバーソルアーム',
-              waist: 'シルバーソルコイル',
-              leg: 'シルバーソルグリーヴ',
+              body: 'シルバーソルメイル',
+              arm: 'ランポスＳアーム',
+              waist: '胴系統倍化',
+              leg: 'バンギスグリーヴ',
               weapon: 'slot0' },
-            { head: 'レウスＳヘルム',
-              body: 'slot1',
-              arm: 'シルバーソルアーム',
-              waist: 'シルバーソルコイル',
-              leg: 'シルバーソルグリーヴ',
+            { head: 'バトルヘルム',
+              body: 'シルバーソルメイル',
+              arm: 'ランポスＳアーム',
+              waist: '胴系統倍化',
+              leg: 'バンギスグリーヴ',
               weapon: 'slot0' },
-            { head: 'シルバーソルキャップ',
-              body: 'slot1',
-              arm: 'シルバーソルアーム',
-              waist: 'シルバーソルコイル',
-              leg: 'シルバーソルグリーヴ',
+            { head: 'バトルキャップ',
+              body: 'シルバーソルメイル',
+              arm: 'ランポスＳアーム',
+              waist: '胴系統倍化',
+              leg: 'バンギスグリーヴ',
+              weapon: 'slot0' },
+            { head: 'クックキャップ',
+              body: 'シルバーソルメイル',
+              arm: 'ランポスＳアーム',
+              waist: '胴系統倍化',
+              leg: 'バンギスグリーヴ',
+              weapon: 'slot0' },
+            { head: 'レックスキャップ',
+              body: 'シルバーソルメイル',
+              arm: 'ランポスＳアーム',
+              waist: '胴系統倍化',
+              leg: 'バンギスグリーヴ',
+              weapon: 'slot0' },
+            { head: 'ドボルキャップ',
+              body: 'シルバーソルメイル',
+              arm: 'ランポスＳアーム',
+              waist: '胴系統倍化',
+              leg: 'バンギスグリーヴ',
               weapon: 'slot0' } ];
     QUnit.deepEqual(got, exp, 'assemble');
 
@@ -97,26 +97,23 @@ QUnit.test('assembleEquip: summary', function () {
     norCombsSet = n.normalize(skills);
     actiCombs = c.combine(skills, norCombsSet);
     got = a.assembleEquip(actiCombs);
-    exp = 2788;
-    //QUnit.deepEqual(got.length, exp, "[ '攻撃力UP【大】', '業物' ]");
-    QUnit.ok(true, 'skip');
+    exp = 12595;
+    QUnit.deepEqual(got.length, exp, "[ '攻撃力UP【大】', '業物' ]");
 
     skills = [ '斬れ味レベル+1', '高級耳栓' ];
     norCombsSet = n.normalize(skills);
     actiCombs = c.combine(skills, norCombsSet);
     got = a.assembleEquip(actiCombs);
-    exp = 13;
-    //QUnit.deepEqual(got.length, exp, "[ '斬れ味レベル+1', '高級耳栓' ]");
-    QUnit.ok(true, 'skip');
+    exp = 2623;
+    QUnit.deepEqual(got.length, exp, "[ '斬れ味レベル+1', '高級耳栓' ]");
 
     skills = [ '攻撃力UP【大】', '業物', '集中', '見切り+1', '弱点特効' ];
     norCombsSet = n.normalize(skills);
     actiCombs = c.combine(skills, norCombsSet);
     got = a.assembleEquip(actiCombs);
     exp = 0;
-    //QUnit.deepEqual(got.length, exp,
-    //                 "[ '攻撃力UP【大】', '業物', '集中', '見切り+1', '弱点特効' ]");
-    QUnit.ok(true, 'skip');
+    QUnit.deepEqual(got.length, exp,
+                    "[ '攻撃力UP【大】', '業物', '集中', '見切り+1', '弱点特効' ]");
 });
 
 QUnit.test('assembleEquip: weaponSlot', function () {
@@ -126,7 +123,7 @@ QUnit.test('assembleEquip: weaponSlot', function () {
         a = new Assembler();
 
     // 装備を村のみにしぼる
-    myapp.setup({ hr: 1 });
+    myapp.setup({ hr: 1, vs: 6 });
 
     skills = [ '斬れ味レベル+1', '砥石使用高速化' ];
 
@@ -134,9 +131,8 @@ QUnit.test('assembleEquip: weaponSlot', function () {
     norCombsSet = n.normalize(skills);
     actiCombs = c.combine(skills, norCombsSet);
     got = a.assembleEquip(actiCombs);
-    exp = 11;
-    //QUnit.deepEqual(got.length, exp, 'weaponSlot: 2');
-    QUnit.ok(true, 'skip');
+    exp = 12;
+    QUnit.deepEqual(got.length, exp, 'weaponSlot: 2');
 });
 });
 })(typeof define !== 'undefined' ?

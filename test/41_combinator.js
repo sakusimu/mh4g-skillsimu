@@ -16,21 +16,21 @@ QUnit.test('combine', function () {
 
     norCombsSet =
         { head:
-           [ { skillComb: { '攻撃': 9, '匠': 1, '聴覚保護': 1 }, equips: [ 'h911' ] },
-             { skillComb: { '攻撃': 7, '匠': 2, '聴覚保護': 1 }, equips: [ 'h721' ] },
-             { skillComb: { '攻撃': 8, '匠': 2, '聴覚保護': 0 }, equips: [ 'h820' ] } ],
+           [ { skillComb: { '攻撃': 7, '匠': 1, '聴覚保護': 1 }, equips: [ 'h711' ] },
+             { skillComb: { '攻撃': 5, '匠': 2, '聴覚保護': 1 }, equips: [ 'h521' ] },
+             { skillComb: { '攻撃': 6, '匠': 2, '聴覚保護': 0 }, equips: [ 'h620' ] } ],
           body:
-           [ { skillComb: { '攻撃': 9, '匠': 0, '聴覚保護': 1 }, equips: [ 'b901' ] },
-             { skillComb: { '攻撃': 6, '匠': 2, '聴覚保護': 2 }, equips: [ 'b622' ] },
-             { skillComb: { '攻撃': 7, '匠': 2, '聴覚保護': 1 }, equips: [ 'b721' ] } ],
+           [ { skillComb: { '攻撃': 7, '匠': 0, '聴覚保護': 1 }, equips: [ 'b701' ] },
+             { skillComb: { '攻撃': 4, '匠': 2, '聴覚保護': 2 }, equips: [ 'b422' ] },
+             { skillComb: { '攻撃': 5, '匠': 2, '聴覚保護': 1 }, equips: [ 'b521' ] } ],
           arm:
-           [ { skillComb: { '攻撃': 5, '匠': 3, '聴覚保護': 0 }, equips: [ 'a530' ] },
-             { skillComb: { '攻撃': 2, '匠': 5, '聴覚保護': 1 }, equips: [ 'a251' ] },
-             { skillComb: { '攻撃': 3, '匠': 5, '聴覚保護': 0 }, equips: [ 'a350' ] } ],
+           [ { skillComb: { '攻撃': 6, '匠': 2, '聴覚保護': 0 }, equips: [ 'a620' ] },
+             { skillComb: { '攻撃': 3, '匠': 3, '聴覚保護': 1 }, equips: [ 'a331' ] },
+             { skillComb: { '攻撃': 4, '匠': 3, '聴覚保護': 0 }, equips: [ 'a430' ] } ],
           waist:
            [ { skillComb: { '攻撃': 5, '匠': 2, '聴覚保護': 1 }, equips: [ 'w521' ] },
-             { skillComb: { '攻撃': 2, '匠': 4, '聴覚保護': 2 }, equips: [ 'w242' ] },
-             { skillComb: { '攻撃': 3, '匠': 4, '聴覚保護': 1 }, equips: [ 'w341' ] } ],
+             { skillComb: { '攻撃': 2, '匠': 3, '聴覚保護': 2 }, equips: [ 'w232' ] },
+             { skillComb: { '攻撃': 3, '匠': 3, '聴覚保護': 1 }, equips: [ 'w331' ] } ],
           leg:
            [ { skillComb: { '攻撃': 6, '匠': 0, '聴覚保護': 4 }, equips: [ 'l604' ] },
              { skillComb: { '攻撃': 3, '匠': 2, '聴覚保護': 4 }, equips: [ 'l324' ] },
@@ -39,20 +39,19 @@ QUnit.test('combine', function () {
            [ { skillComb: { '攻撃': 0, '匠': 0, '聴覚保護': 0 }, equips: [ 'slot0' ] } ] };
     got = c.combine([ '攻撃力UP【大】', '斬れ味レベル+1', '耳栓' ], norCombsSet);
     exp = [ { head:
-               { skillComb: { '攻撃': 7, '匠': 2, '聴覚保護': 1 }, equips: [ 'h721' ] },
+               { skillComb: { '攻撃': 5, '匠': 2, '聴覚保護': 1 }, equips: [ 'h521' ] },
               body:
-               { skillComb: { '攻撃': 6, '匠': 2, '聴覚保護': 2 }, equips: [ 'b622' ] },
+               { skillComb: { '攻撃': 4, '匠': 2, '聴覚保護': 2 }, equips: [ 'b422' ] },
               arm:
-               { skillComb: { '攻撃': 2, '匠': 5, '聴覚保護': 1 }, equips: [ 'a251' ] },
+               { skillComb: { '攻撃': 3, '匠': 3, '聴覚保護': 1 }, equips: [ 'a331' ] },
               waist:
-               { skillComb: { '攻撃': 2, '匠': 4, '聴覚保護': 2 }, equips: [ 'w242' ] },
+               { skillComb: { '攻撃': 2, '匠': 3, '聴覚保護': 2 }, equips: [ 'w232' ] },
               leg:
-               { skillComb: { '攻撃': 3, '匠': 2, '聴覚保護': 4 }, equips: [ 'l324' ] },
+               { skillComb: { '攻撃': 6, '匠': 0, '聴覚保護': 4 }, equips: [ 'l604' ] },
               weapon:
                { skillComb: { '攻撃': 0, '匠': 0, '聴覚保護': 0 }, equips: [ 'slot0' ] } } ];
-    //QUnit.deepEqual(got, exp, 'combine');
-    //QUnit.strictEqual(c.count, 1, 'count');
-    QUnit.ok(true, 'skip');
+    QUnit.deepEqual(got, exp, 'combine');
+    QUnit.strictEqual(c.count, 1, 'count');
 
     got = c.combine();
     QUnit.deepEqual(got, [], 'nothing in');
@@ -81,24 +80,21 @@ QUnit.test('combine: summary', function () {
     skills = [ '攻撃力UP【大】', '業物' ];
     norCombsSet = n.normalize(skills);
     got = c.combine(skills, norCombsSet);
-    exp = 3719;
-    //QUnit.deepEqual(got.length, exp, "[ '攻撃力UP【大】', '業物' ]");
-    QUnit.ok(true, 'skip');
+    exp = 13742;
+    QUnit.deepEqual(got.length, exp, "[ '攻撃力UP【大】', '業物' ]");
 
     skills = [ '斬れ味レベル+1', '高級耳栓' ];
     norCombsSet = n.normalize(skills);
     got = c.combine(skills, norCombsSet);
-    exp = 36;
-    //QUnit.deepEqual(got.length, exp, "[ '斬れ味レベル+1', '高級耳栓' ]");
-    QUnit.ok(true, 'skip');
+    exp = 538;
+    QUnit.deepEqual(got.length, exp, "[ '斬れ味レベル+1', '高級耳栓' ]");
 
     skills = [ '攻撃力UP【大】', '業物', '集中', '見切り+1', '弱点特効' ];
     norCombsSet = n.normalize(skills);
     got = c.combine(skills, norCombsSet);
     exp = 0;
-    //QUnit.deepEqual(got.length, exp,
-    //                 "[ '攻撃力UP【大】', '業物', '集中', '見切り+1', '弱点特効' ]");
-    QUnit.ok(true, 'skip');
+    QUnit.deepEqual(got.length, exp,
+                    "[ '攻撃力UP【大】', '業物', '集中', '見切り+1', '弱点特効' ]");
 });
 
 QUnit.test('combine: weaponSlot', function () {
@@ -107,16 +103,16 @@ QUnit.test('combine: weaponSlot', function () {
         c = new Combinator();
 
     // 装備を村のみにしぼる
-    myapp.setup({ hr: 1 });
+    myapp.setup({ hr: 1, vs: 6 });
 
     skills = [ '斬れ味レベル+1', '砥石使用高速化' ];
 
     n.weaponSlot = 2; // 武器スロ2
     norCombsSet = n.normalize(skills);
     got = c.combine(skills, norCombsSet);
-    exp = 72;
-    //QUnit.deepEqual(got.length, exp, 'weaponSlot: 2');
-    QUnit.ok(true, 'skip');
+    exp = 8;
+    // 8件だが body のゴアメイルとディアブロを展開すると合計12件で、頑シミュさんと同じ件数
+    QUnit.deepEqual(got.length, exp, 'weaponSlot: 2');
 });
 });
 })(typeof define !== 'undefined' ?

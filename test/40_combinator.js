@@ -88,17 +88,17 @@ QUnit.test('_sort', function () {
 
     // 胴系統倍化
     norCombs =
-        [ { skillComb: { '攻撃': 3, '斬れ味': 2, '胴系統倍化': 0 }, equips: [ 'l32' ] },
-          { skillComb: { '攻撃': 0, '斬れ味': 0, '胴系統倍化': 0 }, equips: [ 'slot0' ] },
-          { skillComb: { '攻撃': 1, '斬れ味': 3, '胴系統倍化': 0 }, equips: [ 'l13' ] },
-          { skillComb: { '攻撃': 0, '斬れ味': 0, '胴系統倍化': 1 }, equips: [ 'l=b' ] },
-          { skillComb: { '攻撃': 4, '斬れ味': 1, '胴系統倍化': 0 }, equips: [ 'l41' ] } ];
+        [ { skillComb: { '攻撃': 3, '斬れ味': 2 }, equips: [ 'l32' ] },
+          { skillComb: { '攻撃': 0, '斬れ味': 0 }, equips: [ 'slot0' ] },
+          { skillComb: { '攻撃': 1, '斬れ味': 3 }, equips: [ 'l13' ] },
+          { skillComb: { '胴系統倍化': 1 }, equips: [ 'l=b' ] },
+          { skillComb: { '攻撃': 4, '斬れ味': 1 }, equips: [ 'l41' ] } ];
     got = c._sort(norCombs);
-    exp = [ { skillComb: { '攻撃': 0, '斬れ味': 0, '胴系統倍化': 0 }, equips: [ 'slot0' ] },
-            { skillComb: { '攻撃': 0, '斬れ味': 0, '胴系統倍化': 1 }, equips: [ 'l=b' ] },
-            { skillComb: { '攻撃': 3, '斬れ味': 2, '胴系統倍化': 0 }, equips: [ 'l32' ] },
-            { skillComb: { '攻撃': 4, '斬れ味': 1, '胴系統倍化': 0 }, equips: [ 'l41' ] },
-            { skillComb: { '攻撃': 1, '斬れ味': 3, '胴系統倍化': 0 }, equips: [ 'l13' ] } ];
+    exp = [ { skillComb: { '攻撃': 0, '斬れ味': 0 }, equips: [ 'slot0' ] },
+            { skillComb: { '胴系統倍化': 1 }, equips: [ 'l=b' ] },
+            { skillComb: { '攻撃': 3, '斬れ味': 2 }, equips: [ 'l32' ] },
+            { skillComb: { '攻撃': 4, '斬れ味': 1 }, equips: [ 'l41' ] },
+            { skillComb: { '攻撃': 1, '斬れ味': 3 }, equips: [ 'l13' ] } ];
     QUnit.deepEqual(got, exp, "dupli");
 });
 
@@ -133,28 +133,28 @@ QUnit.test('_calcMaxSkillPoints', function () {
     // 胴系統倍化
     norCombsSet =
         { head:
-           [ { skillComb: { '攻撃': 1, '斬れ味': 0, '胴系統倍化': 0 }, equips: [ 'h10' ] },
-             { skillComb: { '攻撃': 0, '斬れ味': 2, '胴系統倍化': 0 }, equips: [ 'h02' ] },
-             { skillComb: { '攻撃': 0, '斬れ味': 0, '胴系統倍化': 1 }, equips: [ 'h=b' ] } ],
+           [ { skillComb: { '攻撃': 1, '斬れ味': 0 }, equips: [ 'h10' ] },
+             { skillComb: { '攻撃': 0, '斬れ味': 2 }, equips: [ 'h02' ] },
+             { skillComb: { '胴系統倍化': 1 }, equips: [ 'h=b' ] } ],
           body:
-           [ { skillComb: { '攻撃': 2, '斬れ味': 3, '胴系統倍化': 0 }, equips: [ 'b23' ] } ],
+           [ { skillComb: { '攻撃': 2, '斬れ味': 3 }, equips: [ 'b23' ] } ],
           arm:
-           [ { skillComb: { '攻撃': 1, '斬れ味': 0, '胴系統倍化': 0 }, equips: [ 'a10' ] },
-             { skillComb: { '攻撃': 0, '斬れ味': 2, '胴系統倍化': 0 }, equips: [ 'a02' ] },
-             { skillComb: { '攻撃': 5, '斬れ味': 0, '胴系統倍化': 0 }, equips: [ 'a50' ] },
-             { skillComb: { '攻撃': 0, '斬れ味': 0, '胴系統倍化': 1 }, equips: [ 'a=b' ] } ],
+           [ { skillComb: { '攻撃': 1, '斬れ味': 0 }, equips: [ 'a10' ] },
+             { skillComb: { '攻撃': 0, '斬れ味': 2 }, equips: [ 'a02' ] },
+             { skillComb: { '攻撃': 5, '斬れ味': 0 }, equips: [ 'a50' ] },
+             { skillComb: { '胴系統倍化': 1 }, equips: [ 'a=b' ] } ],
           waist:
-           [ { skillComb: { '攻撃': 1, '斬れ味': 0, '胴系統倍化': 0 }, equips: [ 'w10' ] },
-             { skillComb: { '攻撃': 0, '斬れ味': 2, '胴系統倍化': 0 }, equips: [ 'w02' ] },
+           [ { skillComb: { '攻撃': 1, '斬れ味': 0 }, equips: [ 'w10' ] },
+             { skillComb: { '攻撃': 0, '斬れ味': 2 }, equips: [ 'w02' ] },
              { skillComb: { '攻撃': 0, '斬れ味': 0, '胴系統倍化': 1 }, equips: [ 'w=b' ] } ],
           leg:
-           [ { skillComb: { '攻撃': 1, '斬れ味': 0, '胴系統倍化': 0 }, equips: [ 'l10' ] },
-             { skillComb: { '攻撃': 0, '斬れ味': 2, '胴系統倍化': 0 }, equips: [ 'l02' ] },
-             { skillComb: { '攻撃': 0, '斬れ味': 4, '胴系統倍化': 0 }, equips: [ 'l04' ] },
-             { skillComb: { '攻撃': 0, '斬れ味': 0, '胴系統倍化': 1 }, equips: [ 'l=b' ] } ],
+           [ { skillComb: { '攻撃': 1, '斬れ味': 0 }, equips: [ 'l10' ] },
+             { skillComb: { '攻撃': 0, '斬れ味': 2 }, equips: [ 'l02' ] },
+             { skillComb: { '攻撃': 0, '斬れ味': 4 }, equips: [ 'l04' ] },
+             { skillComb: { '胴系統倍化': 1 }, equips: [ 'l=b' ] } ],
           weapon:
-           [ { skillComb: { '攻撃': 1, '斬れ味': 0, '胴系統倍化': 0 }, equips: [ 'wpn' ] },
-             { skillComb: { '攻撃': 0, '斬れ味': 1, '胴系統倍化': 0 }, equips: [ 'wpn' ] } ] };
+           [ { skillComb: { '攻撃': 1, '斬れ味': 0 }, equips: [ 'wpn' ] },
+             { skillComb: { '攻撃': 0, '斬れ味': 1 }, equips: [ 'wpn' ] } ] };
     got = c._calcMaxSkillPoints(norCombsSet);
     exp = { '攻撃': { head: 2, body: 2, arm: 5, waist: 2, leg: 2, weapon: 1 },
             '斬れ味': { head: 3, body: 3, arm: 3, waist: 3, leg: 4, weapon: 1 } };
@@ -198,27 +198,27 @@ QUnit.test('_calcMaxSumPoints', function () {
     // 胴系統倍化
     norCombsSet =
         { head:
-           [ { skillComb: { '攻撃': 1, '斬れ味': 0, '胴系統倍化': 0 }, equips: [ 'h10' ] },
-             { skillComb: { '攻撃': 0, '斬れ味': 2, '胴系統倍化': 0 }, equips: [ 'h02' ] },
-             { skillComb: { '攻撃': 0, '斬れ味': 0, '胴系統倍化': 1 }, equips: [ 'h=b' ] } ],
+           [ { skillComb: { '攻撃': 1, '斬れ味': 0 }, equips: [ 'h10' ] },
+             { skillComb: { '攻撃': 0, '斬れ味': 2 }, equips: [ 'h02' ] },
+             { skillComb: { '胴系統倍化': 1 }, equips: [ 'h=b' ] } ],
           body:
-           [ { skillComb: { '攻撃': 2, '斬れ味': 3, '胴系統倍化': 0 }, equips: [ 'b23' ] } ],
+           [ { skillComb: { '攻撃': 2, '斬れ味': 3 }, equips: [ 'b23' ] } ],
           arm:
-           [ { skillComb: { '攻撃': 1, '斬れ味': 0, '胴系統倍化': 0 }, equips: [ 'a10' ] },
-             { skillComb: { '攻撃': 0, '斬れ味': 2, '胴系統倍化': 0 }, equips: [ 'a02' ] },
-             { skillComb: { '攻撃': 5, '斬れ味': 0, '胴系統倍化': 0 }, equips: [ 'a50' ] },
-             { skillComb: { '攻撃': 0, '斬れ味': 0, '胴系統倍化': 1 }, equips: [ 'a=b' ] } ],
+           [ { skillComb: { '攻撃': 1, '斬れ味': 0 }, equips: [ 'a10' ] },
+             { skillComb: { '攻撃': 0, '斬れ味': 2 }, equips: [ 'a02' ] },
+             { skillComb: { '攻撃': 5, '斬れ味': 0 }, equips: [ 'a50' ] },
+             { skillComb: { '胴系統倍化': 1 }, equips: [ 'a=b' ] } ],
           waist:
-           [ { skillComb: { '攻撃': 1, '斬れ味': 0, '胴系統倍化': 0 }, equips: [ 'w10' ] },
-             { skillComb: { '攻撃': 0, '斬れ味': 2, '胴系統倍化': 0 }, equips: [ 'w02' ] } ],
+           [ { skillComb: { '攻撃': 1, '斬れ味': 0 }, equips: [ 'w10' ] },
+             { skillComb: { '攻撃': 0, '斬れ味': 2 }, equips: [ 'w02' ] } ],
           leg:
-           [ { skillComb: { '攻撃': 1, '斬れ味': 0, '胴系統倍化': 0 }, equips: [ 'l10' ] },
-             { skillComb: { '攻撃': 0, '斬れ味': 2, '胴系統倍化': 0 }, equips: [ 'l02' ] },
-             { skillComb: { '攻撃': 0, '斬れ味': 6, '胴系統倍化': 0 }, equips: [ 'l04' ] },
-             { skillComb: { '攻撃': 0, '斬れ味': 0, '胴系統倍化': 1 }, equips: [ 'l=b' ] } ],
+           [ { skillComb: { '攻撃': 1, '斬れ味': 0 }, equips: [ 'l10' ] },
+             { skillComb: { '攻撃': 0, '斬れ味': 2 }, equips: [ 'l02' ] },
+             { skillComb: { '攻撃': 0, '斬れ味': 6 }, equips: [ 'l04' ] },
+             { skillComb: { '胴系統倍化': 1 }, equips: [ 'l=b' ] } ],
           weapon:
-           [ { skillComb: { '攻撃': 1, '斬れ味': 0, '胴系統倍化': 0 }, equips: [ 'wpn' ] },
-             { skillComb: { '攻撃': 0, '斬れ味': 1, '胴系統倍化': 0 }, equips: [ 'wpn' ] } ] };
+           [ { skillComb: { '攻撃': 1, '斬れ味': 0 }, equips: [ 'wpn' ] },
+             { skillComb: { '攻撃': 0, '斬れ味': 1 }, equips: [ 'wpn' ] } ] };
     got = c._calcMaxSumPoints(norCombsSet);
     exp = { head: 5, body: 5, arm: 5, waist: 2, leg: 6, weapon: 1 };
     QUnit.deepEqual(got, exp, 'dupli');
@@ -259,26 +259,26 @@ QUnit.test('_calcBorderLine', function () {
     // 胴系統倍化
     norCombsSet =
         { head:
-           [ { skillComb: { '攻撃': 2, '斬れ味': 0, '胴系統倍化': 0 }, equips: [ 'h20' ] },
-             { skillComb: { '攻撃': 0, '斬れ味': 1, '胴系統倍化': 0 }, equips: [ 'h01' ] },
-             { skillComb: { '攻撃': 0, '斬れ味': 0, '胴系統倍化': 1 }, equips: [ 'h=b' ] } ],
+           [ { skillComb: { '攻撃': 2, '斬れ味': 0 }, equips: [ 'h20' ] },
+             { skillComb: { '攻撃': 0, '斬れ味': 1 }, equips: [ 'h01' ] },
+             { skillComb: { '胴系統倍化': 1 }, equips: [ 'h=b' ] } ],
           body:
-           [ { skillComb: { '攻撃': 4, '斬れ味': 2, '胴系統倍化': 0 }, equips: [ 'b42' ] } ],
+           [ { skillComb: { '攻撃': 4, '斬れ味': 2 }, equips: [ 'b42' ] } ],
           arm:
-           [ { skillComb: { '攻撃': 3, '斬れ味': 3, '胴系統倍化': 0 }, equips: [ 'a33' ] },
-             { skillComb: { '攻撃': 0, '斬れ味': 4, '胴系統倍化': 0 }, equips: [ 'a04' ] },
-             { skillComb: { '攻撃': 5, '斬れ味': 0, '胴系統倍化': 0 }, equips: [ 'a50' ] },
-             { skillComb: { '攻撃': 0, '斬れ味': 0, '胴系統倍化': 1 }, equips: [ 'a=b' ] } ],
+           [ { skillComb: { '攻撃': 3, '斬れ味': 3 }, equips: [ 'a33' ] },
+             { skillComb: { '攻撃': 0, '斬れ味': 4 }, equips: [ 'a04' ] },
+             { skillComb: { '攻撃': 5, '斬れ味': 0 }, equips: [ 'a50' ] },
+             { skillComb: { '胴系統倍化': 1 }, equips: [ 'a=b' ] } ],
           waist:
-           [ { skillComb: { '攻撃': 5, '斬れ味': 1, '胴系統倍化': 0 }, equips: [ 'w51' ] },
-             { skillComb: { '攻撃': 3, '斬れ味': 2, '胴系統倍化': 0 }, equips: [ 'w32' ] } ],
+           [ { skillComb: { '攻撃': 5, '斬れ味': 1 }, equips: [ 'w51' ] },
+             { skillComb: { '攻撃': 3, '斬れ味': 2 }, equips: [ 'w32' ] } ],
           leg:
-           [ { skillComb: { '攻撃': 5, '斬れ味': 0, '胴系統倍化': 0 }, equips: [ 'l50' ] },
-             { skillComb: { '攻撃': 3, '斬れ味': 3, '胴系統倍化': 0 }, equips: [ 'l33' ] },
-             { skillComb: { '攻撃': 0, '斬れ味': 4, '胴系統倍化': 0 }, equips: [ 'l04' ] },
-             { skillComb: { '攻撃': 0, '斬れ味': 0, '胴系統倍化': 1 }, equips: [ 'l=b' ] } ],
+           [ { skillComb: { '攻撃': 5, '斬れ味': 0 }, equips: [ 'l50' ] },
+             { skillComb: { '攻撃': 3, '斬れ味': 3 }, equips: [ 'l33' ] },
+             { skillComb: { '攻撃': 0, '斬れ味': 4 }, equips: [ 'l04' ] },
+             { skillComb: { '胴系統倍化': 1 }, equips: [ 'l=b' ] } ],
           weapon:
-           [ { skillComb: { '攻撃': 0, '斬れ味': 0, '胴系統倍化': 0 }, equips: [ 'wpn' ] } ] };
+           [ { skillComb: { '攻撃': 0, '斬れ味': 0 }, equips: [ 'wpn' ] } ] };
     goal = c._goal([ '攻撃力UP【大】', '業物' ]);
     got = c._calcBorderLine(norCombsSet, goal);
     exp = { body: { '攻撃': 1, '斬れ味': -2 },
@@ -446,23 +446,23 @@ QUnit.test('_combine', function () {
     QUnit.deepEqual(got, exp, 'combine waist (slot0)');
 
     // 胴系統倍化も先にあってもOK
-    set = [ { skillComb: { '攻撃': 4, '斬れ味': 2, '胴系統倍化': 0 }, equips: [ 'b42' ] },
-            { skillComb: { '攻撃': 0, '斬れ味': 0, '胴系統倍化': 1 }, equips: [ 'h=b' ] },
-            { skillComb: { '攻撃': 3, '斬れ味': 3, '胴系統倍化': 0 }, equips: [ 'a33' ] },
-            { skillComb: { '攻撃': 5, '斬れ味': 1, '胴系統倍化': 0 }, equips: [ 'w51' ] } ];
-    combs = [ { skillComb: { '攻撃': 0, '斬れ味': 0, '胴系統倍化': 0 }, equips: [ 'slot0' ] },
-              { skillComb: { '攻撃': 0, '斬れ味': 0, '胴系統倍化': 1 }, equips: [ 'l=b' ] },
-              { skillComb: { '攻撃': 3, '斬れ味': 3, '胴系統倍化': 0 }, equips: [ 'l33' ] },
-              { skillComb: { '攻撃': 5, '斬れ味': 0, '胴系統倍化': 0 }, equips: [ 'l50' ] },
-              { skillComb: { '攻撃': 0, '斬れ味': 4, '胴系統倍化': 0 }, equips: [ 'l04' ] } ];
+    set = [ { skillComb: { '攻撃': 4, '斬れ味': 2 }, equips: [ 'b42' ] },
+            { skillComb: { '胴系統倍化': 1 }, equips: [ 'h=b' ] },
+            { skillComb: { '攻撃': 3, '斬れ味': 3 }, equips: [ 'a33' ] },
+            { skillComb: { '攻撃': 5, '斬れ味': 1 }, equips: [ 'w51' ] } ];
+    combs = [ { skillComb: { '攻撃': 0, '斬れ味': 0 }, equips: [ 'slot0' ] },
+              { skillComb: { '胴系統倍化': 1 }, equips: [ 'l=b' ] },
+              { skillComb: { '攻撃': 3, '斬れ味': 3 }, equips: [ 'l33' ] },
+              { skillComb: { '攻撃': 5, '斬れ味': 0 }, equips: [ 'l50' ] },
+              { skillComb: { '攻撃': 0, '斬れ味': 4 }, equips: [ 'l04' ] } ];
     borderLine = { leg: { '攻撃': 20, '斬れ味': 10 },
                    sum: { leg: 30 } };
     got = c._combine(set, combs, borderLine, 'leg');
-    exp = [ [ { skillComb: { '攻撃': 4, '斬れ味': 2, '胴系統倍化': 0 }, equips: [ 'b42' ] },
-              { skillComb: { '攻撃': 0, '斬れ味': 0, '胴系統倍化': 1 }, equips: [ 'h=b' ] },
-              { skillComb: { '攻撃': 3, '斬れ味': 3, '胴系統倍化': 0 }, equips: [ 'a33' ] },
-              { skillComb: { '攻撃': 5, '斬れ味': 1, '胴系統倍化': 0 }, equips: [ 'w51' ] },
-              { skillComb: { '攻撃': 0, '斬れ味': 0, '胴系統倍化': 1 }, equips: [ 'l=b' ] } ] ];
+    exp = [ [ { skillComb: { '攻撃': 4, '斬れ味': 2 }, equips: [ 'b42' ] },
+              { skillComb: { '胴系統倍化': 1 }, equips: [ 'h=b' ] },
+              { skillComb: { '攻撃': 3, '斬れ味': 3 }, equips: [ 'a33' ] },
+              { skillComb: { '攻撃': 5, '斬れ味': 1 }, equips: [ 'w51' ] },
+              { skillComb: { '胴系統倍化': 1 }, equips: [ 'l=b' ] } ] ];
     QUnit.deepEqual(got, exp, 'combine leg (dupli)');
 
     // これからスタートするところ(body を調べる)
