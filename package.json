@@ -1,0 +1,23 @@
+{
+  "name": "mh4-skillsimu",
+  "version": "0.0.0",
+  "description": "Skill Simulator for MH4",
+  "author": "sakusimu.net",
+  "scripts": { "test": "grunt test" },
+  "license": [
+    {
+      "type": "MIT",
+      "url": ""
+    }
+  ],
+  "devDependencies": {
+    "grunt": "~0.4.1",
+    "grunt-contrib-clean": "~0.5.0",
+    "grunt-contrib-concat": "~0.3.0",
+    "grunt-contrib-jshint": "~0.6.4",
+    "grunt-contrib-uglify": "~0.2.4",
+    "qunitjs": "1.10.0",
+    "qunit-tap": "~1.4.0",
+    "underscore": "~1.5.2"
+  }
+}

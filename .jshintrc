@@ -1,0 +1,13 @@
+{
+    "boss"    : true,
+    "curly"   : false,
+    "eqeqeq"  : true,
+    "eqnull"  : true,
+    "laxcomma": true,
+    "node"    : true,
+    "undef"   : true,
+    "unused"  : true,
+    "predef"  : {
+        "define": true
+    }
+}
