@@ -33,19 +33,19 @@ QUnit.test('equips', function () {
     QUnit.deepEqual(got, exp, 'equips.body');
 
     got = _.keys(equips.arm).length;
-    QUnit.equal(got, 310, 'equips.arm.length');
+    QUnit.equal(got, 308, 'equips.arm.length');
     got = equips.arm['ブレイブグラブ,0,0'];
     exp = ["ブレイブグラブ,0,0","ブレイブグラブ",0,0,1,0,1,1,1,1,2,0,0,0,1,"採取",3,"運気",2,"体力",-2,"乗り",2,null,null,"竜骨【小】",1,null,null,null,null,null,null];
     QUnit.deepEqual(got, exp, 'equips.arm');
 
     got = _.keys(equips.waist).length;
-    QUnit.equal(got, 307, 'equips.waist.length');
+    QUnit.equal(got, 305, 'equips.waist.length');
     got = equips.waist['ブレイブベルト,0,0'];
     exp = ["ブレイブベルト,0,0","ブレイブベルト",0,0,1,2,1,1,1,1,2,0,0,0,1,"体力",-2,"回復速度",3,"乗り",1,null,null,null,null,"竜骨【小】",1,"鉄鉱石",1,null,null,null,null];
     QUnit.deepEqual(got, exp, 'equips.waist');
 
     got = _.keys(equips.leg).length;
-    QUnit.equal(got, 309, 'equips.leg.length');
+    QUnit.equal(got, 307, 'equips.leg.length');
     got = equips.leg['ブレイブパンツ,0,0'];
     exp = ["ブレイブパンツ,0,0","ブレイブパンツ",0,0,1,0,1,1,1,1,2,0,0,0,1,"体力",-2,"回復速度",2,"乗り",4,null,null,null,null,"竜骨【小】",1,null,null,null,null,null,null];
     QUnit.deepEqual(got, exp, 'equips.leg');
@@ -56,7 +56,7 @@ QUnit.test('decos', function () {
         decos = data.decos;
 
     got = _.keys(decos).length;
-    QUnit.equal(got, 175, 'decos.length');
+    QUnit.equal(got, 176, 'decos.length');
     got = decos['耐絶珠【１】'];
     exp = ["耐絶珠【１】",4,1,1,1,"気絶",1,"麻痺",-1,"水光原珠",1,"鳥竜種の牙",3,null,null,null,null,null,null,null,null,null,null,null,null];
     QUnit.deepEqual(got, exp, 'decos[0]');

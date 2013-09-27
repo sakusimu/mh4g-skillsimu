@@ -24,11 +24,11 @@ QUnit.test('simulate', function () {
         simu = new Simulator();
 
     got = simu.simulate([ '攻撃力UP【大】', '業物' ]);
-    exp = 12595;
+    exp = 10800;
     QUnit.strictEqual(got.length, exp, "[ '攻撃力UP【大】', '業物' ]");
 
     got = simu.simulate([ '斬れ味レベル+1', '高級耳栓' ]);
-    exp = 4184;
+    exp = 435;
     QUnit.strictEqual(got.length, exp, "[ '斬れ味レベル+1', '高級耳栓' ]");
 
     got = simu.simulate([ '攻撃力UP【大】', '業物', '集中', '見切り+1', '弱点特効' ]);
@@ -56,12 +56,6 @@ QUnit.test('simulate: dupli', function () {
               body: 'slot3',
               arm: 'ユクモノコテ・天',
               waist: '胴系統倍化',
-              leg: 'ユクモノハカマ・天',
-              weapon: 'slot0' },
-            { head: 'ユクモノカサ・天',
-              body: 'slot3',
-              arm: 'ユクモノコテ・天',
-              waist: 'slot2',
               leg: 'ユクモノハカマ・天',
               weapon: 'slot0' } ];
     QUnit.deepEqual(got, exp, "[ '斬れ味レベル+1', '砥石使用高速化' ]");
