@@ -27,46 +27,101 @@ QUnit.test('new', function () {
     QUnit.strictEqual(got.weaponSlot, null, 'weaponSlot');
 });
 
-QUnit.test('_makeCombs', function () {
-    var got, exp, equips, combs,
+QUnit.test('_makeCombsSet', function () {
+    var got, exp, equips, combsSet,
         dc = new DecoCombinator();
 
-    var name = function (deCombs) {
-        return _.map(deCombs, function (comb) {
-            return { equip: comb.equip.name, deComb: _.pluck(comb.deComb, 'name') };
+    var name = function (combsSet) {
+        var set = {};
+        _.each(combsSet, function (combs, part) {
+            set[part] = _.map(combs, function (comb) {
+                var e = comb.equip.name,
+                    d = comb.deco ? comb.deco.names : null;
+                return { equip: e, deco: d };
+            });
         });
+        return set;
     };
 
     equips = {
-        head : myapp.equips('head', 'ユクモノカサ・天')[0],
+        head : myapp.equips('head', 'ユクモノカサ・天')[0], // 匠+2, 研ぎ師+3
         body : myapp.equips('body', '三眼の首飾り')[0],
-        arm  : myapp.equips('arm', 'ユクモノコテ・天')[0],
+        arm  : myapp.equips('arm', 'ユクモノコテ・天')[0],  // 匠+1, 研ぎ師+1
+        waist: myapp.equips('waist', 'バンギスコイル')[0],
+        leg  : myapp.equips('leg', 'ユクモノハカマ・天')[0] // 匠+1, 研ぎ師+1
+    };
+    combsSet = dc._makeCombsSet([ '匠', '研ぎ師' ], equips);
+    got = name(combsSet);
+    exp = {
+        head:
+        [ { equip: 'ユクモノカサ・天', deco: [ '研磨珠【１】', '研磨珠【１】' ] },
+          { equip: 'ユクモノカサ・天', deco: [ '匠珠【２】' ] } ],
+        body:
+        [ { equip: '三眼の首飾り', deco: [ '研磨珠【１】', '研磨珠【１】', '研磨珠【１】' ] },
+          { equip: '三眼の首飾り', deco: [ '匠珠【２】', '研磨珠【１】' ] },
+          { equip: '三眼の首飾り', deco: [ '匠珠【３】' ] } ],
+        arm:
+        [ { equip: 'ユクモノコテ・天', deco: [ '研磨珠【１】', '研磨珠【１】' ] },
+          { equip: 'ユクモノコテ・天', deco: [ '匠珠【２】' ] } ],
+        waist:
+        [ { equip: 'バンギスコイル', deco: null } ],
+        leg:
+        [ { equip: 'ユクモノハカマ・天', deco: [ '研磨珠【１】', '研磨珠【１】' ] },
+          { equip: 'ユクモノハカマ・天', deco: [ '匠珠【２】' ] } ]
+    };
+    QUnit.deepEqual(got, exp, 'combsSet');
+
+    // 装備に slotN がある場合
+    equips = {
+        head : myapp.equips('head', 'ユクモノカサ・天')[0],
+        body : { name: 'slot3' },
+        arm  : { name: 'slot0' },
         waist: myapp.equips('waist', 'バンギスコイル')[0],
         leg  : myapp.equips('leg', 'ユクモノハカマ・天')[0]
     };
-    combs = dc._makeCombs([ '匠', '研ぎ師' ], equips);
-    got = name(combs.head);
-    exp = [ { equip: 'ユクモノカサ・天', deComb: [ '研磨珠【１】', '研磨珠【１】' ] },
-            { equip: 'ユクモノカサ・天', deComb: [ '匠珠【２】' ] } ];
-    QUnit.deepEqual(got, exp, 'head');
-    got = name(combs.body);
-    exp = [ { equip: '三眼の首飾り', deComb: [ '研磨珠【１】', '研磨珠【１】', '研磨珠【１】' ] },
-            { equip: '三眼の首飾り', deComb: [ '匠珠【２】', '研磨珠【１】' ] },
-            { equip: '三眼の首飾り', deComb: [ '匠珠【３】' ] } ];
-    QUnit.deepEqual(got, exp, 'body');
-    got = name(combs.arm);
-    exp = [ { equip: 'ユクモノコテ・天', deComb: [ '研磨珠【１】', '研磨珠【１】' ] },
-            { equip: 'ユクモノコテ・天', deComb: [ '匠珠【２】' ] } ];
-    QUnit.deepEqual(got, exp, 'arm');
-    got = name(combs.waist);
-    exp = [];
-    QUnit.deepEqual(got, exp, 'waist');
-    got = name(combs.leg);
-    exp = [ { equip: 'ユクモノハカマ・天', deComb: [ '研磨珠【１】', '研磨珠【１】' ] },
-            { equip: 'ユクモノハカマ・天', deComb: [ '匠珠【２】' ] } ];
-    QUnit.deepEqual(got, exp, 'leg');
+    combsSet = dc._makeCombsSet([ '匠', '研ぎ師' ], equips);
+    got = name(combsSet);
+    exp = {
+        head:
+        [ { equip: 'ユクモノカサ・天', deco: [ '研磨珠【１】', '研磨珠【１】' ] },
+          { equip: 'ユクモノカサ・天', deco: [ '匠珠【２】' ] } ],
+        body:
+        [ { equip: 'slot3', deco: [ '研磨珠【１】', '研磨珠【１】', '研磨珠【１】' ] },
+          { equip: 'slot3', deco: [ '匠珠【２】', '研磨珠【１】' ] },
+          { equip: 'slot3', deco: [ '匠珠【３】' ] } ],
+        arm:
+        [ { equip: 'slot0', deco: null } ],
+        waist:
+        [ { equip: 'バンギスコイル', deco: null } ],
+        leg:
+        [ { equip: 'ユクモノハカマ・天', deco: [ '研磨珠【１】', '研磨珠【１】' ] },
+          { equip: 'ユクモノハカマ・天', deco: [ '匠珠【２】' ] } ]
+    };
+    got = name(combsSet);
+    QUnit.deepEqual(got, exp, 'slotN');
 });
 
+QUnit.test('_calcPoint', function () {
+    var got, exp, equips,
+        dc   = new DecoCombinator();
+
+    equips = {
+        head : myapp.equips('head', 'ユクモノカサ・天')[0], // 匠+2, 研ぎ師+3
+        body : myapp.equips('body', '三眼の首飾り')[0],
+        arm  : { name: 'slot0' },
+        waist: myapp.equips('waist', 'バンギスコイル')[0],  // 胴系統倍化
+        leg  : myapp.equips('leg', 'ユクモノハカマ・天')[0] // 匠+1, 研ぎ師+1
+    };
+    var combsSet = dc._makeCombsSet([ '匠', '研ぎ師' ], equips);
+    var combSet = { head : combsSet.head[1],  // 匠珠【２】
+                    body : combsSet.body[1],  // 匠珠【２】, 研磨珠【１】
+                    arm  : combsSet.arm[0],
+                    waist: combsSet.waist[0],
+                    leg  : combsSet.leg[1] }; // 匠珠【２】
+    got = dc._calcPoint(combSet);
+    exp = { '匠': 7, '研ぎ師': 8, '回復量': 3, '加護': 3, '斬れ味': -4 };
+    QUnit.deepEqual(got, exp, 'point');
+});
 });
 })(typeof define !== 'undefined' ?
    define :
