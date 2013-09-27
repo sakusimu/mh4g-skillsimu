@@ -1,24 +1,24 @@
 (function (define) {
 'use strict';
 var deps = [ './lib/test-helper.js', 'underscore',
-             '../lib/deco-combinator.js',
+             '../lib/deco-simulator.js',
              './lib/driver-myapp.js' ];
-define(deps, function (QUnit, _, DecoCombinator, myapp) {
+define(deps, function (QUnit, _, DecoSimulator, myapp) {
 
-QUnit.module('70_deco-combinator', {
+QUnit.module('70_deco-simulator', {
     setup: function () {
         myapp.initialize();
     }
 });
 
-QUnit.test('Combinator', function () {
-    QUnit.strictEqual(typeof DecoCombinator, 'function', 'is function');
+QUnit.test('DecoSimulator', function () {
+    QUnit.strictEqual(typeof DecoSimulator, 'function', 'is function');
 });
 
 QUnit.test('new', function () {
     var got;
 
-    got = new DecoCombinator();
+    got = new DecoSimulator();
     QUnit.strictEqual(typeof got, 'object', 'is object');
     QUnit.strictEqual(typeof got.initialize, 'function', 'has initialize()');
 
@@ -29,7 +29,7 @@ QUnit.test('new', function () {
 
 QUnit.test('_makeCombsSet', function () {
     var got, exp, equips, combsSet,
-        dc = new DecoCombinator();
+        ds = new DecoSimulator();
 
     var name = function (combsSet) {
         var set = {};
@@ -50,7 +50,7 @@ QUnit.test('_makeCombsSet', function () {
         waist: myapp.equips('waist', 'バンギスコイル')[0],
         leg  : myapp.equips('leg', 'ユクモノハカマ・天')[0] // 匠+1, 研ぎ師+1
     };
-    combsSet = dc._makeCombsSet([ '匠', '研ぎ師' ], equips);
+    combsSet = ds._makeCombsSet([ '匠', '研ぎ師' ], equips);
     got = name(combsSet);
     exp = {
         head:
@@ -79,7 +79,7 @@ QUnit.test('_makeCombsSet', function () {
         waist: myapp.equips('waist', 'バンギスコイル')[0],
         leg  : myapp.equips('leg', 'ユクモノハカマ・天')[0]
     };
-    combsSet = dc._makeCombsSet([ '匠', '研ぎ師' ], equips);
+    combsSet = ds._makeCombsSet([ '匠', '研ぎ師' ], equips);
     got = name(combsSet);
     exp = {
         head:
@@ -103,7 +103,7 @@ QUnit.test('_makeCombsSet', function () {
 
 QUnit.test('_calcPoint', function () {
     var got, exp, equips,
-        dc = new DecoCombinator();
+        ds = new DecoSimulator();
 
     equips = {
         head : myapp.equips('head', 'ユクモノカサ・天')[0], // 匠+2, 研ぎ師+3
@@ -112,20 +112,20 @@ QUnit.test('_calcPoint', function () {
         waist: myapp.equips('waist', 'バンギスコイル')[0],  // 胴系統倍化
         leg  : myapp.equips('leg', 'ユクモノハカマ・天')[0] // 匠+1, 研ぎ師+1
     };
-    var combsSet = dc._makeCombsSet([ '匠', '研ぎ師' ], equips);
+    var combsSet = ds._makeCombsSet([ '匠', '研ぎ師' ], equips);
     var combSet = { head : combsSet.head[1],  // 匠珠【２】
                     body : combsSet.body[1],  // 匠珠【２】, 研磨珠【１】
                     arm  : combsSet.arm[0],
                     waist: combsSet.waist[0],
                     leg  : combsSet.leg[1] }; // 匠珠【２】
-    got = dc._calcPoint(combSet);
+    got = ds._calcPoint(combSet);
     exp = { '匠': 7, '研ぎ師': 8, '回復量': 3, '加護': 3, '斬れ味': -4 };
     QUnit.deepEqual(got, exp, 'point');
 });
 
 QUnit.test('_makeCombSetList', function () {
     var got, exp, combsSet,
-        dc = new DecoCombinator();
+        ds = new DecoSimulator();
 
     combsSet = {
         head:
@@ -143,7 +143,7 @@ QUnit.test('_makeCombSetList', function () {
         [ { equip: 'ユクモノハカマ・天', deco: '研磨珠【１】,研磨珠【１】' },
           { equip: 'ユクモノハカマ・天', deco: '匠珠【２】' } ]
     };
-    got = dc._makeCombSetList(combsSet);
+    got = ds._makeCombSetList(combsSet);
     exp = 2 * 3 * 1 * 1 * 2;
     QUnit.strictEqual(got.length, exp, 'length');
     exp = [ { head: { equip: 'ユクモノカサ・天', deco: '研磨珠【１】,研磨珠【１】' },
@@ -211,7 +211,7 @@ QUnit.test('_makeCombSetList', function () {
 
 QUnit.test('combine', function () {
     var got, exp, equips,
-        dc = new DecoCombinator();
+        ds = new DecoSimulator();
 
     var name = function (combsList) {
         return _.map(combsList, function (combs) {
@@ -233,7 +233,7 @@ QUnit.test('combine', function () {
 
     // 装飾品の組み合わせとしては、研磨珠×2が各部の2スロに入るパターンの3パターンあるが
     // 装飾品のみの組み合わせとしては同じなので1件だけになる
-    got = dc.combine([ '斬れ味レベル+1', '砥石使用高速化' ], equips);
+    got = ds.combine([ '斬れ味レベル+1', '砥石使用高速化' ], equips);
     exp = [ [ { equip: 'ユクモノカサ・天', deco: '研磨珠【１】,研磨珠【１】' },
               { equip: '三眼の首飾り', deco: '匠珠【３】' },
               { equip: 'ユクモノコテ・天', deco: '匠珠【２】' },
@@ -251,6 +251,6 @@ QUnit.test('combine', function () {
            test.apply(this, modules);
        } :
        function (deps, test) {
-           test(this.QUnit, this._, this.simu.DecoCombinator, this.myapp);
+           test(this.QUnit, this._, this.simu.DecoSimulator, this.myapp);
        }
 );
