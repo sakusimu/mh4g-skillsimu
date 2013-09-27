@@ -233,7 +233,7 @@ QUnit.test('combs: 2', function () {
     var no3slot = _.filter(orgDecos, function (deco) {
         return !deco.name.match(/【３】$/);
     });
-    if (no3slot.length !== 153) throw new Error('error: no3slot.length=' + no3slot.length);
+    if (no3slot.length !== 154) throw new Error('error: no3slot.length=' + no3slot.length);
 
     data.decos = no3slot;
     got = Deco.combs([ '攻撃', '斬れ味' ]);
@@ -255,7 +255,7 @@ QUnit.test('combs: 2', function () {
     var no1slot = _.filter(orgDecos, function (deco) {
         return !deco.name.match(/【１】$/);
     });
-    if (no1slot.length !== 56) throw new Error('error: no1slot.length=' + no1slot.length);
+    if (no1slot.length !== 58) throw new Error('error: no1slot.length=' + no1slot.length);
 
     data.decos = no1slot;
     got = Deco.combs([ '攻撃', '匠' ]);
@@ -288,7 +288,7 @@ QUnit.test('skillCombs', function () {
               { '攻撃': 4, '防御': -2 },
               { '匠': 1, '斬れ味': -1, '攻撃': 1, '防御': -1 },
               { '攻撃': 5, '防御': -1 },
-              { '匠': 3, '斬れ味': -2 } ] ];
+              { '匠': 2, '斬れ味': -2 } ] ];
     QUnit.deepEqual(got, exp, "[ '攻撃', '斬れ味' ]");
 
     // どちらも1, 2, 3スロある場合
@@ -319,7 +319,7 @@ QUnit.test('skillCombs', function () {
             [ { '斬れ味': 2, '匠': -2 }, { '匠': 1, '斬れ味': -1 } ],
             [ { '斬れ味': 3, '匠': -3 },
               { '匠': 0, '斬れ味': 0 },
-              { '匠': 3, '斬れ味': -2 } ] ];
+              { '匠': 2, '斬れ味': -2 } ] ];
     QUnit.deepEqual(got, exp, "[ '斬れ味', '匠' ]");
 
     // 採取や高速収集みたく1スロしかない場合
