@@ -103,7 +103,7 @@ QUnit.test('_makeCombsSet', function () {
 
 QUnit.test('_calcPoint', function () {
     var got, exp, equips,
-        dc   = new DecoCombinator();
+        dc = new DecoCombinator();
 
     equips = {
         head : myapp.equips('head', 'ユクモノカサ・天')[0], // 匠+2, 研ぎ師+3
@@ -121,6 +121,92 @@ QUnit.test('_calcPoint', function () {
     got = dc._calcPoint(combSet);
     exp = { '匠': 7, '研ぎ師': 8, '回復量': 3, '加護': 3, '斬れ味': -4 };
     QUnit.deepEqual(got, exp, 'point');
+});
+
+QUnit.test('_makeCombSetList', function () {
+    var got, exp, combsSet,
+        dc = new DecoCombinator();
+
+    combsSet = {
+        head:
+        [ { equip: 'ユクモノカサ・天', deco: '研磨珠【１】,研磨珠【１】' },
+          { equip: 'ユクモノカサ・天', deco: '匠珠【２】' } ],
+        body:
+        [ { equip: 'slot3', deco: '研磨珠【１】,研磨珠【１】,研磨珠【１】' },
+          { equip: 'slot3', deco: '匠珠【２】,研磨珠【１】' },
+          { equip: 'slot3', deco: '匠珠【３】' } ],
+        arm:
+        [ { equip: 'slot0', deco: null } ],
+        waist:
+        [ { equip: 'バンギスコイル', deco: null } ],
+        leg:
+        [ { equip: 'ユクモノハカマ・天', deco: '研磨珠【１】,研磨珠【１】' },
+          { equip: 'ユクモノハカマ・天', deco: '匠珠【２】' } ]
+    };
+    got = dc._makeCombSetList(combsSet);
+    exp = 2 * 3 * 1 * 1 * 2;
+    QUnit.strictEqual(got.length, exp, 'length');
+    exp = [ { head: { equip: 'ユクモノカサ・天', deco: '研磨珠【１】,研磨珠【１】' },
+              body: { equip: 'slot3', deco: '研磨珠【１】,研磨珠【１】,研磨珠【１】' },
+              arm: { equip: 'slot0', deco: null },
+              waist: { equip: 'バンギスコイル', deco: null },
+              leg: { equip: 'ユクモノハカマ・天', deco: '研磨珠【１】,研磨珠【１】' } },
+            { head: { equip: 'ユクモノカサ・天', deco: '研磨珠【１】,研磨珠【１】' },
+              body: { equip: 'slot3', deco: '研磨珠【１】,研磨珠【１】,研磨珠【１】' },
+              arm: { equip: 'slot0', deco: null },
+              waist: { equip: 'バンギスコイル', deco: null },
+              leg: { equip: 'ユクモノハカマ・天', deco: '匠珠【２】' } },
+            { head: { equip: 'ユクモノカサ・天', deco: '研磨珠【１】,研磨珠【１】' },
+              body: { equip: 'slot3', deco: '匠珠【２】,研磨珠【１】' },
+              arm: { equip: 'slot0', deco: null },
+              waist: { equip: 'バンギスコイル', deco: null },
+              leg: { equip: 'ユクモノハカマ・天', deco: '研磨珠【１】,研磨珠【１】' } },
+            { head: { equip: 'ユクモノカサ・天', deco: '研磨珠【１】,研磨珠【１】' },
+              body: { equip: 'slot3', deco: '匠珠【２】,研磨珠【１】' },
+              arm: { equip: 'slot0', deco: null },
+              waist: { equip: 'バンギスコイル', deco: null },
+              leg: { equip: 'ユクモノハカマ・天', deco: '匠珠【２】' } },
+            { head: { equip: 'ユクモノカサ・天', deco: '研磨珠【１】,研磨珠【１】' },
+              body: { equip: 'slot3', deco: '匠珠【３】' },
+              arm: { equip: 'slot0', deco: null },
+              waist: { equip: 'バンギスコイル', deco: null },
+              leg: { equip: 'ユクモノハカマ・天', deco: '研磨珠【１】,研磨珠【１】' } },
+            { head: { equip: 'ユクモノカサ・天', deco: '研磨珠【１】,研磨珠【１】' },
+              body: { equip: 'slot3', deco: '匠珠【３】' },
+              arm: { equip: 'slot0', deco: null },
+              waist: { equip: 'バンギスコイル', deco: null },
+              leg: { equip: 'ユクモノハカマ・天', deco: '匠珠【２】' } },
+            { head: { equip: 'ユクモノカサ・天', deco: '匠珠【２】' },
+              body: { equip: 'slot3', deco: '研磨珠【１】,研磨珠【１】,研磨珠【１】' },
+              arm: { equip: 'slot0', deco: null },
+              waist: { equip: 'バンギスコイル', deco: null },
+              leg: { equip: 'ユクモノハカマ・天', deco: '研磨珠【１】,研磨珠【１】' } },
+            { head: { equip: 'ユクモノカサ・天', deco: '匠珠【２】' },
+              body: { equip: 'slot3', deco: '研磨珠【１】,研磨珠【１】,研磨珠【１】' },
+              arm: { equip: 'slot0', deco: null },
+              waist: { equip: 'バンギスコイル', deco: null },
+              leg: { equip: 'ユクモノハカマ・天', deco: '匠珠【２】' } },
+            { head: { equip: 'ユクモノカサ・天', deco: '匠珠【２】' },
+              body: { equip: 'slot3', deco: '匠珠【２】,研磨珠【１】' },
+              arm: { equip: 'slot0', deco: null },
+              waist: { equip: 'バンギスコイル', deco: null },
+              leg: { equip: 'ユクモノハカマ・天', deco: '研磨珠【１】,研磨珠【１】' } },
+            { head: { equip: 'ユクモノカサ・天', deco: '匠珠【２】' },
+              body: { equip: 'slot3', deco: '匠珠【２】,研磨珠【１】' },
+              arm: { equip: 'slot0', deco: null },
+              waist: { equip: 'バンギスコイル', deco: null },
+              leg: { equip: 'ユクモノハカマ・天', deco: '匠珠【２】' } },
+            { head: { equip: 'ユクモノカサ・天', deco: '匠珠【２】' },
+              body: { equip: 'slot3', deco: '匠珠【３】' },
+              arm: { equip: 'slot0', deco: null },
+              waist: { equip: 'バンギスコイル', deco: null },
+              leg: { equip: 'ユクモノハカマ・天', deco: '研磨珠【１】,研磨珠【１】' } },
+            { head: { equip: 'ユクモノカサ・天', deco: '匠珠【２】' },
+              body: { equip: 'slot3', deco: '匠珠【３】' },
+              arm: { equip: 'slot0', deco: null },
+              waist: { equip: 'バンギスコイル', deco: null },
+              leg: { equip: 'ユクモノハカマ・天', deco: '匠珠【２】' } } ];
+    QUnit.deepEqual(got, exp, 'combSetList');
 });
 });
 })(typeof define !== 'undefined' ?
