@@ -46,7 +46,7 @@ QUnit.test('_makeCombsSet', function () {
     equips = {
         head : myapp.equips('head', 'ユクモノカサ・天')[0], // 匠+2, 研ぎ師+3
         body : myapp.equips('body', '三眼の首飾り')[0],
-        arm  : myapp.equips('arm', 'ユクモノコテ・天')[0],  // 匠+1, 研ぎ師+1
+        arm  : myapp.equips('arm', 'ユクモノコテ・天')[0],  // 匠+1, 研ぎ師+3
         waist: myapp.equips('waist', 'バンギスコイル')[0],
         leg  : myapp.equips('leg', 'ユクモノハカマ・天')[0] // 匠+1, 研ぎ師+1
     };
@@ -207,6 +207,39 @@ QUnit.test('_makeCombSetList', function () {
               waist: { equip: 'バンギスコイル', deco: null },
               leg: { equip: 'ユクモノハカマ・天', deco: '匠珠【２】' } } ];
     QUnit.deepEqual(got, exp, 'combSetList');
+});
+
+QUnit.test('combine', function () {
+    var got, exp, equips,
+        dc = new DecoCombinator();
+
+    var name = function (combsList) {
+        return _.map(combsList, function (combs) {
+            return _.map(combs, function (comb) {
+                var e = comb.equip.name,
+                    d = comb.deco ? comb.deco.names.join(',') : null;
+                return { equip: e, deco: d };
+            });
+        });
+    };
+
+    equips = {
+        head : myapp.equips('head', 'ユクモノカサ・天')[0], // 匠+2, 研ぎ師+3
+        body : myapp.equips('body', '三眼の首飾り')[0],
+        arm  : myapp.equips('arm', 'ユクモノコテ・天')[0],  // 匠+1, 研ぎ師+3
+        waist: myapp.equips('waist', 'バンギスコイル')[0],
+        leg  : myapp.equips('leg', 'ユクモノハカマ・天')[0] // 匠+1, 研ぎ師+1
+    };
+
+    // 装飾品の組み合わせとしては、研磨珠×2が各部の2スロに入るパターンの3パターンあるが
+    // 装飾品のみの組み合わせとしては同じなので1件だけになる
+    got = dc.combine([ '斬れ味レベル+1', '砥石使用高速化' ], equips);
+    exp = [ [ { equip: 'ユクモノカサ・天', deco: '研磨珠【１】,研磨珠【１】' },
+              { equip: '三眼の首飾り', deco: '匠珠【３】' },
+              { equip: 'ユクモノコテ・天', deco: '匠珠【２】' },
+              { equip: 'バンギスコイル', deco: null },
+              { equip: 'ユクモノハカマ・天', deco: '匠珠【２】' } ] ];
+    QUnit.deepEqual(name(got), exp, 'combine');
 });
 });
 })(typeof define !== 'undefined' ?
