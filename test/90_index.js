@@ -9,7 +9,8 @@ QUnit.test('initialize', function () {
     QUnit.strictEqual(typeof simu.initialize, 'function', 'has initialize()');
 
     simu.initialize();
-    QUnit.strictEqual(simu.engin instanceof simu.Simulator, true, 'engin');
+    QUnit.strictEqual(simu.simu, null, 'simu');
+    QUnit.strictEqual(simu.decoSimu, null, 'decoSimu');
 });
 
 QUnit.test('simulate', function () {
@@ -33,6 +34,6 @@ QUnit.test('simulate', function () {
            test.apply(this, modules);
        } :
        function (deps, test) {
-           test(this.QUnit, this.simu.Simulator, this.simu.data, this.myapp);
+           test(this.QUnit, this.simu, this.simu.data, this.myapp);
        }
 );
