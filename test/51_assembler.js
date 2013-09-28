@@ -97,14 +97,14 @@ QUnit.test('assembleEquip: summary', function () {
     norCombsSet = n.normalize(skills);
     actiCombs = c.combine(skills, norCombsSet);
     got = a.assembleEquip(actiCombs);
-    exp = 10800;
+    exp = 15740;
     QUnit.deepEqual(got.length, exp, "[ '攻撃力UP【大】', '業物' ]");
 
     skills = [ '斬れ味レベル+1', '高級耳栓' ];
     norCombsSet = n.normalize(skills);
     actiCombs = c.combine(skills, norCombsSet);
     got = a.assembleEquip(actiCombs);
-    exp = 435;
+    exp = 741;
     QUnit.deepEqual(got.length, exp, "[ '斬れ味レベル+1', '高級耳栓' ]");
 
     skills = [ '攻撃力UP【大】', '業物', '集中', '見切り+1', '弱点特効' ];
