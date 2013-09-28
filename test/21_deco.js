@@ -17,7 +17,7 @@ QUnit.test('filter', function () {
         name   = function (deco) { return deco.name; },
         sorter = function (str) { return str; };
 
-    var kireaji = [ '斬鉄珠【１】' ];
+    var kireaji = [ '斬鉄珠【１】', '斬鉄珠【３】' ];
     var kougeki = [ '攻撃珠【１】', '攻撃珠【２】', '攻撃珠【３】' ];
     var takumi  = [ '匠珠【２】', '匠珠【３】' ];
 
@@ -233,7 +233,7 @@ QUnit.test('combs: 2', function () {
     var no3slot = _.filter(orgDecos, function (deco) {
         return !deco.name.match(/【３】$/);
     });
-    if (no3slot.length !== 154) throw new Error('error: no3slot.length=' + no3slot.length);
+    if (no3slot.length !== 155) throw new Error('error: no3slot.length=' + no3slot.length);
 
     data.decos = no3slot;
     got = Deco.combs([ '攻撃', '斬れ味' ]);
@@ -255,7 +255,7 @@ QUnit.test('combs: 2', function () {
     var no1slot = _.filter(orgDecos, function (deco) {
         return !deco.name.match(/【１】$/);
     });
-    if (no1slot.length !== 58) throw new Error('error: no1slot.length=' + no1slot.length);
+    if (no1slot.length !== 60) throw new Error('error: no1slot.length=' + no1slot.length);
 
     data.decos = no1slot;
     got = Deco.combs([ '攻撃', '匠' ]);
@@ -319,7 +319,8 @@ QUnit.test('skillCombs', function () {
             [ { '斬れ味': 2, '匠': -2 }, { '匠': 1, '斬れ味': -1 } ],
             [ { '斬れ味': 3, '匠': -3 },
               { '匠': 0, '斬れ味': 0 },
-              { '匠': 2, '斬れ味': -2 } ] ];
+              { '匠': 2, '斬れ味': -2 },
+              { '斬れ味': 4, '匠': -2 } ] ];
     QUnit.deepEqual(got, exp, "[ '斬れ味', '匠' ]");
 
     // 採取や高速収集みたく1スロしかない場合
