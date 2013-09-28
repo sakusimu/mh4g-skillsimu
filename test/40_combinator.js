@@ -23,25 +23,25 @@ QUnit.test('new', function () {
     QUnit.deepEqual(got, exp, 'parts');
 });
 
-QUnit.test('_goal', function () {
+QUnit.test('goal', function () {
     var got, exp,
-        c = new Combinator();
+        c = Combinator;
 
-    got = c._goal([ '攻撃力UP【大】', '業物' ]);
+    got = c.goal([ '攻撃力UP【大】', '業物' ]);
     exp = { '攻撃': 20, '斬れ味': 10 };
     QUnit.deepEqual(got, exp, "[ '攻撃力UP【大】', '業物' ]");
 
-    got = c._goal([ 'なまくら' ]);
+    got = c.goal([ 'なまくら' ]);
     exp = { '斬れ味': -10 };
     QUnit.deepEqual(got, exp, "[ 'なまくら' ]");
 
-    got = c._goal();
+    got = c.goal();
     QUnit.strictEqual(got, null, "nothing in");
-    got = c._goal(undefined);
+    got = c.goal(undefined);
     QUnit.strictEqual(got, null, "undefined");
-    got = c._goal(null);
+    got = c.goal(null);
     QUnit.strictEqual(got, null, "null");
-    got = c._goal(null);
+    got = c.goal(null);
     QUnit.strictEqual(got, null, "null");
 });
 
@@ -245,7 +245,7 @@ QUnit.test('_calcBorderLine', function () {
            [ { skillComb: { '攻撃': 5, '斬れ味': 4 }, equips: [ 'l54' ] } ],
           weapon:
            [ { skillComb: { '攻撃': 0, '斬れ味': 0 }, equips: [ 'wpn' ] } ] };
-    goal = c._goal([ '攻撃力UP【大】', '業物' ]);
+    goal = Combinator.goal([ '攻撃力UP【大】', '業物' ]);
     got = c._calcBorderLine(norCombsSet, goal);
     exp = { body: { '攻撃': 2, '斬れ味': -3 },
             head: { '攻撃': 8, '斬れ味': 1 },
@@ -279,7 +279,7 @@ QUnit.test('_calcBorderLine', function () {
              { skillComb: { '胴系統倍化': 1 }, equips: [ 'l=b' ] } ],
           weapon:
            [ { skillComb: { '攻撃': 0, '斬れ味': 0 }, equips: [ 'wpn' ] } ] };
-    goal = c._goal([ '攻撃力UP【大】', '業物' ]);
+    goal = Combinator.goal([ '攻撃力UP【大】', '業物' ]);
     got = c._calcBorderLine(norCombsSet, goal);
     exp = { body: { '攻撃': 1, '斬れ味': -2 },
             head: { '攻撃': 5, '斬れ味': 0 },
@@ -309,7 +309,7 @@ QUnit.test('_calcBorderLine', function () {
           weapon:
            [ { skillComb: { '攻撃': 1, '斬れ味': 0 }, equips: [ 'wpn' ] },
              { skillComb: { '攻撃': 0, '斬れ味': 1 }, equips: [ 'wpn' ] } ] };
-    goal = c._goal([ '攻撃力UP【大】', '業物' ]);
+    goal = Combinator.goal([ '攻撃力UP【大】', '業物' ]);
     got = c._calcBorderLine(norCombsSet, goal);
     exp = { body: { '攻撃': 1, '斬れ味': -4 },
             head: { '攻撃': 7, '斬れ味': 0 },

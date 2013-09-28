@@ -39,6 +39,7 @@ module.exports = function(grunt) {
                   , 'lib/combinator.js'
                   , 'lib/assembler.js'
                   , 'lib/simulator.js'
+                  , 'lib/deco-simulator.js'
                   , 'index.js'
                 ],
                 dest: 'dist/<%= pkg.name %>-<%= pkg.version %>.js'
