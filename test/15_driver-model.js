@@ -431,6 +431,75 @@ QUnit.test('skill: simuData', function () {
     };
     QUnit.deepEqual(got, exp, 'simuData');
 });
+
+QUnit.test('oma: new', function () {
+    var got, exp, data, oma;
+
+    data = [ '龍の護石',3,'匠',4,'氷耐性',-5 ];
+    oma = new model.Oma(data);
+    QUnit.strictEqual(typeof oma, 'object', 'is object');
+    QUnit.strictEqual(typeof oma.initialize, 'function', 'has initialize()');
+
+    QUnit.strictEqual(oma.name, '龍の護石', 'name');
+    QUnit.strictEqual(oma.slot, 3, 'slot');
+    QUnit.strictEqual(oma.skillTree1, '匠', 'skillTree1');
+    QUnit.strictEqual(oma.skillPt1, 4, 'skillPt1');
+    QUnit.strictEqual(oma.skillTree2, '氷耐性', 'skillTree2');
+    QUnit.strictEqual(oma.skillPt2, -5, 'skillPt2');
+
+    got = oma.toString();
+    exp = '龍の護石(スロ3,匠+4,氷耐性,-5)';
+    QUnit.strictEqual(got, exp, 'toString()');
+
+    data = [ '龍の護石','3','痛撃溜','4' ];
+    oma = new model.Oma(data);
+    QUnit.strictEqual(oma.skillTree2, null, 'skill2 is null: skillTree2');
+    QUnit.strictEqual(oma.skillPt2, 0, 'skill2 is null: skillPt2');
+
+    got = oma.toString();
+    exp = '龍の護石(スロ3,痛撃溜+4)';
+    QUnit.strictEqual(got, exp, 'skill2 is null: toString()');
+
+    got = new model.Oma();
+    QUnit.strictEqual(typeof got, 'object', 'nothing in: is object');
+    QUnit.strictEqual(got.name, null, 'nothing in: name');
+
+    got = new model.Oma([]);
+    QUnit.strictEqual(typeof got, 'object', 'empty Array: is object');
+    QUnit.strictEqual(got.name, null, 'empty Array: name');
+});
+
+QUnit.test('oma: simuData', function () {
+    var got, exp, oma;
+
+    oma = new model.Oma([ '龍の護石',3,'匠',4,'氷耐性',-5 ]);
+    got = oma.simuData();
+    exp = {
+        name: '龍の護石(スロ3,匠+4,氷耐性,-5)',
+        slot: 3,
+        skillComb: { '匠': 4, '氷耐性': -5 }
+    };
+    QUnit.deepEqual(got, exp, 'simuData');
+});
+
+QUnit.test('oma: createSimuData', function () {
+    var got, exp;
+
+    var data = [
+        [ '龍の護石',3,'匠',4,'氷耐性',-5 ],
+        [ '龍の護石',0,'溜め短縮',5,'攻撃',9 ],
+        [ '龍の護石',3,'痛撃',4 ]
+    ];
+
+    got = model.Oma.createSimuData(data);
+    exp = [ { name: '龍の護石(スロ3,匠+4,氷耐性,-5)', slot: 3,
+              skillComb: { '匠': 4, '氷耐性': -5 } },
+            { name: '龍の護石(スロ0,溜め短縮+5,攻撃,9)', slot: 0,
+              skillComb: { '溜め短縮': 5, '攻撃': 9 } },
+            { name: '龍の護石(スロ3,痛撃+4)', slot: 3,
+              skillComb: { '痛撃': 4 } } ];
+    QUnit.deepEqual(got, exp, 'createSimuData');
+});
 });
 })(typeof define !== 'undefined' ?
    define :
