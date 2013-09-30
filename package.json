@@ -4,10 +4,10 @@
   "description": "Skill Simulator for MH4",
   "author": "sakusimu.net",
   "scripts": { "test": "grunt test" },
-  "license": [
+  "licenses": [
     {
       "type": "MIT",
-      "url": ""
+      "url": "https://github.com/sakusimu/mh4-skillsimu/blob/master/LICENSE"
     }
   ],
   "devDependencies": {
