@@ -168,6 +168,43 @@ QUnit.test('normalize: weapon slot', function () {
     QUnit.deepEqual(got.weapon, exp, 'weaponSlot 3');
 });
 
+QUnit.test('normalize: oma', function () {
+    var got, exp,
+        n = new Normalizer();
+
+    // 村のみに装備をしぼってスキルの組み合わせ
+    myapp.setup({ hr: 1, vs: 6 });
+
+    var omas = [
+        [ '龍の護石',3,'匠',4,'氷耐性',-5 ],
+        [ '龍の護石',0,'溜め短縮',5,'攻撃',9 ],
+        [ '龍の護石',3,'痛撃',4 ]
+    ];
+    n.omas = myapp.model.Oma.createSimuData(omas);
+
+    got = n.normalize([ '斬れ味レベル+1', '攻撃力UP【中】', '耳栓' ]);
+    // slot3 は「龍の護石(スロ3,痛撃+4)」の分
+    exp = [ { skillComb: { '匠': 0, '攻撃': 0, '聴覚保護': 3 },
+              equips: [ 'slot3' ] },
+            { skillComb: { '匠': 0, '攻撃': 1, '聴覚保護': 2 },
+              equips: [ 'slot3' ] },
+            { skillComb: { '匠': 0, '攻撃': 3, '聴覚保護': 1 },
+              equips: [ 'slot3' ] },
+            { skillComb: { '匠': 0, '攻撃': 4, '聴覚保護': 0 },
+              equips: [ 'slot3' ] },
+            { skillComb: { '匠': 4, '攻撃': 0, '聴覚保護': 3 },
+              equips: [ '龍の護石(スロ3,匠+4,氷耐性,-5)' ] },
+            { skillComb: { '匠': 4, '攻撃': 1, '聴覚保護': 2 },
+              equips: [ '龍の護石(スロ3,匠+4,氷耐性,-5)' ] },
+            { skillComb: { '匠': 4, '攻撃': 3, '聴覚保護': 1 },
+              equips: [ '龍の護石(スロ3,匠+4,氷耐性,-5)' ] },
+            { skillComb: { '匠': 4, '攻撃': 4, '聴覚保護': 0 },
+              equips: [ '龍の護石(スロ3,匠+4,氷耐性,-5)' ] },
+            { skillComb: { '匠': 0, '攻撃': 9, '聴覚保護': 0 },
+              equips: [ '龍の護石(スロ0,溜め短縮+5,攻撃,9)' ] } ];
+    QUnit.deepEqual(got.oma, exp, 'oma');
+});
+
 QUnit.test('normalize: summary', function () {
     var got, exp,
         n = new Normalizer();
