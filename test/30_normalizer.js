@@ -61,12 +61,6 @@ QUnit.test('_compact', function () {
     exp = [ { a: 1, c: 0 }, { a: 0, c: -1 } ];
     QUnit.deepEqual(got, exp, 'case ' + count++);
 
-    trees = [ 'a', '胴系統倍化' ];
-    combs = [ { a: 1, b: 2 }, { '胴系統倍化': 1 } ];
-    got = n._compact(trees, combs);
-    exp = [ { a: 1, '胴系統倍化': 0 }, { a: 0, '胴系統倍化': 1 } ];
-    QUnit.deepEqual(got, exp, 'case ' + count++);
-
     trees = [ 'a' ];
     combs = [];
     got = n._compact(trees, combs);
@@ -247,7 +241,7 @@ QUnit.test('_normalize1', function () {
     equips = myapp.equips('leg', names);
     if (equips.length !== 5) throw new Error('error: equips.length=' + equips.length);
 
-    got = n._normalize1([ '攻撃', '斬れ味', '胴系統倍化' ], equips);
+    got = n._normalize1([ '攻撃', '斬れ味' ], equips);
     exp = { 'クックＳグリーヴ':
             [ { '攻撃': 5, '聴覚保護': -2, 'スタミナ': 2, '火耐性': 2, '防御': -1 },
               { '攻撃': 4, '聴覚保護': -2, 'スタミナ': 2, '火耐性': 2, '斬れ味': 1, '匠': -1 } ],
@@ -262,7 +256,7 @@ QUnit.test('_normalize1', function () {
               { '攻撃': 4, '斬れ味': 4, '腹減り': -2, '防御': -1, '匠': -1 },
               { '攻撃': 6, '斬れ味': 3, '腹減り': -2, '防御': -1 },
               { '攻撃': 1, '斬れ味': 7, '腹減り': -2, '匠': -2 } ] };
-    QUnit.deepEqual(got, exp, 'case 3');
+    QUnit.deepEqual(got, exp, 'case 3: doubling');
 
     QUnit.deepEqual(n._normalize1(), null, 'nothing in');
     QUnit.deepEqual(n._normalize1(undefined), null, 'undefined');
@@ -349,22 +343,21 @@ QUnit.test('_normalize2', function () {
                 { '痛撃': 1, '斬れ味': 3, '攻撃': 5, '体力': -2, '防御': -1, '匠': -1 },
                 { '痛撃': 1, '斬れ味': 2, '攻撃': 7, '体力': -2, '防御': -1 },
                 { '痛撃': 1, '斬れ味': 6, '攻撃': 2, '体力': -2, '匠': -2 } ] };
-    got = n._normalize2([ '攻撃', '斬れ味', '胴系統倍化' ], combs);
+    got = n._normalize2([ '攻撃', '斬れ味' ], combs);
     exp = { 'ジャギィＳグリーヴ':
-            [ { '攻撃': 5, '斬れ味': 0, '胴系統倍化': 0 },
-              { '攻撃': 4, '斬れ味': 1, '胴系統倍化': 0 } ],
-            '胴系統倍化': [ { '攻撃': 0, '斬れ味': 0, '胴系統倍化': 1 } ],
-            slot0: [ { '攻撃': 0, '斬れ味': 0, '胴系統倍化': 0 } ],
+            [ { '攻撃': 5, '斬れ味': 0 }, { '攻撃': 4, '斬れ味': 1 } ],
+            '胴系統倍化': [ { '胴系統倍化': 1 } ],
+            slot0: [ { '攻撃': 0, '斬れ味': 0 } ],
             'シルバーソルグリーヴ':
-            [ { '攻撃': 5, '斬れ味': 2, '胴系統倍化': 0 },
-              { '攻撃': 4, '斬れ味': 3, '胴系統倍化': 0 },
-              { '攻撃': 3, '斬れ味': 4, '胴系統倍化': 0 },
-              { '攻撃': 2, '斬れ味': 5, '胴系統倍化': 0 },
-              { '攻撃': 6, '斬れ味': 2, '胴系統倍化': 0 },
-              { '攻撃': 5, '斬れ味': 3, '胴系統倍化': 0 },
-              { '攻撃': 7, '斬れ味': 2, '胴系統倍化': 0 },
-              { '攻撃': 2, '斬れ味': 6, '胴系統倍化': 0 } ] };
-    QUnit.deepEqual(got, exp, "dupli");
+            [ { '攻撃': 5, '斬れ味': 2 },
+              { '攻撃': 4, '斬れ味': 3 },
+              { '攻撃': 3, '斬れ味': 4 },
+              { '攻撃': 2, '斬れ味': 5 },
+              { '攻撃': 6, '斬れ味': 2 },
+              { '攻撃': 5, '斬れ味': 3 },
+              { '攻撃': 7, '斬れ味': 2 },
+              { '攻撃': 2, '斬れ味': 6 } ] };
+    QUnit.deepEqual(got, exp, "doubling");
 
     QUnit.deepEqual(n._normalize2(), null, 'nothing in');
     QUnit.deepEqual(n._normalize2(undefined), null, 'undefined');
@@ -430,89 +423,21 @@ QUnit.test('_normalize3', function () {
 
     // case 3: 胴系統倍化
     combs = { 'ジャギィＳグリーヴ':
-              [ { '攻撃': 5, '斬れ味': 0, '胴系統倍化': 0 },
-                { '攻撃': 4, '斬れ味': 1, '胴系統倍化': 0 } ],
-              '胴系統倍化': [ { '攻撃': 0, '斬れ味': 0, '胴系統倍化': 1 } ],
-              slot0: [ { '攻撃': 0, '斬れ味': 0, '胴系統倍化': 0 } ],
+              [ { '攻撃': 5, '斬れ味': 0 }, { '攻撃': 4, '斬れ味': 1 } ],
+              '胴系統倍化': [ { '胴系統倍化': 1 } ],
+              slot0: [ { '攻撃': 0, '斬れ味': 0 } ],
               'シルバーソルグリーヴ':
-              [ { '攻撃': 5, '斬れ味': 2, '胴系統倍化': 0 },
-                { '攻撃': 4, '斬れ味': 3, '胴系統倍化': 0 },
-                { '攻撃': 3, '斬れ味': 4, '胴系統倍化': 0 },
-                { '攻撃': 2, '斬れ味': 5, '胴系統倍化': 0 },
-                { '攻撃': 6, '斬れ味': 2, '胴系統倍化': 0 },
-                { '攻撃': 5, '斬れ味': 3, '胴系統倍化': 0 },
-                { '攻撃': 7, '斬れ味': 2, '胴系統倍化': 0 },
-                { '攻撃': 2, '斬れ味': 6, '胴系統倍化': 0 } ] };
+              [ { '攻撃': 5, '斬れ味': 2 },
+                { '攻撃': 4, '斬れ味': 3 },
+                { '攻撃': 3, '斬れ味': 4 },
+                { '攻撃': 2, '斬れ味': 5 },
+                { '攻撃': 6, '斬れ味': 2 },
+                { '攻撃': 5, '斬れ味': 3 },
+                { '攻撃': 7, '斬れ味': 2 },
+                { '攻撃': 2, '斬れ味': 6 } ] };
     got = n._normalize3(combs);
     exp = { 'ジャギィＳグリーヴ':
-             [ { '攻撃': 5, '斬れ味': 0, '胴系統倍化': 0 },
-               { '攻撃': 4, '斬れ味': 1, '胴系統倍化': 0 } ],
-            '胴系統倍化': [ { '攻撃': 0, '斬れ味': 0, '胴系統倍化': 1 } ],
-            slot0: [ { '攻撃': 0, '斬れ味': 0, '胴系統倍化': 0 } ],
-            'シルバーソルグリーヴ':
-            [ { '攻撃': 3, '斬れ味': 4, '胴系統倍化': 0 },
-              { '攻撃': 5, '斬れ味': 3, '胴系統倍化': 0 },
-              { '攻撃': 7, '斬れ味': 2, '胴系統倍化': 0 },
-              { '攻撃': 2, '斬れ味': 6, '胴系統倍化': 0 } ] };
-    QUnit.deepEqual(got, exp, "case 3");
-
-    QUnit.deepEqual(n._normalize3(), null, 'nothing in');
-    QUnit.deepEqual(n._normalize3(undefined), null, 'undefined');
-    QUnit.deepEqual(n._normalize3(null), null, 'null');
-    QUnit.deepEqual(n._normalize3({}), {}, '{}');
-});
-
-QUnit.test('_normalize4', function () {
-    var got, exp, combs,
-        n = new Normalizer();
-
-    // 胴系統倍化がない
-    combs = { 'ジャギィＳメイル':
-              [ { '攻撃': 3, '斬れ味': 0 }, { '攻撃': 2, '斬れ味': 1 } ],
-              'バギィＳメイル':
-              [ { '攻撃': 4, '斬れ味': 1 }, { '攻撃': 3, '斬れ味': 2 },
-                { '攻撃': 6, '斬れ味': 0 } ],
-              'ジンオウメイル':
-              [ { '攻撃': 0, '斬れ味': 2 } ],
-              slot0: [ { '攻撃': 0, '斬れ味': 0 } ],
-              slot3:
-              [ { '攻撃': 1, '斬れ味': 2 }, { '攻撃': 3, '斬れ味': 1 },
-                { '攻撃': 5, '斬れ味': 0 }, { '攻撃': 0, '斬れ味': 4 } ],
-              'シルバーソルメイル':
-              [ { '攻撃': 2, '斬れ味': 2 }, { '攻撃': 1, '斬れ味': 3 },
-                { '攻撃': 4, '斬れ味': 1 } ] };
-    got = n._normalize4(combs);
-    exp = { 'ジャギィＳメイル':
-            [ { '攻撃': 3, '斬れ味': 0 }, { '攻撃': 2, '斬れ味': 1 } ],
-            'バギィＳメイル':
-            [ { '攻撃': 4, '斬れ味': 1 }, { '攻撃': 3, '斬れ味': 2 },
-              { '攻撃': 6, '斬れ味': 0 } ],
-            'ジンオウメイル':
-            [ { '攻撃': 0, '斬れ味': 2 } ],
-            slot0: [ { '攻撃': 0, '斬れ味': 0 } ],
-            slot3:
-            [ { '攻撃': 1, '斬れ味': 2 }, { '攻撃': 3, '斬れ味': 1 },
-              { '攻撃': 5, '斬れ味': 0 }, { '攻撃': 0, '斬れ味': 4 } ],
-            'シルバーソルメイル':
-            [ { '攻撃': 2, '斬れ味': 2 }, { '攻撃': 1, '斬れ味': 3 },
-              { '攻撃': 4, '斬れ味': 1 } ] };
-    QUnit.deepEqual(got, exp, "case 1");
-
-    // case 3: 胴系統倍化
-    combs = { 'ジャギィＳグリーヴ':
-              [ { '攻撃': 5, '斬れ味': 0, '胴系統倍化': 0 },
-                { '攻撃': 4, '斬れ味': 1, '胴系統倍化': 0 } ],
-              '胴系統倍化': [ { '攻撃': 0, '斬れ味': 0, '胴系統倍化': 1 } ],
-              slot0: [ { '攻撃': 0, '斬れ味': 0, '胴系統倍化': 0 } ],
-              'シルバーソルグリーヴ':
-              [ { '攻撃': 3, '斬れ味': 4, '胴系統倍化': 0 },
-                { '攻撃': 5, '斬れ味': 3, '胴系統倍化': 0 },
-                { '攻撃': 7, '斬れ味': 2, '胴系統倍化': 0 },
-                { '攻撃': 2, '斬れ味': 6, '胴系統倍化': 0 } ] };
-    got = n._normalize4(combs);
-    exp = { 'ジャギィＳグリーヴ':
-             [ { '攻撃': 5, '斬れ味': 0 },
-               { '攻撃': 4, '斬れ味': 1 } ],
+             [ { '攻撃': 5, '斬れ味': 0 }, { '攻撃': 4, '斬れ味': 1 } ],
             '胴系統倍化': [ { '胴系統倍化': 1 } ],
             slot0: [ { '攻撃': 0, '斬れ味': 0 } ],
             'シルバーソルグリーヴ':
@@ -522,13 +447,13 @@ QUnit.test('_normalize4', function () {
               { '攻撃': 2, '斬れ味': 6 } ] };
     QUnit.deepEqual(got, exp, "case 3");
 
-    QUnit.deepEqual(n._normalize4(), null, 'nothing in');
-    QUnit.deepEqual(n._normalize4(undefined), null, 'undefined');
-    QUnit.deepEqual(n._normalize4(null), null, 'null');
-    QUnit.deepEqual(n._normalize4({}), {}, '{}');
+    QUnit.deepEqual(n._normalize3(), null, 'nothing in');
+    QUnit.deepEqual(n._normalize3(undefined), null, 'undefined');
+    QUnit.deepEqual(n._normalize3(null), null, 'null');
+    QUnit.deepEqual(n._normalize3({}), {}, '{}');
 });
 
-QUnit.test('_normalize5', function () {
+QUnit.test('_normalize4', function () {
     var got, exp, combs,
         n = new Normalizer();
 
@@ -554,7 +479,7 @@ QUnit.test('_normalize5', function () {
               'シルバーソルメイル':
               [ { '攻撃': 2, '斬れ味': 2 }, { '攻撃': 1, '斬れ味': 3 },
                 { '攻撃': 4, '斬れ味': 1 } ] };
-    got = n._normalize5(combs);
+    got = n._normalize4(combs);
     exp = [ { skillComb: { '攻撃': 0, '斬れ味': 0 }, equips: [ 'slot0' ] },
             { skillComb: { '攻撃': 0, '斬れ味': 2 }, equips: [ 'ジンオウメイル' ] },
             { skillComb: { '攻撃': 3, '斬れ味': 0 }, equips: [ 'ジャギィＳメイル' ] },
@@ -580,7 +505,7 @@ QUnit.test('_normalize5', function () {
               'シルバーソルグリーヴ':
               [ { '攻撃': 3, '斬れ味': 4 }, { '攻撃': 5, '斬れ味': 3 },
                 { '攻撃': 7, '斬れ味': 2 }, { '攻撃': 2, '斬れ味': 6 } ] };
-    got = n._normalize5(combs);
+    got = n._normalize4(combs);
     exp = [ { skillComb: { '攻撃': 0, '斬れ味': 0 }, equips: [ 'slot0' ] },
             { skillComb: { '胴系統倍化': 1 }, equips: [ '胴系統倍化' ] },
             { skillComb: { '攻撃': 5, '斬れ味': 0 }, equips: [ 'ジャギィＳグリーヴ' ] },
@@ -591,10 +516,10 @@ QUnit.test('_normalize5', function () {
             { skillComb: { '攻撃': 7, '斬れ味': 2 }, equips: [ 'シルバーソルグリーヴ' ] } ];
     QUnit.deepEqual(sorter(got), sorter(exp), "dupli");
 
-    QUnit.deepEqual(n._normalize5(), [], 'nothing in');
-    QUnit.deepEqual(n._normalize5(undefined), [], 'undefined');
-    QUnit.deepEqual(n._normalize5(null), [], 'null');
-    QUnit.deepEqual(n._normalize5({}), [], '{}');
+    QUnit.deepEqual(n._normalize4(), [], 'nothing in');
+    QUnit.deepEqual(n._normalize4(undefined), [], 'undefined');
+    QUnit.deepEqual(n._normalize4(null), [], 'null');
+    QUnit.deepEqual(n._normalize4({}), [], '{}');
 });
 
 QUnit.test('_normalizeWeaponSkill', function () {
