@@ -52,12 +52,13 @@ QUnit.test('simulate: doubling', function () {
     equips.leg   = myapp.equips('leg', 'ユクモノハカマ・天');
 
     got = simu.simulate([ '斬れ味レベル+1', '砥石使用高速化' ]);
-    exp = [ { head: 'ユクモノカサ・天',
-              body: 'slot3',
-              arm: 'ユクモノコテ・天',
-              waist: '胴系統倍化',
-              leg: 'ユクモノハカマ・天',
-              weapon: 'slot0' } ];
+    exp = [ { head  : 'ユクモノカサ・天',
+              body  : 'slot3',
+              arm   : 'ユクモノコテ・天',
+              waist : '胴系統倍化',
+              leg   : 'ユクモノハカマ・天',
+              weapon: null,
+              oma   : null } ];
     QUnit.deepEqual(got, exp, "[ '斬れ味レベル+1', '砥石使用高速化' ]");
 });
 });
