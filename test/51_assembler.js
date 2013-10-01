@@ -37,43 +37,50 @@ QUnit.test('assembleEquip', function () {
               arm: 'ジンオウＳフォールド',
               waist: 'ジンオウＳフォールド',
               leg: 'バンギスグリーヴ',
-              weapon: 'slot0' },
+              weapon: 'slot0',
+              oma: null },
             { head: 'slot3',
               body: 'シルバーソルメイル',
               arm: 'ランポスＳアーム',
               waist: '胴系統倍化',
               leg: 'バンギスグリーヴ',
-              weapon: 'slot0' },
+              weapon: 'slot0',
+              oma: null },
             { head: 'バトルヘルム',
               body: 'シルバーソルメイル',
               arm: 'ランポスＳアーム',
               waist: '胴系統倍化',
               leg: 'バンギスグリーヴ',
-              weapon: 'slot0' },
+              weapon: 'slot0',
+              oma: null },
             { head: 'バトルキャップ',
               body: 'シルバーソルメイル',
               arm: 'ランポスＳアーム',
               waist: '胴系統倍化',
               leg: 'バンギスグリーヴ',
-              weapon: 'slot0' },
+              weapon: 'slot0',
+              oma: null },
             { head: 'クックキャップ',
               body: 'シルバーソルメイル',
               arm: 'ランポスＳアーム',
               waist: '胴系統倍化',
               leg: 'バンギスグリーヴ',
-              weapon: 'slot0' },
+              weapon: 'slot0',
+              oma: null },
             { head: 'レックスキャップ',
               body: 'シルバーソルメイル',
               arm: 'ランポスＳアーム',
               waist: '胴系統倍化',
               leg: 'バンギスグリーヴ',
-              weapon: 'slot0' },
+              weapon: 'slot0',
+              oma: null },
             { head: 'ドボルキャップ',
               body: 'シルバーソルメイル',
               arm: 'ランポスＳアーム',
               waist: '胴系統倍化',
               leg: 'バンギスグリーヴ',
-              weapon: 'slot0' } ];
+              weapon: 'slot0',
+              oma: null } ];
     QUnit.deepEqual(got, exp, 'assemble');
 
     got = a.assembleEquip();
@@ -129,10 +136,43 @@ QUnit.test('assembleEquip: weaponSlot', function () {
 
     n.weaponSlot = 2; // 武器スロ2
     norCombsSet = n.normalize(skills);
-    actiCombs = c.combine(skills, norCombsSet);
+    actiCombs   = c.combine(skills, norCombsSet);
     got = a.assembleEquip(actiCombs);
     exp = 18;
     QUnit.deepEqual(got.length, exp, 'weaponSlot: 2');
+});
+
+QUnit.test('combine: oma', function () {
+    var got, exp, skills, norCombsSet, actiCombs,
+        n = new Normalizer(),
+        c = new Combinator(),
+        a = new Assembler();
+
+    // 装備を村のみにしぼる
+    myapp.setup({ hr: 1, vs: 6 });
+
+    var omas = [
+        [ '龍の護石',3,'匠',4,'氷耐性',-5 ],
+        [ '龍の護石',0,'溜め短縮',5,'攻撃',9 ],
+        [ '龍の護石',3,'痛撃',4 ]
+    ];
+    n.omas = myapp.model.Oma.createSimuData(omas);
+
+    skills = [ '斬れ味レベル+1', '攻撃力UP【大】', '耳栓' ];
+    n.weaponSlot = 3; // 武器スロ3
+    norCombsSet = n.normalize(skills);
+    actiCombs   = c.combine(skills, norCombsSet);
+    got = a.assembleEquip(actiCombs);
+    exp = 3; // 頑シミュさんと同じ
+    QUnit.deepEqual(got.length, exp, 'oma');
+
+    // 武器スロ0
+    n.weaponSlot = 0;
+    norCombsSet = n.normalize(skills);
+    actiCombs   = c.combine(skills, norCombsSet);
+    got = a.assembleEquip(actiCombs);
+    exp = 0;
+    QUnit.deepEqual(got.length, exp, 'oma: weaponSlot=0');
 });
 });
 })(typeof define !== 'undefined' ?
