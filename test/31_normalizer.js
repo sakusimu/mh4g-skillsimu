@@ -59,6 +59,8 @@ QUnit.test('normalize', function () {
             { skillComb: { '攻撃': -2, '斬れ味': 0 },
               equips: [ 'ブナハハット', 'ブナハキャップ' ] } ];
     QUnit.deepEqual(sorter(got.head), sorter(exp), "[ '攻撃力UP【大】', '業物' ]");
+    QUnit.strictEqual(got.weapon, null, "weapon");
+    QUnit.strictEqual(got.oma, null, "oma");
 
     myapp.setup({ type: 'g', hr: 1, vs: 6 }); // ガンナー
 
@@ -113,7 +115,9 @@ QUnit.test('normalize', function () {
 
 var summary = function (norCombs) {
     var ret = {};
-    _.each(norCombs, function (norComb, part) { ret[part] = norComb.length; });
+    _.each(norCombs, function (norComb, part) {
+        ret[part] = norComb ? norComb.length : null;
+    });
     return ret;
 };
 
@@ -131,7 +135,7 @@ QUnit.test('normalize: selected equips', function () {
     exp = [ { skillComb: { '攻撃': 1, '斬れ味': -2 }, equips: [ 'アカムトウルンテ' ] },
             { skillComb: { '攻撃': 0, '斬れ味': -1 }, equips: [ 'アカムトウルンテ' ] } ];
     QUnit.deepEqual(got.body, exp, 'fixed equip');
-    exp = { head: 37, body: 2, arm: 28, waist: 30, leg: 34, weapon: 1 };
+    exp = { head: 37, body: 2, arm: 28, waist: 30, leg: 34, weapon: null, oma: null };
     QUnit.deepEqual(summary(got), exp, 'fixed equip: summary');
 
     myapp.initialize();
@@ -146,7 +150,7 @@ QUnit.test('normalize: selected equips', function () {
     data.equips.body = equips;
 
     got = n.normalize([ '攻撃力UP【大】', '業物' ]);
-    exp = { head: 37, body: 5, arm: 28, waist: 30, leg: 34, weapon: 1 };
+    exp = { head: 37, body: 5, arm: 28, waist: 30, leg: 34, weapon: null, oma: null };
     QUnit.deepEqual(summary(got), exp, 'selected equip');
 });
 
@@ -156,8 +160,8 @@ QUnit.test('normalize: weapon slot', function () {
 
     n.weaponSlot = 0;
     got = n.normalize([ '攻撃力UP【大】', '業物' ]);
-    exp = [ { skillComb: { '攻撃': 0, '斬れ味': 0 }, equips: [ 'slot0' ] } ];
-    QUnit.deepEqual(got.weapon, exp, 'weaponSlot 0');
+    exp = null;
+    QUnit.strictEqual(got.weapon, exp, 'weaponSlot 0');
 
     n.weaponSlot = 3;
     got = n.normalize([ '攻撃力UP【大】', '業物' ]);
@@ -168,25 +172,62 @@ QUnit.test('normalize: weapon slot', function () {
     QUnit.deepEqual(got.weapon, exp, 'weaponSlot 3');
 });
 
+QUnit.test('normalize: oma', function () {
+    var got, exp,
+        n = new Normalizer();
+
+    // 村のみに装備をしぼってスキルの組み合わせ
+    myapp.setup({ hr: 1, vs: 6 });
+
+    var omas = [
+        [ '龍の護石',3,'匠',4,'氷耐性',-5 ],
+        [ '龍の護石',0,'溜め短縮',5,'攻撃',9 ],
+        [ '龍の護石',3,'痛撃',4 ]
+    ];
+    n.omas = myapp.model.Oma.createSimuData(omas);
+
+    got = n.normalize([ '斬れ味レベル+1', '攻撃力UP【中】', '耳栓' ]);
+    // slot3 は「龍の護石(スロ3,痛撃+4)」の分
+    exp = [ { skillComb: { '匠': 0, '攻撃': 0, '聴覚保護': 3 },
+              equips: [ 'slot3' ] },
+            { skillComb: { '匠': 0, '攻撃': 1, '聴覚保護': 2 },
+              equips: [ 'slot3' ] },
+            { skillComb: { '匠': 0, '攻撃': 3, '聴覚保護': 1 },
+              equips: [ 'slot3' ] },
+            { skillComb: { '匠': 0, '攻撃': 4, '聴覚保護': 0 },
+              equips: [ 'slot3' ] },
+            { skillComb: { '匠': 4, '攻撃': 0, '聴覚保護': 3 },
+              equips: [ '龍の護石(スロ3,匠+4,氷耐性,-5)' ] },
+            { skillComb: { '匠': 4, '攻撃': 1, '聴覚保護': 2 },
+              equips: [ '龍の護石(スロ3,匠+4,氷耐性,-5)' ] },
+            { skillComb: { '匠': 4, '攻撃': 3, '聴覚保護': 1 },
+              equips: [ '龍の護石(スロ3,匠+4,氷耐性,-5)' ] },
+            { skillComb: { '匠': 4, '攻撃': 4, '聴覚保護': 0 },
+              equips: [ '龍の護石(スロ3,匠+4,氷耐性,-5)' ] },
+            { skillComb: { '匠': 0, '攻撃': 9, '聴覚保護': 0 },
+              equips: [ '龍の護石(スロ0,溜め短縮+5,攻撃,9)' ] } ];
+    QUnit.deepEqual(got.oma, exp, 'oma');
+});
+
 QUnit.test('normalize: summary', function () {
     var got, exp,
         n = new Normalizer();
 
     got = n.normalize([ '攻撃力UP【大】', '業物' ]);
-    exp = { head: 37, body: 28, arm: 28, waist: 30, leg: 34, weapon: 1 };
+    exp = { head: 37, body: 28, arm: 28, waist: 30, leg: 34, weapon: null, oma: null };
     QUnit.deepEqual(summary(got), exp, "[ '攻撃力UP【大】', '業物' ]");
 
     got = n.normalize([ '斬れ味レベル+1', '高級耳栓' ]);
-    exp = { head: 18, body: 16, arm: 21, waist: 21, leg: 23, weapon: 1 };
+    exp = { head: 18, body: 16, arm: 21, waist: 21, leg: 23, weapon: null, oma: null };
     QUnit.deepEqual(summary(got), exp, "[ '斬れ味レベル+1', '高級耳栓' ]");
 
     // スキル系統で見ているので、高級耳栓も耳栓も結果は同じ
     got = n.normalize([ '斬れ味レベル+1', '耳栓' ]);
-    exp = { head: 18, body: 16, arm: 21, waist: 21, leg: 23, weapon: 1 };
+    exp = { head: 18, body: 16, arm: 21, waist: 21, leg: 23, weapon: null, oma: null };
     QUnit.deepEqual(summary(got), exp, "[ '斬れ味レベル+1', '耳栓' ]");
 
     got = n.normalize([ '攻撃力UP【大】', '業物', '集中', '見切り+1', '弱点特効' ]);
-    exp = { head: 444, body: 228, arm: 249, waist: 342, leg: 270, weapon: 1 };
+    exp = { head: 444, body: 228, arm: 249, waist: 342, leg: 270, weapon: null, oma: null };
     QUnit.deepEqual(summary(got), exp,
                     "[ '攻撃力UP【大】', '業物', '集中', '見切り+1', '弱点特効' ]");
 });

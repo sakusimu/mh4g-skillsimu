@@ -213,9 +213,59 @@ Skill.get = function (skillName) {
     return new Skill(s);
 };
 
+
+/**
+ * シミュレータのユーザ側にあたるクラス。
+ * お守りデータのクラス。
+ */
+var Oma = function () {
+    this.initialize.apply(this, arguments);
+};
+
+/**
+ * 引数の oma は以下を要素とする配列。
+ * スキル,スキル系統,ポイント,"タイプ(0=両方, 1=剣士, 2=ガンナー)"
+ */
+Oma.prototype.initialize = function (oma) {
+    oma = oma || [];
+    var props = [ 'name', 'slot', 'skillTree1', 'skillPt1', 'skillTree2', 'skillPt2' ];
+    var numProps = { slot: true, skillPt1: true, skillPt2: true };
+
+    var model = make(oma, props, numProps);
+    for (var prop in model) this[prop] = model[prop];
+};
+
+var skillAsStr = function (tree, pt) {
+    if (tree == null || tree === '') return null;
+    var point = pt > 0 ? '+' + pt : '-' + pt;
+    return tree + point;
+};
+
+Oma.prototype.toString = function () {
+    var summary = [ 'スロ' + this.slot,
+                    skillAsStr(this.skillTree1, this.skillPt1) ];
+    if (this.skillTree2 != null) summary.push(this.skillTree2, this.skillPt2);
+    return this.name + '(' + summary.join(',') + ')';
+};
+
+Oma.prototype.simuData = function () {
+    return {
+        name     : this.toString(),
+        slot     : this.slot,
+        skillComb: makeSkillComb(this, 2)
+    };
+};
+
+Oma.createSimuData = function (omas) {
+    return _.map(omas, function (oma) {
+        return new Oma(oma).simuData();
+    });
+};
+
 model.Equip = Equip;
 model.Deco  = Deco;
 model.Skill = Skill;
+model.Oma   = Oma;
 
 return myapp.model = model;
 });
