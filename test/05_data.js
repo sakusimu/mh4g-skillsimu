@@ -2,7 +2,7 @@
 'use strict';
 define([ './lib/test-helper.js', '../lib/data.js' ], function (QUnit, data) {
 
-QUnit.module('01_data');
+QUnit.module('05_data');
 
 QUnit.test('data', function () {
     var got, exp;

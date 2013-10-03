@@ -32,6 +32,7 @@ module.exports = function(grunt) {
             js: {
                 src: [
                     'lib/namespace.js'
+                  , 'lib/util.js'
                   , 'lib/data.js'
                   , 'lib/skill.js'
                   , 'lib/deco.js'
