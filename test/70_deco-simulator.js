@@ -175,6 +175,14 @@ QUnit.test('_needSkillComb', function () {
     got = ds._needSkillComb(skillNames, equipSkillComb);
     exp = null;
     QUnit.strictEqual(got, exp, 'no need');
+
+    // スキルが equipSkillComb にはない(装備ではポイントがない場合)
+    skillNames     = [ '斬れ味レベル+1', '砥石使用高速化' ];
+    equipSkillComb = { '匠': 4, '回復量': 5, '加護': 6 };
+
+    got = ds._needSkillComb(skillNames, equipSkillComb);
+    exp = { '匠': 6, '研ぎ師': 10 };
+    QUnit.deepEqual(got, exp, 'no need');
 });
 
 QUnit.test('_slotsSet', function () {
