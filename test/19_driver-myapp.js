@@ -12,10 +12,10 @@ QUnit.test('setup', function() {
     myapp.setup();
     got = {};
     _.each(data.equips, function (equips, part) { got[part] = equips.length; });
-    exp = { head: 310, body: 156, arm: 153, waist: 152, leg: 154 };
+    exp = { head: 304, body: 152, arm: 149, waist: 148, leg: 150 };
     QUnit.deepEqual(got, exp, 'simu.data.equips');
     got = data.decos.length;
-    exp = 177;
+    exp = 179;
     QUnit.deepEqual(got, exp, 'simu.data.decos');
     got = _.keys(data.skills).length;
     exp = 259;
