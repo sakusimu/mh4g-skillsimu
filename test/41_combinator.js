@@ -84,7 +84,7 @@ QUnit.test('combine: summary', function () {
     skills = [ '攻撃力UP【大】', '業物' ];
     norCombsSet = n.normalize(skills);
     got = c.combine(skills, norCombsSet);
-    exp = 15544;
+    exp = 18564;
     QUnit.deepEqual(got.length, exp, "[ '攻撃力UP【大】', '業物' ]");
 
     skills = [ '斬れ味レベル+1', '高級耳栓' ];

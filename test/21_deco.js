@@ -233,7 +233,7 @@ QUnit.test('combs: 2', function () {
     var no3slot = _.filter(orgDecos, function (deco) {
         return !deco.name.match(/【３】$/);
     });
-    if (no3slot.length !== 155) throw new Error('error: no3slot.length=' + no3slot.length);
+    if (no3slot.length !== 156) throw new Error('error: no3slot.length=' + no3slot.length);
 
     data.decos = no3slot;
     got = Deco.combs([ '攻撃', '斬れ味' ]);
@@ -255,7 +255,7 @@ QUnit.test('combs: 2', function () {
     var no1slot = _.filter(orgDecos, function (deco) {
         return !deco.name.match(/【１】$/);
     });
-    if (no1slot.length !== 60) throw new Error('error: no1slot.length=' + no1slot.length);
+    if (no1slot.length !== 62) throw new Error('error: no1slot.length=' + no1slot.length);
 
     data.decos = no1slot;
     got = Deco.combs([ '攻撃', '匠' ]);
