@@ -56,7 +56,7 @@ QUnit.test('decos', function () {
         decos = data.decos;
 
     got = _.keys(decos).length;
-    QUnit.equal(got, 179, 'decos.length');
+    QUnit.equal(got, 181, 'decos.length');
     got = decos['耐絶珠【１】'];
     exp = ["耐絶珠【１】",4,1,1,1,"気絶",1,"麻痺",-1,"水光原珠",1,"鳥竜種の牙",3,null,null,null,null,null,null,null,null,null,null,null,null];
     QUnit.deepEqual(got, exp, 'decos[0]');
