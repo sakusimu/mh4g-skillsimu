@@ -15,7 +15,7 @@ QUnit.test('setup', function() {
     exp = { head: 304, body: 152, arm: 149, waist: 148, leg: 150 };
     QUnit.deepEqual(got, exp, 'simu.data.equips');
     got = data.decos.length;
-    exp = 179;
+    exp = 181;
     QUnit.deepEqual(got, exp, 'simu.data.decos');
     got = _.keys(data.skills).length;
     exp = 259;
