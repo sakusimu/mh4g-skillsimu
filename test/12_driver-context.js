@@ -17,7 +17,7 @@ QUnit.test('context', function () {
     QUnit.strictEqual(got.sex, 'm', 'sex');
     QUnit.strictEqual(got.type, 'k', 'type');
     QUnit.strictEqual(got.hr, 8, 'hr');
-    QUnit.strictEqual(got.vs, 8, 'vs');
+    QUnit.strictEqual(got.vs, 6, 'vs');
 });
 });
 })(typeof define !== 'undefined' ?

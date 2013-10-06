@@ -106,7 +106,7 @@ QUnit.test('_groupBySlot', function () {
     var got, exp, decos;
 
     decos = Deco.filter([ '攻撃' ]);
-    if (decos.length !== 3) throw new Error('error: deos.length=' + decos.length);
+    if (decos.length !== 3) throw new Error('error: decos.length=' + decos.length);
 
     got = Deco._groupBySlot(decos);
     exp = { '1': [ '攻撃珠【１】' ],
@@ -115,7 +115,7 @@ QUnit.test('_groupBySlot', function () {
     QUnit.deepEqual(name(got), exp, '攻撃');
 
     decos = Deco.filter([ '攻撃', '達人' ]);
-    if (decos.length !== 6) throw new Error('error: deos.length=' + decos.length);
+    if (decos.length !== 6) throw new Error('error: decos.length=' + decos.length);
 
     got = Deco._groupBySlot(decos);
     exp = { '1': [ '攻撃珠【１】', '達人珠【１】' ],
@@ -124,7 +124,7 @@ QUnit.test('_groupBySlot', function () {
     QUnit.deepEqual(name(got), exp, '攻撃, 達人');
 
     decos = Deco.filter([ '攻撃', '匠' ]);
-    if (decos.length !== 5) throw new Error('error: deos.length=' + decos.length);
+    if (decos.length !== 5) throw new Error('error: decos.length=' + decos.length);
 
     got = Deco._groupBySlot(decos);
     exp = { '1': [ '攻撃珠【１】' ],
@@ -233,7 +233,7 @@ QUnit.test('combs: 2', function () {
     var no3slot = _.filter(orgDecos, function (deco) {
         return !deco.name.match(/【３】$/);
     });
-    if (no3slot.length !== 157) throw new Error('error: no3slot.length=' + no3slot.length);
+    if (no3slot.length !== 158) throw new Error('error: no3slot.length=' + no3slot.length);
 
     data.decos = no3slot;
     got = Deco.combs([ '攻撃', '斬れ味' ]);
@@ -255,7 +255,7 @@ QUnit.test('combs: 2', function () {
     var no1slot = _.filter(orgDecos, function (deco) {
         return !deco.name.match(/【１】$/);
     });
-    if (no1slot.length !== 63) throw new Error('error: no1slot.length=' + no1slot.length);
+    if (no1slot.length !== 64) throw new Error('error: no1slot.length=' + no1slot.length);
 
     data.decos = no1slot;
     got = Deco.combs([ '攻撃', '匠' ]);

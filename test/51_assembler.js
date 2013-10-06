@@ -138,7 +138,7 @@ QUnit.test('assembleEquip: weaponSlot', function () {
     norCombsSet = n.normalize(skills);
     actiCombs   = c.combine(skills, norCombsSet);
     got = a.assembleEquip(actiCombs);
-    exp = 18;
+    exp = 11;
     QUnit.deepEqual(got.length, exp, 'weaponSlot: 2');
 });
 

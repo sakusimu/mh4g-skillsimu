@@ -17,7 +17,7 @@ Context.prototype.initialize = function (args) {
     this.type = args.type || 'k'; // 'k' or 'g' (k: kenshi, g: gunner)
 
     this.hr = args.hr || 8; // 進行度(HR)
-    this.vs = args.vs || 8; // 進行度(村☆) vs=VillageStar
+    this.vs = args.vs || 6; // 進行度(村☆) vs=VillageStar
 };
 
 return myapp.context = new Context();
