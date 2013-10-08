@@ -237,14 +237,18 @@ Oma.prototype.initialize = function (oma) {
 
 var skillAsStr = function (tree, pt) {
     if (tree == null || tree === '') return null;
-    var point = pt > 0 ? '+' + pt : '-' + pt;
+    pt = +pt;
+    var point = pt > 0 ? '+' + pt : '' + pt;
     return tree + point;
 };
 
 Oma.prototype.toString = function () {
-    var summary = [ 'スロ' + this.slot,
-                    skillAsStr(this.skillTree1, this.skillPt1) ];
-    if (this.skillTree2 != null) summary.push(this.skillTree2, this.skillPt2);
+    var skill1 = skillAsStr(this.skillTree1, this.skillPt1),
+        skill2 = skillAsStr(this.skillTree2, this.skillPt2);
+
+    var summary = [ 'スロ' + this.slot, skill1 ];
+    if (skill2 != null) summary.push(skill2);
+
     return this.name + '(' + summary.join(',') + ')';
 };
 
