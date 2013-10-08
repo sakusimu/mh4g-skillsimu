@@ -117,7 +117,7 @@ QUnit.test('_normalize', function () {
         { equip: 'slot2',
           decos: [ [], [ '研磨珠【１】' ], [ '研磨珠【１】,研磨珠【１】', '匠珠【２】' ] ] }
       , oma:
-        { equip: '龍の護石(スロ3,匠+4,氷耐性,-5)',
+        { equip: '龍の護石(スロ3,匠+4,氷耐性-5)',
           decos: [ [],
                    [ '研磨珠【１】' ],
                    [ '研磨珠【１】,研磨珠【１】', '匠珠【２】' ],
@@ -484,7 +484,7 @@ QUnit.test('simulate', function () {
           skillComb: { '匠': 3, '本気': 3, '火耐性': -3, '狂撃耐性': 1 } },
         weapon: { name: 'slot3', slot: 3, skillComb: {} },
         oma:
-        { name: '龍の護石(スロ3,匠+4,氷耐性,-5)',
+        { name: '龍の護石(スロ3,匠+4,氷耐性-5)',
           slot: 3,
           skillComb: { '匠': 4, '氷耐性': -5 } },
         decos:
