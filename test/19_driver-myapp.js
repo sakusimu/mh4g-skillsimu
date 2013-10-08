@@ -18,7 +18,7 @@ QUnit.test('setup', function() {
     exp = 183;
     QUnit.deepEqual(got, exp, 'simu.data.decos');
     got = _.keys(data.skills).length;
-    exp = 258;
+    exp = 259;
     QUnit.deepEqual(got, exp, 'simu.data.skills');
 });
 
