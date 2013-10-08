@@ -67,7 +67,7 @@ QUnit.test('skills', function () {
         skills = data.skills;
 
     got = _.keys(skills).length;
-    QUnit.equal(got, 258, 'skills.length');
+    QUnit.equal(got, 259, 'skills.length');
     got = skills['攻撃力UP【小】'];
     exp = ["攻撃力UP【小】","攻撃",10,0];
     QUnit.deepEqual(got, exp, 'skills[0]');
