@@ -93,15 +93,13 @@ QUnit.test('normalize', function () {
             { skillComb: { '胴系統倍化': 1 }, equips: [ '胴系統倍化' ] },
             { skillComb: { '溜め短縮': 0, '痛撃': 1 }, equips: [ 'slot1' ] },
             { skillComb: { '溜め短縮': 1, '痛撃': 0 }, equips: [ 'slot1' ] },
-            { skillComb: { '溜め短縮': 0, '痛撃': 2 },
-              equips: [ 'slot2', 'ナルガレギンス' ] },
+            { skillComb: { '溜め短縮': 0, '痛撃': 2 }, equips: [ 'slot2' ] },
             { skillComb: { '溜め短縮': 1, '痛撃': 1 }, equips: [ 'slot2' ] },
             { skillComb: { '溜め短縮': 2, '痛撃': 0 }, equips: [ 'slot2' ] },
             { skillComb: { '溜め短縮': 0, '痛撃': 3 }, equips: [ 'slot3' ] },
             { skillComb: { '溜め短縮': 1, '痛撃': 2 }, equips: [ 'slot3' ] },
             { skillComb: { '溜め短縮': 2, '痛撃': 1 }, equips: [ 'slot3' ] },
-            { skillComb: { '溜め短縮': 3, '痛撃': 0 },
-              equips: [ 'slot3', 'マギュルヴルツェル' ] } ];
+            { skillComb: { '溜め短縮': 3, '痛撃': 0 }, equips: [ 'slot3' ] } ];
     QUnit.deepEqual(sorter(got.leg), sorter(exp), "[ '集中', '弱点特効' ]");
 
     got = n.normalize();
@@ -218,16 +216,16 @@ QUnit.test('normalize: summary', function () {
     QUnit.deepEqual(summary(got), exp, "[ '攻撃力UP【大】', '業物' ]");
 
     got = n.normalize([ '斬れ味レベル+1', '高級耳栓' ]);
-    exp = { head: 18, body: 16, arm: 21, waist: 21, leg: 23, weapon: null, oma: null };
+    exp = { head: 19, body: 16, arm: 21, waist: 21, leg: 24, weapon: null, oma: null };
     QUnit.deepEqual(summary(got), exp, "[ '斬れ味レベル+1', '高級耳栓' ]");
 
     // スキル系統で見ているので、高級耳栓も耳栓も結果は同じ
     got = n.normalize([ '斬れ味レベル+1', '耳栓' ]);
-    exp = { head: 18, body: 16, arm: 21, waist: 21, leg: 23, weapon: null, oma: null };
+    exp = { head: 19, body: 16, arm: 21, waist: 21, leg: 24, weapon: null, oma: null };
     QUnit.deepEqual(summary(got), exp, "[ '斬れ味レベル+1', '耳栓' ]");
 
     got = n.normalize([ '攻撃力UP【大】', '業物', '集中', '見切り+1', '弱点特効' ]);
-    exp = { head: 444, body: 229, arm: 250, waist: 330, leg: 268, weapon: null, oma: null };
+    exp = { head: 444, body: 229, arm: 250, waist: 342, leg: 268, weapon: null, oma: null };
     QUnit.deepEqual(summary(got), exp,
                     "[ '攻撃力UP【大】', '業物', '集中', '見切り+1', '弱点特効' ]");
 });

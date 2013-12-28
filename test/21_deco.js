@@ -233,7 +233,7 @@ QUnit.test('combs: 2', function () {
     var no3slot = _.filter(orgDecos, function (deco) {
         return !deco.name.match(/【３】$/);
     });
-    if (no3slot.length !== 158) throw new Error('error: no3slot.length=' + no3slot.length);
+    if (no3slot.length !== 159) throw new Error('error: no3slot.length=' + no3slot.length);
 
     data.decos = no3slot;
     got = Deco.combs([ '攻撃', '斬れ味' ]);
