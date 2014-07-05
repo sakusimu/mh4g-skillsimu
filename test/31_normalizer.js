@@ -225,7 +225,7 @@ QUnit.test('normalize: summary', function () {
     QUnit.deepEqual(summary(got), exp, "[ '斬れ味レベル+1', '耳栓' ]");
 
     got = n.normalize([ '攻撃力UP【大】', '業物', '集中', '見切り+1', '弱点特効' ]);
-    exp = { head: 444, body: 229, arm: 250, waist: 342, leg: 268, weapon: null, oma: null };
+    exp = { head: 444, body: 229, arm: 250, waist: 343, leg: 268, weapon: null, oma: null };
     QUnit.deepEqual(summary(got), exp,
                     "[ '攻撃力UP【大】', '業物', '集中', '見切り+1', '弱点特効' ]");
 });
