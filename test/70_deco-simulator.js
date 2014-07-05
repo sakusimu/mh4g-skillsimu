@@ -531,6 +531,6 @@ QUnit.test('simulate', function () {
            test.apply(this, modules);
        } :
        function (deps, test) {
-           test(this.QUnit, this._, this.simu.DecoSimulator, this.simu.Skill, this.myapp);
+           test(this.QUnit, this._, this.simu.DecoSimulator, this.simu.Deco, this.simu.Skill, this.myapp);
        }
 );
