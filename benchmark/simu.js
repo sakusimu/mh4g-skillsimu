@@ -1,8 +1,8 @@
-var myapp = require('../test/lib/driver-myapp.js'),
-    data  = require('../lib/data.js'),
-    Normalizer = require('../lib/normalizer.js'),
-    Combinator = require('../lib/combinator.js'),
-    Assembler  = require('../lib/assembler.js');
+(function (define) {
+'use strict';
+var deps = [ '../test/lib/driver-myapp.js', '../lib/data.js',
+             '../lib/normalizer.js', '../lib/combinator.js', '../lib/assembler.js' ];
+define(deps, function (myapp, data, Normalizer, Combinator, Assembler) {
 
 myapp.setup();
 
@@ -19,17 +19,16 @@ var simulate = function (skillNames, opts) {
     var assems = a.assembleEquip(actiCombs);
     var adone = Date.now();
 
-    var time = { n: ndone - start,
-                 c: cdone - ndone,
-                 a: adone - cdone,
-                 total: adone - start };
-
-    console.log('>', skillNames);
+    console.log('>', '[ ' + skillNames.join(', ') + ' ]');
     console.log('n:', resultNormalizer(norCombsSet));
     console.log('c:', actiCombs.length);
     console.log('a:', assems.length);
+
+    var time = (adone - start) + ' ('
+            + 'n=' + (ndone - start)
+            + ', c=' + (cdone - ndone)
+            + ', a=' + (adone - cdone) + ')';
     console.log('time:', time);
-    //console.log('mem:', memoryUsage());
 };
 
 var resultNormalizer = function (norCombsSet) {
@@ -41,22 +40,12 @@ var resultNormalizer = function (norCombsSet) {
     }
     return '[ ' + list.join(', ') + ' ]';
 };
-var memoryUsage = function () {
-    var usage = process.memoryUsage();
-    for (var key in usage) {
-        var value = usage[key];
-        usage[key] = ('' + value / 1024 / 1024).slice(0, 5) + 'MB';
-    }
-    return usage;
-};
-
-console.log('mem:', memoryUsage());
 
 //myapp.setup({ hr: 1, vs: 6 });
 
 var list = [];
 for (var part in data.equips) list.push(part + ': ' + data.equips[part].length);
-console.log('data.equips:', list);
+console.log('data.equips:', '[ ' + list.join(', ') + ' ]');
 
 simulate([ '斬れ味レベル+1', '集中' ], { weaponSlot: 2});
 
@@ -65,5 +54,17 @@ simulate([ '攻撃力UP【大】', '業物' ]);
 simulate([ '斬れ味レベル+1', '高級耳栓' ]);
 simulate([ '攻撃力UP【大】', '業物', '集中', '見切り+1', '弱点特効' ]);
 
-//if (global.gc) global.gc();
-//console.log('memoryUsage:', memoryUsage());
+});
+})(typeof define !== 'undefined' ?
+   define :
+   typeof module !== 'undefined' && module.exports ?
+       function (deps, test) {
+           var modules = [], len = deps.length;
+           for (var i = 0; i < len; ++i) modules.push(require(deps[i]));
+           test.apply(this, modules);
+       } :
+       function (deps, test) {
+           test(this.myapp, this.simu.data,
+                this.simu.Normalizer, this.simu.Combinator, this.simu.Assembler);
+       }
+);

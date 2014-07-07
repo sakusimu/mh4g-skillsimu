@@ -1,6 +1,7 @@
-var myapp = require('../test/lib/driver-myapp.js'),
-    data  = require('../lib/data.js'),
-    DecoSimulator = require('../lib/deco-simulator.js');
+(function (define) {
+'use strict';
+var deps = [ '../test/lib/driver-myapp.js', '../lib/data.js', '../lib/deco-simulator.js' ];
+define(deps, function (myapp, data, DecoSimulator) {
 
 var simulate = function (skillNames, quipSet) {
     var ds = new DecoSimulator();
@@ -9,22 +10,10 @@ var simulate = function (skillNames, quipSet) {
     var result = ds.simulate(skillNames, equipSet);
     var done = Date.now();
 
-    console.log('>', skillNames);
+    console.log('>', '[ ' + skillNames.join(', ') + ' ]');
     console.log('decos:', result.decos.length);
     console.log('time:', done - start);
-    //console.log('mem:', memoryUsage());
 };
-
-var memoryUsage = function () {
-    var usage = process.memoryUsage();
-    for (var key in usage) {
-        var value = usage[key];
-        usage[key] = ('' + value / 1024 / 1024).slice(0, 5) + 'MB';
-    }
-    return usage;
-};
-
-console.log('memoryUsage:', memoryUsage());
 
 var equipSet, omas;
 
@@ -54,3 +43,17 @@ equipSet = {
   , oma   : omas[0]
 };
 simulate([ '斬れ味レベル+1', '攻撃力UP【大】', '耳栓' ], equipSet);
+
+});
+})(typeof define !== 'undefined' ?
+   define :
+   typeof module !== 'undefined' && module.exports ?
+       function (deps, test) {
+           var modules = [], len = deps.length;
+           for (var i = 0; i < len; ++i) modules.push(require(deps[i]));
+           test.apply(this, modules);
+       } :
+       function (deps, test) {
+           test(this.myapp, this.simu.data, this.simu.DecoSimulator);
+       }
+);
