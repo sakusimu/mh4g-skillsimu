@@ -1,24 +1,24 @@
 (function (define) {
 'use strict';
 var deps = [ './lib/test-helper.js', 'underscore',
-             '../lib/deco-simulator.js', '../lib/deco.js', '../lib/skill.js',
+             '../lib/deco/simulator.js', '../lib/util/deco.js', '../lib/util/skill.js',
              './lib/driver-myapp.js' ];
-define(deps, function (QUnit, _, DecoSimulator, Deco, Skill, myapp) {
+define(deps, function (QUnit, _, Simulator, Deco, Skill, myapp) {
 
-QUnit.module('70_deco-simulator', {
+QUnit.module('49_deco-simulator', {
     setup: function () {
         myapp.initialize();
     }
 });
 
-QUnit.test('DecoSimulator', function () {
-    QUnit.strictEqual(typeof DecoSimulator, 'function', 'is function');
+QUnit.test('Simulator', function () {
+    QUnit.strictEqual(typeof Simulator, 'function', 'is function');
 });
 
 QUnit.test('new', function () {
     var got, exp;
 
-    got = new DecoSimulator();
+    got = new Simulator();
 
     QUnit.strictEqual(typeof got, 'object', 'is object');
     QUnit.strictEqual(typeof got.initialize, 'function', 'has initialize()');
@@ -30,7 +30,7 @@ QUnit.test('new', function () {
 
 QUnit.test('_normalize', function () {
     var got, exp, equipSet, norSet,
-        ds = new DecoSimulator();
+        ds = new Simulator();
 
     var name = function (norSet) {
         var set = {};
@@ -129,7 +129,7 @@ QUnit.test('_normalize', function () {
 
 QUnit.test('_euipSkillComb', function () {
     var got, exp, equipSet, norSet,
-        ds = new DecoSimulator();
+        ds = new Simulator();
 
     equipSet = {
         head : myapp.equips('head', 'ユクモノカサ・天')[0]  // 匠+2, 研ぎ師+3
@@ -159,7 +159,7 @@ QUnit.test('_euipSkillComb', function () {
 
 QUnit.test('_needSkillComb', function () {
     var got, exp, skillNames, equipSkillComb,
-        ds = new DecoSimulator();
+        ds = new Simulator();
 
     skillNames     = [ '斬れ味レベル+1', '砥石使用高速化' ];
     equipSkillComb = { '匠': 4, '研ぎ師': 7, '回復量': 5, '加護': 6 };
@@ -187,7 +187,7 @@ QUnit.test('_needSkillComb', function () {
 
 QUnit.test('_slotsSet', function () {
     var got, exp, equipSet, norSet,
-        ds = new DecoSimulator();
+        ds = new Simulator();
 
     equipSet = {
         head : myapp.equips('head', 'ユクモノカサ・天')[0]  // スロ2
@@ -255,7 +255,7 @@ var name = function (deCombSets) {
 
 QUnit.test('_appendDeCombSets', function () {
     var got, exp, deCombs, deCombSets,
-        ds = new DecoSimulator();
+        ds = new Simulator();
 
     var deCombsBySlot = Deco.combs([ '匠', '研ぎ師' ]);
     deCombSets = [];
@@ -282,7 +282,7 @@ QUnit.test('_appendDeCombSets', function () {
 
 QUnit.test('_activatedDeCombs', function () {
     var got, exp, equipSet, norSet, need, slots, deCombSets,
-        ds = new DecoSimulator();
+        ds = new Simulator();
 
     var skillNames = [ '斬れ味レベル+1', '砥石使用高速化' ],
         skillTrees = Skill.trees(skillNames);
@@ -320,7 +320,7 @@ QUnit.test('_activatedDeCombs', function () {
 
 QUnit.test('_combine', function () {
     var got, exp, equipSet, norSet, deCombSets,
-        ds = new DecoSimulator();
+        ds = new Simulator();
 
     equipSet = {
         head : myapp.equips('head', 'ユクモノカサ・天')[0]  // スロ2
@@ -364,7 +364,7 @@ QUnit.test('_combine', function () {
 
 QUnit.test('_calcPoint', function () {
     var got, exp, equipSet,
-        ds = new DecoSimulator();
+        ds = new Simulator();
 
     equipSet = {
         head  : myapp.equips('head', 'ユクモノカサ・天')[0]  // スロ2
@@ -386,7 +386,7 @@ QUnit.test('_calcPoint', function () {
 
 QUnit.test('_sumFreeSlot', function () {
     var got, exp, equipSet,
-        ds = new DecoSimulator();
+        ds = new Simulator();
 
     equipSet = {
         head  : myapp.equips('head', 'ユクモノカサ・天')[0]  // スロ2
@@ -407,7 +407,7 @@ QUnit.test('_sumFreeSlot', function () {
 
 QUnit.test('simulate', function () {
     var got, exp, equipSet,
-        ds = new DecoSimulator();
+        ds = new Simulator();
 
     equipSet = {
         head  : myapp.equips('head', 'ユクモノカサ・天')[0]  // 匠+2, 研ぎ師+3
@@ -531,6 +531,7 @@ QUnit.test('simulate', function () {
            test.apply(this, modules);
        } :
        function (deps, test) {
-           test(this.QUnit, this._, this.simu.DecoSimulator, this.simu.Deco, this.simu.Skill, this.myapp);
+           test(this.QUnit, this._, this.simu.Deco.Simulator,
+                this.simu.Util.Deco, this.simu.Util.Skill, this.myapp);
        }
 );

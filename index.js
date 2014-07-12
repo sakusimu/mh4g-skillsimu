@@ -1,24 +1,27 @@
 (function (define) {
 'use strict';
-var deps = [ './lib/namespace.js', './lib/simulator.js', './lib/deco-simulator' ];
-define(deps, function (simu, Simulator, DecoSimulator) {
+var deps = [ './lib/namespace.js',
+             './lib/equip/simulator.js', './lib/deco/simulator.js' ];
+define(deps, function (simu, EquipSimulator, DecoSimulator) {
 
-simu.initialize = function () {
-    this.simu     = null;
-    this.decoSimu = null;
+var Simulator = function () {
+    this.initialize.apply(this, arguments);
 };
 
-simu.simulate = function (skillNames, opts) {
-    if (this.simu == null) this.simu = new Simulator();
-    return this.simu.simulate(skillNames, opts);
+Simulator.prototype.initialize = function () {
+    this.equip = new EquipSimulator();
+    this.deco  = new DecoSimulator();
 };
 
-simu.simulateDeco = function (skillNames, equips, opts) {
-    if (this.decoSimu == null) this.decoSimu = new DecoSimulator();
-    return this.decoSimu.simulate(skillNames, equips, opts);
+Simulator.prototype.simulateEquip = function (skillNames, opts) {
+    return this.equip.simulate(skillNames, opts);
 };
 
-return simu;
+Simulator.prototype.simulateDeco = function (skillNames, equips, opts) {
+    return this.deco.simulate(skillNames, equips, opts);
+};
+
+return simu.Simulator = Simulator;
 });
 })(typeof define !== 'undefined' ?
    define :
@@ -29,6 +32,6 @@ return simu;
            module.exports = factory.apply(this, modules);
        } :
        function (deps, factory) {
-           factory(this.simu, this.simu.Simulator, this.simu.DecoSimulator);
+           factory(this.simu, this.simu.Equip.Simulator, this.simu.Deco.Simulator);
        }
 );

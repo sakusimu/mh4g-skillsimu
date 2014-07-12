@@ -1,9 +1,9 @@
 (function (define) {
 'use strict';
-var deps = [ './lib/test-helper.js', '../lib/combinator.js', './lib/driver-myapp.js' ];
+var deps = [ './lib/test-helper.js', '../lib/equip/combinator.js', './lib/driver-myapp.js' ];
 define(deps, function (QUnit, Combinator, myapp) {
 
-QUnit.module('40_combinator');
+QUnit.module('33_eq-combinator');
 
 myapp.initialize();
 
@@ -582,6 +582,6 @@ QUnit.test('_combine', function () {
            test.apply(this, modules);
        } :
        function (deps, test) {
-           test(this.QUnit, this.simu.Combinator, this.myapp);
+           test(this.QUnit, this.simu.Equip.Combinator, this.myapp);
        }
 );

@@ -1,16 +1,36 @@
 (function (define) {
 'use strict';
-var deps = [ './lib/test-helper.js', '../index.js' ];
-define(deps, function (QUnit, simu) {
+var deps = [ './lib/test-helper.js', '../index.js', './lib/driver-myapp.js' ];
+define(deps, function (QUnit, Simulator, myapp) {
 
-QUnit.module('90_index');
+QUnit.module('90_index', {
+    setup: function () {
+        myapp.initialize();
+    }
+});
 
-QUnit.test('initialize', function () {
+QUnit.test('Simulator', function () {
+    QUnit.strictEqual(typeof Simulator, 'function', 'is function');
+});
+
+QUnit.test('new', function () {
+    var simu = new Simulator();
+    QUnit.strictEqual(typeof simu, 'object', 'is object');
     QUnit.strictEqual(typeof simu.initialize, 'function', 'has initialize()');
 
+    QUnit.strictEqual(typeof simu.equip, 'object', 'equip');
+    QUnit.strictEqual(typeof simu.deco, 'object', 'deco');
+});
+
+QUnit.test('initialize', function () {
+    var simu = new Simulator();
+
+    simu.equip = null;
+    simu.deco  = null;
+
     simu.initialize();
-    QUnit.strictEqual(simu.simu, null, 'simu');
-    QUnit.strictEqual(simu.decoSimu, null, 'decoSimu');
+    QUnit.strictEqual(typeof simu.equip, 'object', 'equip');
+    QUnit.strictEqual(typeof simu.deco, 'object', 'deco');
 });
 
 QUnit.test('simulate', function () {
@@ -34,6 +54,6 @@ QUnit.test('simulate', function () {
            test.apply(this, modules);
        } :
        function (deps, test) {
-           test(this.QUnit, this.simu, this.simu.data, this.myapp);
+           test(this.QUnit, this.simu.Simulator, this.simu.data, this.myapp);
        }
 );

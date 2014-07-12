@@ -1,9 +1,9 @@
 (function (define) {
 'use strict';
-var deps = [ './lib/test-helper.js', '../lib/assembler.js' ];
+var deps = [ './lib/test-helper.js', '../lib/equip/assembler.js' ];
 define(deps, function (QUnit, Assembler) {
 
-QUnit.module('50_assembler');
+QUnit.module('35_eq-assembler');
 
 QUnit.test('Assembler', function () {
     QUnit.strictEqual(typeof Assembler, 'function', 'is function');
@@ -271,6 +271,6 @@ QUnit.test('_uniqAssembies', function () {
            test.apply(this, modules);
        } :
        function (deps, test) {
-           test(this.QUnit, this.simu.Assembler);
+           test(this.QUnit, this.simu.Equip.Assembler);
        }
 );

@@ -1,10 +1,10 @@
 (function (define) {
 'use strict';
-var deps = [ './lib/test-helper.js',
-             '../lib/simulator.js', '../lib/data.js', './lib/driver-myapp.js' ];
+var deps = [ './lib/test-helper.js', '../lib/equip/simulator.js',
+             '../lib/data.js', './lib/driver-myapp.js' ];
 define(deps, function (QUnit, Simulator, data, myapp) {
 
-QUnit.module('60_simulator', {
+QUnit.module('39_eq-simulator', {
     setup: function () {
         myapp.initialize();
     }
@@ -71,6 +71,6 @@ QUnit.test('simulate: doubling', function () {
            test.apply(this, modules);
        } :
        function (deps, test) {
-           test(this.QUnit, this.simu.Simulator, this.simu.data, this.myapp);
+           test(this.QUnit, this.simu.Equip.Simulator, this.simu.data, this.myapp);
        }
 );

@@ -1,9 +1,9 @@
 (function (define) {
 'use strict';
-var deps = [ './lib/test-helper.js', '../lib/skill.js', './lib/driver-myapp.js' ];
+var deps = [ './lib/test-helper.js', '../lib/util/skill.js', './lib/driver-myapp.js' ];
 define(deps, function (QUnit, Skill, myapp) {
 
-QUnit.module('20_skill');
+QUnit.module('21_util-skill');
 
 myapp.setup();
 
@@ -195,6 +195,6 @@ QUnit.test('trees', function () {
            test.apply(this, modules);
        } :
        function (deps, test) {
-           test(this.QUnit, this.simu.Skill, this.myapp);
+           test(this.QUnit, this.simu.Util.Skill, this.myapp);
        }
 );

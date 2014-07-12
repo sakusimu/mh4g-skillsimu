@@ -1,11 +1,11 @@
 (function (define) {
 'use strict';
-var deps = [ './lib/test-helper.js',
-             '../lib/assembler.js', '../lib/normalizer.js', '../lib/combinator.js',
+var deps = [ './lib/test-helper.js', '../lib/equip/assembler.js',
+             '../lib/equip/normalizer.js', '../lib/equip/combinator.js',
              './lib/driver-myapp.js' ];
 define(deps, function (QUnit, Assembler, Normalizer, Combinator, myapp) {
 
-QUnit.module('51_assembler', {
+QUnit.module('36_eq-assembler', {
     setup: function () {
         myapp.initialize();
     }
@@ -184,8 +184,8 @@ QUnit.test('combine: oma', function () {
            test.apply(this, modules);
        } :
        function (deps, test) {
-           test(this.QUnit,
-                this.simu.Assembler, this.simu.Normalizer, this.simu.Combinator,
+           test(this.QUnit, this.simu.Equip.Assembler,
+                this.simu.Equip.Normalizer, this.simu.Equip.Combinator,
                 this.myapp);
        }
 );
