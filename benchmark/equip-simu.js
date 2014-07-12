@@ -1,7 +1,8 @@
 (function (define) {
 'use strict';
 var deps = [ '../test/lib/driver-myapp.js', '../lib/data.js',
-             '../lib/normalizer.js', '../lib/combinator.js', '../lib/assembler.js' ];
+             '../lib/equip/normalizer.js', '../lib/equip/combinator.js',
+             '../lib/equip/assembler.js' ];
 define(deps, function (myapp, data, Normalizer, Combinator, Assembler) {
 
 myapp.setup();
@@ -64,7 +65,7 @@ simulate([ '攻撃力UP【大】', '業物', '集中', '見切り+1', '弱点特
            test.apply(this, modules);
        } :
        function (deps, test) {
-           test(this.myapp, this.simu.data,
-                this.simu.Normalizer, this.simu.Combinator, this.simu.Assembler);
+           test(this.myapp, this.simu.data, this.simu.Equip.Normalizer,
+                this.simu.Equip.Combinator, this.simu.Equip.Assembler);
        }
 );
