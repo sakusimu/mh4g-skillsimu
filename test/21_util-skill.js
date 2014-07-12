@@ -13,6 +13,26 @@ QUnit.test('Skill', function () {
     QUnit.strictEqual(typeof Skill, 'object', 'is object');
 });
 
+QUnit.test('clone', function () {
+    var got, exp;
+
+    got = Skill.clone({ a: 1, b: 2 });
+    exp = { a: 1, b: 2 };
+    QUnit.deepEqual(got, exp, 'skillComb');
+
+    got = Skill.clone({});
+    exp = {};
+    QUnit.deepEqual(got, exp, 'empty');
+
+    got = Skill.clone(null);
+    exp = null;
+    QUnit.deepEqual(got, exp, 'null');
+
+    got = Skill.clone();
+    exp = null;
+    QUnit.deepEqual(got, exp, 'nothing in');
+});
+
 QUnit.test('contains', function () {
     var got, equip;
 
