@@ -1,11 +1,13 @@
 (function (define) {
 'use strict';
-var deps = [ './lib/test-helper.js', '../lib/combinator.js', './lib/driver-myapp.js' ];
+var deps = [ './lib/test-helper.js', '../lib/equip/combinator.js', './lib/driver-myapp.js' ];
 define(deps, function (QUnit, Combinator, myapp) {
 
-QUnit.module('40_combinator');
-
-myapp.initialize();
+QUnit.module('33_eq-combinator', {
+    setup: function () {
+        myapp.initialize();
+    }
+});
 
 QUnit.test('Combinator', function () {
     QUnit.strictEqual(typeof Combinator, 'function', 'is function');
@@ -582,6 +584,6 @@ QUnit.test('_combine', function () {
            test.apply(this, modules);
        } :
        function (deps, test) {
-           test(this.QUnit, this.simu.Combinator, this.myapp);
+           test(this.QUnit, this.simu.Equip.Combinator, this.myapp);
        }
 );

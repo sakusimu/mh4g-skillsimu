@@ -1,14 +1,14 @@
 (function (define) {
 'use strict';
-define([ './lib/test-helper.js', '../lib/util.js' ], function (QUnit, util) {
+define([ './lib/test-helper.js', '../lib/util.js' ], function (QUnit, Util) {
 
-QUnit.module('01_util');
+QUnit.module('20_util');
 
 QUnit.test('_combination', function () {
     var got , exp, list;
 
     list = [ 'a', 'b', 'c', 'd', 'e' ];
-    got = util._combination(list, 4, [], 0, 0);
+    got = Util._combination(list, 4, [], 0, 0);
     exp = [ [ 'a', 'b', 'c', 'd' ],
             [ 'a', 'b', 'c', 'e' ],
             [ 'a', 'b', 'd', 'e' ],
@@ -20,7 +20,7 @@ QUnit.test('combination', function () {
     var got , exp, list;
 
     list = [ 'a', 'b', 'c', 'd', 'e' ];
-    got = util.combination(list, 4);
+    got = Util.combination(list, 4);
     exp = [ [ 'a', 'b', 'c', 'd' ],
             [ 'a', 'b', 'c', 'e' ],
             [ 'a', 'b', 'd', 'e' ],
@@ -29,22 +29,22 @@ QUnit.test('combination', function () {
     QUnit.deepEqual(got, exp, '5C4');
 
     list = [ 'a', 'b', 'c', 'd', 'e', 'f', 'g' ];
-    got = util.combination(list, 1);
+    got = Util.combination(list, 1);
     exp = [ [ 'a' ], [ 'b' ], [ 'c' ], [ 'd' ], [ 'e' ], [ 'f' ], [ 'g' ] ];
     QUnit.deepEqual(got, exp, '7C1');
 
     list = [ 'a', 'b', 'c', 'd', 'e', 'f', 'g' ];
-    got = util.combination(list, 7);
+    got = Util.combination(list, 7);
     exp = [ [ 'a', 'b', 'c', 'd', 'e', 'f', 'g' ] ];
     QUnit.deepEqual(got, exp, '7C1');
 
     list = [ 'a', 'b', 'c', 'd', 'e', 'f', 'g' ];
-    got = util.combination(list, 0);
+    got = Util.combination(list, 0);
     exp = [];
     QUnit.deepEqual(got, exp, '7C0');
 
     list = [ 'a', 'b', 'c', 'd', 'e', 'f', 'g' ];
-    got = util.combination(null, 4);
+    got = Util.combination(null, 4);
     exp = [];
     QUnit.deepEqual(got, exp, 'null');
 });
@@ -53,7 +53,7 @@ QUnit.test('power', function () {
     var got , exp, list;
 
     list = [ 'a', 'b', 'c' ];
-    got = util.power(list);
+    got = Util.power(list);
     exp = [ [],
             [ 'a' ],
             [ 'b' ],
@@ -65,7 +65,7 @@ QUnit.test('power', function () {
     QUnit.deepEqual(got, exp, 'power');
 
     list = [];
-    got = util.power(list);
+    got = Util.power(list);
     exp = [ [] ];
     QUnit.deepEqual(got, exp, 'empty list');
 });
@@ -80,6 +80,6 @@ QUnit.test('power', function () {
            test.apply(this, modules);
        } :
        function (deps, test) {
-           test(this.QUnit, this.simu.util);
+           test(this.QUnit, this.simu.Util);
        }
 );

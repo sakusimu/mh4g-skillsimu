@@ -32,15 +32,16 @@ module.exports = function(grunt) {
             js: {
                 src: [
                     'lib/namespace.js'
-                  , 'lib/util.js'
                   , 'lib/data.js'
-                  , 'lib/skill.js'
+                  , 'lib/util.js'
+                  , 'lib/util/skill.js', 'lib/util/deco.js'
+                  , 'lib/equip.js'
+                  , 'lib/equip/normalizer.js'
+                  , 'lib/equip/combinator.js'
+                  , 'lib/equip/assembler.js'
+                  , 'lib/equip/simulator.js'
                   , 'lib/deco.js'
-                  , 'lib/normalizer.js'
-                  , 'lib/combinator.js'
-                  , 'lib/assembler.js'
-                  , 'lib/simulator.js'
-                  , 'lib/deco-simulator.js'
+                  , 'lib/deco/simulator.js'
                   , 'index.js'
                 ],
                 dest: 'dist/<%= pkg.name %>-<%= pkg.version %>.js'

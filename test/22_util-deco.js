@@ -1,12 +1,14 @@
 (function (define) {
 'use strict';
 var deps = [ './lib/test-helper.js', 'underscore',
-             '../lib/deco.js', '../lib/data.js', './lib/driver-myapp.js' ];
+             '../lib/util/deco.js', '../lib/data.js', './lib/driver-myapp.js' ];
 define(deps, function (QUnit, _, Deco, data, myapp) {
 
-QUnit.module('20_deco');
-
-myapp.setup();
+QUnit.module('22_util-deco', {
+    setup: function () {
+        myapp.initialize();
+    }
+});
 
 QUnit.test('Deco', function () {
     QUnit.strictEqual(typeof Deco, 'object', 'is object');
@@ -361,6 +363,6 @@ QUnit.test('skillCombs', function () {
            test.apply(this, modules);
        } :
        function (deps, test) {
-           test(this.QUnit, this._, this.simu.Deco, this.simu.data, this.myapp);
+           test(this.QUnit, this._, this.simu.Util.Deco, this.simu.data, this.myapp);
        }
 );

@@ -1,11 +1,13 @@
 (function (define) {
 'use strict';
-var deps = [ './lib/test-helper.js', '../lib/skill.js', './lib/driver-myapp.js' ];
+var deps = [ './lib/test-helper.js', '../lib/util/skill.js', './lib/driver-myapp.js' ];
 define(deps, function (QUnit, Skill, myapp) {
 
-QUnit.module('20_skill');
-
-myapp.setup();
+QUnit.module('21_util-skill', {
+    setup: function () {
+        myapp.initialize();
+    }
+});
 
 QUnit.test('Skill', function () {
     QUnit.strictEqual(typeof Skill, 'object', 'is object');
@@ -54,57 +56,64 @@ QUnit.test('isEqual', function () {
     var a, b, count = 1;
 
     a = { a: 1 }; b = { a: 1 };
-    QUnit.ok(Skill.isEqual(a, b), 'case ' + count);
+    QUnit.ok(Skill.isEqual(a, b), 'case 1-' + count++);
     a = { a: 1 }; b = { a: 2 };
-    QUnit.ok(!Skill.isEqual(a, b), 'case ' + count);
+    QUnit.ok(!Skill.isEqual(a, b), 'case 1-' + count++);
     a = { a: 1 }; b = { a: 0 };
-    QUnit.ok(!Skill.isEqual(a, b), 'case ' + count);
-    ++count;
+    QUnit.ok(!Skill.isEqual(a, b), 'case 1-' + count++);
 
+    count = 1;
     a = { a: 1, b: 0 }; b = { a: 1, b: 0 };
-    QUnit.ok(Skill.isEqual(a, b), 'case ' + count);
+    QUnit.ok(Skill.isEqual(a, b), 'case 2-' + count++);
     a = { a: 1, b: 1 }; b = { a: 1, b: 2 };
-    QUnit.ok(!Skill.isEqual(a, b), 'case ' + count);
+    QUnit.ok(!Skill.isEqual(a, b), 'case 2-' + count++);
     a = { a: 1, b: 1 }; b = { a: 1, b: 0 };
-    QUnit.ok(!Skill.isEqual(a, b), 'case ' + count);
-    ++count;
+    QUnit.ok(!Skill.isEqual(a, b), 'case 2-' + count++);
 
+    count = 1;
     a = { a: 3, b: 2, c: 1, d: 0 }; b = { a: 3, b: 2, c: 1, d: 0 };
-    QUnit.ok(Skill.isEqual(a, b), 'case ' + count);
+    QUnit.ok(Skill.isEqual(a, b), 'case 3-' + count++);
     a = { a: 3, b: 2, c: 1, d: 0 }; b = { a: 3, b: 2, c: 2, d: 0 };
-    QUnit.ok(!Skill.isEqual(a, b), 'case ' + count);
-    ++count;
+    QUnit.ok(!Skill.isEqual(a, b), 'case 3-' + count++);
 
     // 同じプロパティでないと正しい結果が返らない
+    count = 1;
     a = { a: 1 }; b = { b: 1 };
-    QUnit.ok(!Skill.isEqual(a, b), 'case ' + count);
+    QUnit.ok(!Skill.isEqual(a, b), 'case 4-' + count++);
     a = { a: 1 }; b = { a: 1, b: 1 };
-    QUnit.ok(Skill.isEqual(a, b), 'case ' + count);
-    ++count;
+    QUnit.ok(Skill.isEqual(a, b), 'case 4-' + count++);
 });
 
 QUnit.test('merge', function () {
-    var got, exp, skillList;
+    var got, exp;
 
-    skillList = [ { '攻撃': 1, '防御': -1 }, { '斬れ味': 1, '匠': -1 } ];
+    var skillList = [ { a: 1, b: -1 }, { c: 1, d: -1 } ];
     got = Skill.merge(skillList);
-    exp = { '攻撃': 1, '斬れ味': 1, '防御': -1, '匠': -1 };
+    exp = { a: 1, c: 1, b: -1, d: -1 };
     QUnit.deepEqual(got, exp, 'merge(list)');
-    exp = [ { '攻撃': 1, '防御': -1 }, { '斬れ味': 1, '匠': -1 } ];
+    exp = [ { a: 1, b: -1 }, { c: 1, d: -1 } ];
     QUnit.deepEqual(skillList, exp, 'merge(list): STABLE');
 
-    got = Skill.merge([ { '攻撃': 1, '防御': -1 }, { '攻撃': 1 } ]);
-    QUnit.deepEqual(got, { '攻撃': 2, '防御': -1 }, 'merge(list): add');
-    got = Skill.merge([ { '攻撃': 1, '防御': -1 }, { '防御': -1 } ]);
-    QUnit.deepEqual(got, { '攻撃': 1, '防御': -2 }, 'merge(list): remove');
+    got = Skill.merge([ { a: 1 } ]);
+    exp = { a: 1 };
+    QUnit.deepEqual(got, exp, 'merge(list): single');
 
-    got = Skill.merge({ '攻撃': 1, '防御': -1 }, { '斬れ味': 1, '匠': -1 });
-    exp = { '攻撃': 1, '斬れ味': 1, '防御': -1, '匠': -1 };
+    got = Skill.merge([ { a: 1, b: -1 }, { a: 1 } ]);
+    exp = { a: 2, b: -1 };
+    QUnit.deepEqual(got, exp, 'merge(list): add');
+    got = Skill.merge([ { a: 1, b: -1 }, { b: -1 } ]);
+    exp = { a: 1, b: -2 };
+    QUnit.deepEqual(got, exp, 'merge(list): remove');
+
+    got = Skill.merge({ a: 1, b: -1 }, { c: 1, d: -1 });
+    exp = { a: 1, c: 1, b: -1, d: -1 };
     QUnit.deepEqual(got, exp, 'merge(args)');
-    got = Skill.merge({ '攻撃': 1, '防御': -1 }, { '攻撃': 1 });
-    QUnit.deepEqual(got, { '攻撃': 2, '防御': -1 }, 'merge(args): add');
-    got = Skill.merge({ '攻撃': 1, '防御': -1 }, { '防御': -1 });
-    QUnit.deepEqual(got, { '攻撃': 1, '防御': -2 }, 'merge(args): remove');
+    got = Skill.merge({ a: 1, b: -1 }, { a: 1 });
+    exp = { a: 2, b: -1 };
+    QUnit.deepEqual(got, exp, 'merge(args): add');
+    got = Skill.merge({ a: 1, b: -1 }, { b: -1 });
+    exp = { a: 1, b: -2 };
+    QUnit.deepEqual(got, exp, 'merge(args): remove');
 
     got = Skill.merge();
     QUnit.deepEqual(got, null, 'nothing in');
@@ -115,53 +124,51 @@ QUnit.test('merge', function () {
     got = Skill.merge([]);
     QUnit.deepEqual(got, {}, '[]');
 
-    got = Skill.merge([ { '攻撃': 1 } ]);
-    QUnit.deepEqual(got, { '攻撃': 1 }, '[ skill ]');
-    got = Skill.merge([ { '攻撃': 1 }, undefined ]);
-    QUnit.deepEqual(got, { '攻撃': 1 }, '[ skill, undefined ]');
-    got = Skill.merge([ { '攻撃': 1 }, null ]);
-    QUnit.deepEqual(got, { '攻撃': 1 }, '[ skill, null ]');
-    got = Skill.merge([ { '攻撃': 1 }, {} ]);
-    QUnit.deepEqual(got, { '攻撃': 1 }, '[ skill, {} ]');
+    got = Skill.merge({ a: 1 }, undefined);
+    QUnit.deepEqual(got, { a: 1 }, 'skill, undefined');
+    got = Skill.merge({ a: 1 }, null);
+    QUnit.deepEqual(got, { a: 1 }, 'skill, null');
+    got = Skill.merge({ a: 1 }, {});
+    QUnit.deepEqual(got, { a: 1 }, 'skill, {}');
 });
 
 QUnit.test('sum', function () {
     var got, exp;
 
-    got = Skill.sum({ '攻撃': 1, '斬れ味': 1 });
+    got = Skill.sum({ a: 1, b: 1 });
     exp = 2;
-    QUnit.strictEqual(got, exp, "{ '攻撃': 1, '斬れ味': 1 }");
+    QUnit.strictEqual(got, exp, "{ a: 1, b: 1 }");
 
-    got = Skill.sum({ '攻撃': 3, '斬れ味': 1 });
+    got = Skill.sum({ a: 3, b: 1 });
     exp = 4;
-    QUnit.strictEqual(got, exp, "{ '攻撃': 3, '斬れ味': 1 }");
-    got = Skill.sum({ '攻撃': 1, '斬れ味': 2 });
+    QUnit.strictEqual(got, exp, "{ a: 3, b: 1 }");
+    got = Skill.sum({ a: 1, b: 2 });
     exp = 3;
-    QUnit.strictEqual(got, exp, "{ '攻撃': 1, '斬れ味': 2 }");
-    got = Skill.sum({ '攻撃': -3, '斬れ味': 1 });
+    QUnit.strictEqual(got, exp, "{ a: 1, b: 2 }");
+    got = Skill.sum({ a: -3, b: 1 });
     exp = -2;
-    QUnit.strictEqual(got, exp, "{ '攻撃': -3, '斬れ味': 1 }");
-    got = Skill.sum({ '攻撃': 1, '斬れ味': -2 });
+    QUnit.strictEqual(got, exp, "{ a: -3, b: 1 }");
+    got = Skill.sum({ a: 1, b: -2 });
     exp = -1;
-    QUnit.strictEqual(got, exp, "{ '攻撃': 1, '斬れ味': -2 }");
+    QUnit.strictEqual(got, exp, "{ a: 1, b: -2 }");
 
-    got = Skill.sum({ '攻撃': 0, '斬れ味': 0 });
+    got = Skill.sum({ a: 0, b: 0 });
     exp = 0;
-    QUnit.strictEqual(got, exp, "{ '攻撃': 0, '斬れ味': 0 }");
-    got = Skill.sum({ '攻撃': 1, '斬れ味': 0 });
+    QUnit.strictEqual(got, exp, "{ a: 0, b: 0 }");
+    got = Skill.sum({ a: 1, b: 0 });
     exp = 1;
-    QUnit.strictEqual(got, exp, "{ '攻撃': 1, '斬れ味': 0 }");
-    got = Skill.sum({ '攻撃': 0, '斬れ味': 1 });
+    QUnit.strictEqual(got, exp, "{ a: 1, b: 0 }");
+    got = Skill.sum({ a: 0, b: 1 });
     exp = 1;
-    QUnit.strictEqual(got, exp, "{ '攻撃': 0, '斬れ味': 1 }");
+    QUnit.strictEqual(got, exp, "{ a: 0, b: 1 }");
 
-    got = Skill.sum({ '攻撃': 1, '斬れ味': 1, '溜め短縮': 1, '達人': 1, '痛撃': 1 });
+    got = Skill.sum({ a: 1, b: 1, 'c': 1, 'd': 1, 'e': 1 });
     exp = 5;
     QUnit.strictEqual(got, exp, 'many');
 
-    got = Skill.sum({ '攻撃': 1, '斬れ味': 1, '胴系統倍化': 1, '痛撃': 1 });
+    got = Skill.sum({ a: 1, b: 1, '胴系統倍化': 1, 'c': 1 });
     exp = 3;
-    QUnit.strictEqual(got, exp, 'dupli');
+    QUnit.strictEqual(got, exp, 'torso up');
 
     got = Skill.sum();
     QUnit.strictEqual(got, 0, 'nothing in');
@@ -195,6 +202,6 @@ QUnit.test('trees', function () {
            test.apply(this, modules);
        } :
        function (deps, test) {
-           test(this.QUnit, this.simu.Skill, this.myapp);
+           test(this.QUnit, this.simu.Util.Skill, this.myapp);
        }
 );

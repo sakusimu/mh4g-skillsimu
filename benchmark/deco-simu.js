@@ -1,13 +1,13 @@
 (function (define) {
 'use strict';
-var deps = [ '../test/lib/driver-myapp.js', '../lib/data.js', '../lib/deco-simulator.js' ];
-define(deps, function (myapp, data, DecoSimulator) {
+var deps = [ '../test/lib/driver-myapp.js', '../lib/data.js', '../lib/deco/simulator.js' ];
+define(deps, function (myapp, data, Simulator) {
 
 var simulate = function (skillNames, quipSet) {
-    var ds = new DecoSimulator();
+    var s = new Simulator();
 
     var start = Date.now();
-    var result = ds.simulate(skillNames, equipSet);
+    var result = s.simulate(skillNames, equipSet);
     var done = Date.now();
 
     console.log('>', '[ ' + skillNames.join(', ') + ' ]');
@@ -54,6 +54,6 @@ simulate([ '斬れ味レベル+1', '攻撃力UP【大】', '耳栓' ], equipSet)
            test.apply(this, modules);
        } :
        function (deps, test) {
-           test(this.myapp, this.simu.data, this.simu.DecoSimulator);
+           test(this.myapp, this.simu.data, this.simu.Deco.Simulator);
        }
 );

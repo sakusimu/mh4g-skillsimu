@@ -1,10 +1,10 @@
 (function (define) {
 'use strict';
 var deps = [ './lib/test-helper.js', 'underscore',
-             '../lib/normalizer.js', '../lib/data.js', './lib/driver-myapp.js' ];
+             '../lib/equip/normalizer.js', '../lib/data.js', './lib/driver-myapp.js' ];
 define(deps, function (QUnit, _, Normalizer, data, myapp) {
 
-QUnit.module('31_normalizer', {
+QUnit.module('32_eq-normalizer', {
     setup: function () {
         myapp.initialize();
     }
@@ -239,6 +239,6 @@ QUnit.test('normalize: summary', function () {
            test.apply(this, modules);
        } :
        function (deps, test) {
-           test(this.QUnit, this._, this.simu.Normalizer, this.simu.data, this.myapp);
+           test(this.QUnit, this._, this.simu.Equip.Normalizer, this.simu.data, this.myapp);
        }
 );
