@@ -4,9 +4,11 @@ var deps = [ './lib/test-helper.js', 'underscore',
              '../lib/util/deco.js', '../lib/data.js', './lib/driver-myapp.js' ];
 define(deps, function (QUnit, _, Deco, data, myapp) {
 
-QUnit.module('22_util-deco');
-
-myapp.setup();
+QUnit.module('22_util-deco', {
+    setup: function () {
+        myapp.initialize();
+    }
+});
 
 QUnit.test('Deco', function () {
     QUnit.strictEqual(typeof Deco, 'object', 'is object');

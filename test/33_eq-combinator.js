@@ -3,9 +3,11 @@
 var deps = [ './lib/test-helper.js', '../lib/equip/combinator.js', './lib/driver-myapp.js' ];
 define(deps, function (QUnit, Combinator, myapp) {
 
-QUnit.module('33_eq-combinator');
-
-myapp.initialize();
+QUnit.module('33_eq-combinator', {
+    setup: function () {
+        myapp.initialize();
+    }
+});
 
 QUnit.test('Combinator', function () {
     QUnit.strictEqual(typeof Combinator, 'function', 'is function');
