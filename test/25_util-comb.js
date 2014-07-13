@@ -13,6 +13,40 @@ QUnit.test('Comb', function () {
     QUnit.strictEqual(typeof Comb, 'object', 'is object');
 });
 
+QUnit.test('activates', function () {
+    var got, goal, sc;
+
+    sc   = { a: 20, b: 10 };
+    goal = { a: 20, b: 10 };
+    got = Comb.activates(sc, goal);
+    QUnit.deepEqual(got, true, 'case 1');
+
+    sc   = { a: 19, b: 10 };
+    goal = { a: 20, b: 10 };
+    got = Comb.activates(sc, goal);
+    QUnit.deepEqual(got, false, 'case 2');
+
+    sc   = { a: 21, b: 10 };
+    goal = { a: 20, b: 10 };
+    got = Comb.activates(sc, goal);
+    QUnit.deepEqual(got, true, 'case 3');
+
+    sc   = { a: 20 };
+    goal = { a: 20, b: 10 };
+    got = Comb.activates(sc, goal);
+    QUnit.deepEqual(got, false, 'case 4');
+
+    sc   = { a: 20, b: 10, '胴系統倍化': 1 };
+    goal = { a: 20, b: 10 };
+    got = Comb.activates(sc, goal);
+    QUnit.deepEqual(got, true, 'torsoUp');
+
+    sc   = { a: 20, b: 10, '胴系統倍化': 1 };
+    goal = null;
+    var fn = function () { Comb.activates(sc, goal); };
+    QUnit.throws(fn, 'goal is required', 'goal is required');
+});
+
 QUnit.test('_calcMaxEachSkillPoint', function () {
     var got, exp, combsSet;
 
