@@ -194,6 +194,16 @@ QUnit.test('merge', function () {
     exp = { a: 1, b: -2 };
     QUnit.deepEqual(got, exp, 'merge(args): remove');
 
+    got = Skill.merge({ a: 1, '胴系統倍化': 1 }, { a: 1 });
+    exp = { a: 2, '胴系統倍化': 1 };
+    QUnit.deepEqual(got, exp, 'merge: torso up 1');
+    got = Skill.merge({ a: 1, b: -1 }, { '胴系統倍化': 1 });
+    exp = { a: 1, b: -1, '胴系統倍化': 1 };
+    QUnit.deepEqual(got, exp, 'merge: torso up 2');
+    got = Skill.merge({ a: 1, '胴系統倍化': 1 }, { '胴系統倍化': 1 });
+    exp = { a: 1, '胴系統倍化': 1 };
+    QUnit.deepEqual(got, exp, 'merge: torso up 3');
+
     got = Skill.merge();
     QUnit.deepEqual(got, null, 'nothing in');
     got = Skill.merge(undefined);
