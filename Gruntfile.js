@@ -41,6 +41,7 @@ module.exports = function(grunt) {
                   , 'lib/equip/assembler.js'
                   , 'lib/equip/simulator.js'
                   , 'lib/deco.js'
+                  , 'lib/deco/normalizer.js'
                   , 'lib/deco/simulator.js'
                   , 'index.js'
                 ],
