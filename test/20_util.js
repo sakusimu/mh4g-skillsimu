@@ -4,6 +4,18 @@ define([ './lib/test-helper.js', '../lib/util.js' ], function (QUnit, Util) {
 
 QUnit.module('20_util');
 
+QUnit.test('Util', function () {
+    QUnit.strictEqual(typeof Util, 'object', 'is object');
+});
+
+QUnit.test('parts', function () {
+    var got, exp;
+
+    got = Util.parts;
+    exp = [ 'body', 'head', 'arm', 'waist', 'leg', 'weapon', 'oma' ];
+    QUnit.deepEqual(got, exp, 'parts');
+});
+
 QUnit.test('_combination', function () {
     var got , exp, list;
 
