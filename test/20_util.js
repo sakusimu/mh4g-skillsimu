@@ -16,6 +16,22 @@ QUnit.test('parts', function () {
     QUnit.deepEqual(got, exp, 'parts');
 });
 
+QUnit.test('isArray', function () {
+    var got;
+
+    got = Util.isArray([]);
+    QUnit.deepEqual(got, true, '[]');
+
+    got = Util.isArray('string');
+    QUnit.deepEqual(got, false, 'string');
+    got = Util.isArray({});
+    QUnit.deepEqual(got, false, 'Object');
+    got = Util.isArray(null);
+    QUnit.deepEqual(got, false, 'null');
+    got = Util.isArray();
+    QUnit.deepEqual(got, false, 'nothing in');
+});
+
 QUnit.test('_combination', function () {
     var got , exp, list;
 
