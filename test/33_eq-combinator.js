@@ -83,64 +83,6 @@ QUnit.test('_sort', function () {
     QUnit.deepEqual(got, exp, "doubling");
 });
 
-QUnit.test('_isBeyondMaxSkill', function () {
-    var got, mergedComb, skillComb, borderLine,
-        c = new Combinator();
-
-    // case 1
-    mergedComb = { '攻撃': 5, '匠': 3, '聴覚保護': 1 };
-    skillComb  = { '攻撃': 2, '匠': 1, '聴覚保護': 1 };
-    borderLine = { waist: { '攻撃': 6, '匠': 4, '聴覚保護': 2 },
-                   sum: { waist: 12 } };
-    got = c._isBeyondMaxSkill(mergedComb, skillComb, borderLine, 'waist');
-    QUnit.equal(got, true, 'case 1');
-
-    // case 2: borderLine と同じ値
-    mergedComb = { '攻撃': 5, '匠': 3, '聴覚保護': 1 };
-    skillComb  = { '攻撃': 1, '匠': 1, '聴覚保護': 1 };
-    borderLine = { waist: { '攻撃': 6, '匠': 4, '聴覚保護': 2 },
-                   sum: { waist: 12 } };
-    got = c._isBeyondMaxSkill(mergedComb, skillComb, borderLine, 'waist');
-    QUnit.equal(got, true, 'case 2');
-
-    // case 3: borderLine.waist をこえなくてアウト
-    mergedComb = { '攻撃': 5, '匠': 3, '聴覚保護': 1 };
-    skillComb  = { '攻撃': 2, '匠': 1, '聴覚保護': 0 };
-    borderLine = { waist: { '攻撃': 6, '匠': 4, '聴覚保護': 2 },
-                   sum: { waist: 12 } };
-    got = c._isBeyondMaxSkill(mergedComb, skillComb, borderLine, 'waist');
-    QUnit.equal(got, false, 'case 3');
-});
-
-QUnit.test('_isBeyondMaxSum', function () {
-    var got, mergedComb, skillComb, borderLine,
-        c = new Combinator();
-
-    // case 1
-    mergedComb = { '攻撃': 5, '匠': 3, '聴覚保護': 1 };
-    skillComb  = { '攻撃': 2, '匠': 1, '聴覚保護': 1 };
-    borderLine = { waist: { '攻撃': 6, '匠': 4, '聴覚保護': 2 },
-                   sum: { waist: 12 } };
-    got = c._isBeyondMaxSum(mergedComb, skillComb, borderLine, 'waist');
-    QUnit.equal(got, true, 'case 1');
-
-    // case 2: borderLine と同じ値
-    mergedComb = { '攻撃': 5, '匠': 3, '聴覚保護': 1 };
-    skillComb  = { '攻撃': 1, '匠': 1, '聴覚保護': 1 };
-    borderLine = { waist: { '攻撃': 6, '匠': 4, '聴覚保護': 2 },
-                   sum: { waist: 12 } };
-    got = c._isBeyondMaxSum(mergedComb, skillComb, borderLine, 'waist');
-    QUnit.equal(got, true, 'case 2');
-
-    // case 3: borderLine.sum.body をこえなくてアウト
-    mergedComb = {};
-    skillComb  = { '攻撃': 1, '匠': 1, '聴覚保護': 1 };
-    borderLine = { body: { '攻撃': 1, '匠': 1, '聴覚保護': 1 },
-                   sum: { body: 5 } };
-    got = c._isBeyondMaxSum(mergedComb, skillComb, borderLine, 'body');
-    QUnit.equal(got, false, 'case 3');
-});
-
 QUnit.test('_combine', function () {
     var got, exp,
         set, combs, borderLine,

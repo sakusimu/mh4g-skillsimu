@@ -13,7 +13,7 @@ QUnit.test('Comb', function () {
     QUnit.strictEqual(typeof Comb, 'object', 'is object');
 });
 
-QUnit.test('_calcMaxSkillPoint', function () {
+QUnit.test('_calcMaxEachSkillPoint', function () {
     var got, exp, combsSet;
 
     combsSet = {
@@ -39,7 +39,7 @@ QUnit.test('_calcMaxSkillPoint', function () {
       , oma: [
             { skillComb: {         'b': 1 } } ]
     };
-    got = Comb._calcMaxSkillPoint(combsSet);
+    got = Comb._calcMaxEachSkillPoint(combsSet);
     exp = { 'a': { head: 1, body: 1, arm: 1, waist: 2, leg: 5, weapon: 1, oma: 0 },
             'b': { head: 1, body: 1, arm: 1, waist: 0, leg: 6, weapon: 0, oma: 1 } };
     QUnit.deepEqual(got, exp, 'calc');
@@ -56,7 +56,7 @@ QUnit.test('_calcMaxSkillPoint', function () {
       , weapon: [
             { skillComb: { 'c': 1 } } ]
     };
-    got = Comb._calcMaxSkillPoint(combsSet);
+    got = Comb._calcMaxEachSkillPoint(combsSet);
     exp = { 'a': { head: 1, body: 1, arm: 0, waist: 0, leg: 0, weapon: 0, oma: 0 },
             'b': { head: 1, body: 1, arm: 0, waist: 0, leg: 0, weapon: 0, oma: 0 },
             'c': { head: 0, body: 0, arm: 0, waist: 0, leg: 0, weapon: 1, oma: 0 } };
@@ -83,7 +83,7 @@ QUnit.test('_calcMaxSkillPoint', function () {
       , leg: [
             { skillComb: { '胴系統倍化': 1 } } ]
     };
-    got = Comb._calcMaxSkillPoint(combsSet);
+    got = Comb._calcMaxEachSkillPoint(combsSet);
     exp = { 'a': { head: 2, body: 2, arm: 5, waist: 2, leg: 2, weapon: 0, oma: 0 },
             'b': { head: 2, body: 2, arm: 2, waist: 3, leg: 2, weapon: 0, oma: 0 } };
     QUnit.deepEqual(got, exp, 'torso up');
@@ -108,16 +108,16 @@ QUnit.test('_calcMaxSkillPoint', function () {
       , leg: [
             { skillComb: { '胴系統倍化': 1 } } ]
     };
-    got = Comb._calcMaxSkillPoint(combsSet);
+    got = Comb._calcMaxEachSkillPoint(combsSet);
     exp = { 'a': { head: 1, body: 0, arm: 5, waist: 1, leg: 0, weapon: 0, oma: 0 },
             'b': { head: 1, body: 0, arm: 2, waist: 3, leg: 0, weapon: 0, oma: 0 } };
     QUnit.deepEqual(got, exp, 'torso up: body is null');
 
-    got = Comb._calcMaxSkillPoint();
+    got = Comb._calcMaxEachSkillPoint();
     QUnit.deepEqual(got, null, 'nothing in');
-    got = Comb._calcMaxSkillPoint(undefined);
+    got = Comb._calcMaxEachSkillPoint(undefined);
     QUnit.deepEqual(got, null, 'undefined');
-    got = Comb._calcMaxSkillPoint(null);
+    got = Comb._calcMaxEachSkillPoint(null);
     QUnit.deepEqual(got, null, 'null');
 });
 
@@ -382,6 +382,62 @@ QUnit.test('goal', function () {
 
     var fn = function () { Comb.goal([ '攻撃大' ]); };
     QUnit.throws(fn, 'skill not found: 攻撃大', 'not found');
+});
+
+QUnit.test('isOverMaxEachSkill', function () {
+    var got, skillComb, borderLine;
+
+    skillComb  = { a: 7, b: 4, c: 2 };
+    borderLine = { arm: { a: 6, b: 4, c: 2 },
+                   sum: { arm: 12 } };
+    got = Comb.isOverMaxEachSkill(skillComb, borderLine, 'arm');
+    QUnit.equal(got, true, 'over');
+
+    skillComb  = { a: 6, b: 4, c: 2 };
+    borderLine = { arm: { a: 6, b: 4, c: 2 },
+                   sum: { arm: 12 } };
+    got = Comb.isOverMaxEachSkill(skillComb, borderLine, 'arm');
+    QUnit.equal(got, true, 'over: same');
+
+    skillComb  = { a: 7, b: 4, c: 1 };
+    borderLine = { arm: { a: 6, b: 4, c: 2 },
+                   sum: { arm: 12 } };
+    got = Comb.isOverMaxEachSkill(skillComb, borderLine, 'arm');
+    QUnit.equal(got, false, 'not over');
+
+    skillComb  = { a: 7, b: 4 };
+    borderLine = { arm: { a: 6, b: 4, c: 2 },
+                   sum: { arm: 12 } };
+    got = Comb.isOverMaxEachSkill(skillComb, borderLine, 'arm');
+    QUnit.equal(got, false, 'not over: no c');
+});
+
+QUnit.test('isOverMaxSumSkill', function () {
+    var got, skillComb, borderLine;
+
+    skillComb  = { a: 7, b: 4, c: 2 };
+    borderLine = { arm: { a: 6, b: 4, c: 2 },
+                   sum: { arm: 12 } };
+    got = Comb.isOverMaxSumSkill(skillComb, borderLine, 'arm');
+    QUnit.equal(got, true, 'over');
+
+    skillComb  = { a: 6, b: 4, c: 2 };
+    borderLine = { arm: { a: 6, b: 4, c: 2 },
+                   sum: { arm: 12 } };
+    got = Comb.isOverMaxSumSkill(skillComb, borderLine, 'arm');
+    QUnit.equal(got, true, 'over: same');
+
+    skillComb  = { a: 7, b: 4, c: 0 };
+    borderLine = { arm: { a: 6, b: 4, c: 2 },
+                   sum: { arm: 12 } };
+    got = Comb.isOverMaxSumSkill(skillComb, borderLine, 'arm');
+    QUnit.equal(got, false, 'not over');
+
+    skillComb  = { a: 7, b: 4 };
+    borderLine = { arm: { a: 6, b: 4, c: 2 },
+                   sum: { arm: 12 } };
+    got = Comb.isOverMaxSumSkill(skillComb, borderLine, 'arm');
+    QUnit.equal(got, false, 'not over: no c');
 });
 
 });
