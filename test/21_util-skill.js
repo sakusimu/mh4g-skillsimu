@@ -13,26 +13,6 @@ QUnit.test('Skill', function () {
     QUnit.strictEqual(typeof Skill, 'object', 'is object');
 });
 
-QUnit.test('clone', function () {
-    var got, exp;
-
-    got = Skill.clone({ a: 1, b: 2 });
-    exp = { a: 1, b: 2 };
-    QUnit.deepEqual(got, exp, 'skillComb');
-
-    got = Skill.clone({});
-    exp = {};
-    QUnit.deepEqual(got, exp, 'empty');
-
-    got = Skill.clone(null);
-    exp = null;
-    QUnit.deepEqual(got, exp, 'null');
-
-    got = Skill.clone();
-    exp = null;
-    QUnit.deepEqual(got, exp, 'nothing in');
-});
-
 QUnit.test('compact', function () {
     var got, exp;
 
@@ -184,9 +164,13 @@ QUnit.test('merge', function () {
     exp = { a: 1, b: -2 };
     QUnit.deepEqual(got, exp, 'merge(list): remove');
 
-    got = Skill.merge({ a: 1, b: -1 }, { c: 1, d: -1 });
+    var skillComb = { a: 1, b: -1 };
+    got = Skill.merge(skillComb, { c: 1, d: -1 });
     exp = { a: 1, c: 1, b: -1, d: -1 };
     QUnit.deepEqual(got, exp, 'merge(args)');
+    exp = { a: 1, b: -1 };
+    QUnit.deepEqual(skillComb, exp, 'merge(args): STABLE');
+
     got = Skill.merge({ a: 1, b: -1 }, { a: 1 });
     exp = { a: 2, b: -1 };
     QUnit.deepEqual(got, exp, 'merge(args): add');
