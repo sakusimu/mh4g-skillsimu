@@ -41,9 +41,53 @@ QUnit.test('activates', function () {
     got = Comb.activates(sc, goal);
     QUnit.deepEqual(got, true, 'torsoUp');
 
-    sc   = { a: 20, b: 10, '胴系統倍化': 1 };
+    sc   = {};
+    goal = { a: 0, b: 0 };
+    got = Comb.activates(sc, goal);
+    QUnit.deepEqual(got, true, 'already activate');
+
+    sc   = { a: 20, b: 10 };
     goal = null;
     var fn = function () { Comb.activates(sc, goal); };
+    QUnit.throws(fn, 'goal is required', 'goal is required');
+});
+
+QUnit.test('justActivates', function () {
+    var got, goal, sc;
+
+    sc   = { a: 20, b: 10 };
+    goal = { a: 20, b: 10 };
+    got = Comb.justActivates(sc, goal);
+    QUnit.deepEqual(got, true, 'case 1');
+
+    sc   = { a: 19, b: 10 };
+    goal = { a: 20, b: 10 };
+    got = Comb.justActivates(sc, goal);
+    QUnit.deepEqual(got, false, 'case 2');
+
+    sc   = { a: 21, b: 10 };
+    goal = { a: 20, b: 10 };
+    got = Comb.justActivates(sc, goal);
+    QUnit.deepEqual(got, false, 'case 3');
+
+    sc   = { a: 20 };
+    goal = { a: 20, b: 10 };
+    got = Comb.justActivates(sc, goal);
+    QUnit.deepEqual(got, false, 'case 4');
+
+    sc   = { a: 20, b: 10, '胴系統倍化': 1 };
+    goal = { a: 20, b: 10 };
+    got = Comb.justActivates(sc, goal);
+    QUnit.deepEqual(got, true, 'torsoUp');
+
+    sc   = {};
+    goal = { a: 0, b: 0 };
+    got = Comb.justActivates(sc, goal);
+    QUnit.deepEqual(got, true, 'already activate');
+
+    sc   = { a: 20, b: 10 };
+    goal = null;
+    var fn = function () { Comb.justActivates(sc, goal); };
     QUnit.throws(fn, 'goal is required', 'goal is required');
 });
 
@@ -392,6 +436,42 @@ QUnit.test('calcBorderLine', function () {
              sum: { body: 4, head: 6, arm: 12, waist: 18, leg: 24, weapon: 24, oma: 30 },
             goal: { '攻撃': 20, '斬れ味': 10 } };
     QUnit.deepEqual(got, exp, 'torso up: body is null');
+});
+
+QUnit.test('calcBorderLine: with subtracted', function () {
+    var got, exp, combsSet, subtractedSet;
+
+    var sangan = [
+        { skillComb: { '匠': 0, '研ぎ師': 2 } },
+        { skillComb: { '匠': 0, '研ぎ師': 4 } },
+        { skillComb: { '匠': 1, '研ぎ師': 0 } },
+        { skillComb: { '匠': 0, '研ぎ師': 6 } },
+        { skillComb: { '匠': 1, '研ぎ師': 2 } },
+        { skillComb: { '匠': 2, '研ぎ師': 0 } }
+    ];
+
+    subtractedSet = {
+        oma: { skillComb: { '匠': 4 } }
+    };
+    combsSet = {
+        head: sangan,
+        body: sangan,
+         arm: sangan,
+       waist: sangan,
+         leg: sangan,
+         oma: sangan
+    };
+    got = Comb.calcBorderLine(combsSet, [ '斬れ味レベル+1', '砥石使用高速化' ], subtractedSet);
+    exp = { body: { '匠': -4, '研ぎ師': -20 },
+            head: { '匠': -2, '研ぎ師': -14 },
+             arm: { '匠': 0, '研ぎ師': -8 },
+           waist: { '匠': 2, '研ぎ師': -2 },
+             leg: { '匠': 4, '研ぎ師': 4 },
+          weapon: { '匠': 4, '研ぎ師': 4 },
+             oma: { '匠': 6, '研ぎ師': 10 },
+             sum: { body: -14, head: -8, arm: -2, waist: 4, leg: 10, weapon: 10, oma: 16 },
+            goal: { '匠': 6, '研ぎ師': 10 } };
+    QUnit.deepEqual(got, exp, 'calc');
 });
 
 QUnit.test('goal', function () {

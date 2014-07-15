@@ -15,15 +15,12 @@ QUnit.test('Normalizer', function () {
 });
 
 QUnit.test('new', function () {
-    var got, exp;
+    var got;
 
     got = new Normalizer();
 
     QUnit.strictEqual(typeof got, 'object', 'is object');
     QUnit.strictEqual(typeof got.initialize, 'function', 'has initialize()');
-
-    exp = [ 'body', 'head', 'arm', 'waist', 'leg', 'weapon', 'oma' ];
-    QUnit.deepEqual(got.parts, exp, 'parts');
 });
 
 QUnit.test('_normalizeEquip', function () {
@@ -48,10 +45,10 @@ QUnit.test('_normalizeEquip', function () {
       , waist : { name: 'バンギスコイル', slot: 0, skillComb: { '胴系統倍化': 1 } }
       , leg   : { name: 'ユクモノハカマ・天',
                   slot: 2, skillComb: { '匠': 1, '研ぎ師': 1, '回復量': 2, '加護': 2 } }
-      , weapon: { name: '', slot: 0, skillComb: {} }
-      , oma   : { name: '', slot: 0, skillComb: {} }
+      , weapon: null
+      , oma   : null
     };
-    QUnit.deepEqual(got, exp, 'case 1');
+    QUnit.deepEqual(got, exp, '5 equips');
 
     // 装備に slotN と胴系統倍化、武器スロ、お守りがある場合
     var omas = [ [ '龍の護石',3,'匠',4,'氷耐性',-5 ] ];
@@ -78,7 +75,20 @@ QUnit.test('_normalizeEquip', function () {
       , oma   : { name: '龍の護石(スロ3,匠+4,氷耐性-5)',
                   slot: 3, skillComb: { '匠': 4, '氷耐性': -5 } }
     };
-    QUnit.deepEqual(got, exp, 'case 2');
+    QUnit.deepEqual(got, exp, 'slotN, torsoUp, weapon, oma');
+
+    equipSet = {};
+    got = n._normalizeEquip(equipSet);
+    exp = {
+        body  : null
+      , head  : null
+      , arm   : null
+      , waist : null
+      , leg   : null
+      , weapon: null
+      , oma   : null
+    };
+    QUnit.deepEqual(got, exp, 'empty equipSet');
 });
 
 QUnit.test('_makeDecombs', function () {
@@ -126,7 +136,7 @@ QUnit.test('_makeDecombs', function () {
 });
 
 QUnit.test('normalize', function () {
-    var got, exp, equipSet,
+    var got, exp, equipSet, normalized,
         n = new Normalizer();
 
     // 普通に装備が5つ
@@ -137,13 +147,14 @@ QUnit.test('normalize', function () {
       , waist: myapp.equips('waist', 'バンギスコイル')[0]
       , leg  : myapp.equips('leg', 'ユクモノハカマ・天')[0] // 匠+1, 研ぎ師+1
     };
-    got = n.normalize([ '斬れ味レベル+1', '砥石使用高速化' ], equipSet);
+    normalized = n.normalize([ '斬れ味レベル+1', '砥石使用高速化' ], equipSet);
+    got = normalized.decombsSet;
     exp = {
         head:
-        [ { names: [ '研磨珠【１】' ], slot: 1, skillComb: { '匠': 2, '研ぎ師': 5 } },
+        [ { names: [ '研磨珠【１】' ], slot: 1, skillComb: { '匠': 0, '研ぎ師': 2 } },
           { names: [ '研磨珠【１】', '研磨珠【１】' ],
-            slot: 2, skillComb: { '匠': 2, '研ぎ師': 7 } },
-          { names: [ '匠珠【２】' ], slot: 2, skillComb: { '匠': 3, '研ぎ師': 3 } } ]
+            slot: 2, skillComb: { '匠': 0, '研ぎ師': 4 } },
+          { names: [ '匠珠【２】' ], slot: 2, skillComb: { '匠': 1, '研ぎ師': 0 } } ]
       , body:
         [ { names: [ '研磨珠【１】' ], slot: 1, skillComb: { '匠': 0, '研ぎ師': 2 } },
           { names: [ '研磨珠【１】', '研磨珠【１】' ],
@@ -155,17 +166,17 @@ QUnit.test('normalize', function () {
             slot: 3, skillComb: { '匠': 1, '研ぎ師': 2 } },
           { names: [ '匠珠【３】' ], slot: 3, skillComb: { '匠': 2, '研ぎ師': 0 } } ]
       , arm:
-        [ { names: [ '研磨珠【１】' ], slot: 1, skillComb: { '匠': 1, '研ぎ師': 5 } },
+        [ { names: [ '研磨珠【１】' ], slot: 1, skillComb: { '匠': 0, '研ぎ師': 2 } },
           { names: [ '研磨珠【１】', '研磨珠【１】' ],
-            slot: 2, skillComb: { '匠': 1, '研ぎ師': 7 } },
-          { names: [ '匠珠【２】' ], slot: 2, skillComb: { '匠': 2, '研ぎ師': 3 } } ]
+            slot: 2, skillComb: { '匠': 0, '研ぎ師': 4 } },
+          { names: [ '匠珠【２】' ], slot: 2, skillComb: { '匠': 1, '研ぎ師': 0 } } ]
       , waist:
         [ { names: [], slot: 0, skillComb: { '匠': 0, '研ぎ師': 0, '胴系統倍化': 1 } } ]
       , leg:
-        [ { names: [ '研磨珠【１】' ], slot: 1, skillComb: { '匠': 1, '研ぎ師': 3 } },
+        [ { names: [ '研磨珠【１】' ], slot: 1, skillComb: { '匠': 0, '研ぎ師': 2 } },
           { names: [ '研磨珠【１】', '研磨珠【１】' ],
-            slot: 2, skillComb: { '匠': 1, '研ぎ師': 5 } },
-          { names: [ '匠珠【２】' ], slot: 2, skillComb: { '匠': 2, '研ぎ師': 1 } } ]
+            slot: 2, skillComb: { '匠': 0, '研ぎ師': 4 } },
+          { names: [ '匠珠【２】' ], slot: 2, skillComb: { '匠': 1, '研ぎ師': 0 } } ]
       , weapon: []
       , oma: []
     };
@@ -183,13 +194,14 @@ QUnit.test('normalize', function () {
         weapon: { name: 'slot2' },
         oma   : omas[0]
     };
-    got = n.normalize([ '斬れ味レベル+1', '砥石使用高速化' ], equipSet);
+    normalized = n.normalize([ '斬れ味レベル+1', '砥石使用高速化' ], equipSet);
+    got = normalized.decombsSet;
     exp = {
         head:
-        [ { names: [ '研磨珠【１】' ], slot: 1, skillComb: { '匠': 2, '研ぎ師': 5 } },
+        [ { names: [ '研磨珠【１】' ], slot: 1, skillComb: { '匠': 0, '研ぎ師': 2 } },
           { names: [ '研磨珠【１】', '研磨珠【１】' ],
-            slot: 2, skillComb: { '匠': 2, '研ぎ師': 7 } },
-          { names: [ '匠珠【２】' ], slot: 2, skillComb: { '匠': 3, '研ぎ師': 3 } } ]
+            slot: 2, skillComb: { '匠': 0, '研ぎ師': 4 } },
+          { names: [ '匠珠【２】' ], slot: 2, skillComb: { '匠': 1, '研ぎ師': 0 } } ]
       , body:
         [ { names: [ '研磨珠【１】' ], slot: 1, skillComb: { '匠': 0, '研ぎ師': 2 } },
           { names: [ '研磨珠【１】', '研磨珠【１】' ],
@@ -204,25 +216,25 @@ QUnit.test('normalize', function () {
       , waist:
         [ { names: [], slot: 0, skillComb: { '匠': 0, '研ぎ師': 0, '胴系統倍化': 1 } } ]
       , leg:
-        [ { names: [ '研磨珠【１】' ], slot: 1, skillComb: { '匠': 1, '研ぎ師': 3 } },
+        [ { names: [ '研磨珠【１】' ], slot: 1, skillComb: { '匠': 0, '研ぎ師': 2 } },
           { names: [ '研磨珠【１】', '研磨珠【１】' ],
-            slot: 2, skillComb: { '匠': 1, '研ぎ師': 5 } },
-          { names: [ '匠珠【２】' ], slot: 2, skillComb: { '匠': 2, '研ぎ師': 1 } } ]
+            slot: 2, skillComb: { '匠': 0, '研ぎ師': 4 } },
+          { names: [ '匠珠【２】' ], slot: 2, skillComb: { '匠': 1, '研ぎ師': 0 } } ]
       , weapon:
         [ { names: [ '研磨珠【１】' ], slot: 1, skillComb: { '匠': 0, '研ぎ師': 2 } },
           { names: [ '研磨珠【１】', '研磨珠【１】' ],
             slot: 2, skillComb: { '匠': 0, '研ぎ師': 4 } },
           { names: [ '匠珠【２】' ], slot: 2, skillComb: { '匠': 1, '研ぎ師': 0 } } ]
       , oma:
-        [ { names: [ '研磨珠【１】' ], slot: 1, skillComb: { '匠': 4, '研ぎ師': 2 } },
+        [ { names: [ '研磨珠【１】' ], slot: 1, skillComb: { '匠': 0, '研ぎ師': 2 } },
           { names: [ '研磨珠【１】', '研磨珠【１】' ],
-            slot: 2, skillComb: { '匠': 4, '研ぎ師': 4 } },
-          { names: [ '匠珠【２】' ], slot: 2, skillComb: { '匠': 5, '研ぎ師': 0 } },
+            slot: 2, skillComb: { '匠': 0, '研ぎ師': 4 } },
+          { names: [ '匠珠【２】' ], slot: 2, skillComb: { '匠': 1, '研ぎ師': 0 } },
           { names: [ '研磨珠【１】', '研磨珠【１】', '研磨珠【１】' ],
-            slot: 3, skillComb: { '匠': 4, '研ぎ師': 6 } },
+            slot: 3, skillComb: { '匠': 0, '研ぎ師': 6 } },
           { names: [ '匠珠【２】', '研磨珠【１】' ],
-            slot: 3, skillComb: { '匠': 5, '研ぎ師': 2 } },
-          { names: [ '匠珠【３】' ], slot: 3, skillComb: { '匠': 6, '研ぎ師': 0 } } ]
+            slot: 3, skillComb: { '匠': 1, '研ぎ師': 2 } },
+          { names: [ '匠珠【３】' ], slot: 3, skillComb: { '匠': 2, '研ぎ師': 0 } } ]
     };
     QUnit.deepEqual(got, exp, 'case 2');
 
@@ -242,7 +254,16 @@ QUnit.test('normalize', function () {
     got = n.normalize([ '攻撃力UP【大】' ], null);
     QUnit.deepEqual(got, null, 'skillNames, null');
     got = n.normalize([ '攻撃力UP【大】' ], {});
-    QUnit.deepEqual(got, null, 'skillNames, {}');
+    exp = {
+        decombsSet: {
+            head: [], body: [], arm: [], waist: [],leg: [], weapon: [], oma: []
+        },
+        equipSet: {
+            head: null, body: null, arm: null, waist: null, leg: null,
+            weapon: null, oma: null
+        }
+    };
+    QUnit.deepEqual(got, exp, 'skillNames, {}');
 });
 
 });
