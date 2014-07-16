@@ -23,85 +23,73 @@ QUnit.test('data', function () {
 QUnit.test('set', function () {
     var got, exp;
 
-    (function () {
-        data.set({
-            equips: {
-                head : [ 'head01', 'head02' ],
-                body : [ 'body01', 'body02' ],
-                arm  : [ 'arm01', 'arm02' ],
-                waist: [ 'waist01', 'waist02' ],
-                leg  : [ 'leg01', 'leg02' ]
-            },
-            decos: [ 'deco01', 'deco02' ],
-            skills: { 'skill01': 'skill01', 'skill02': 'skill02' }
-        });
-
-        got = data.equips;
-        exp = {
+    // 普通にデータを用意
+    data.set({
+        equips: {
             head : [ 'head01', 'head02' ],
             body : [ 'body01', 'body02' ],
             arm  : [ 'arm01', 'arm02' ],
             waist: [ 'waist01', 'waist02' ],
             leg  : [ 'leg01', 'leg02' ]
-        };
-        QUnit.deepEqual(got, exp, 'equips');
+        },
+        decos: [ 'deco01', 'deco02' ],
+        skills: { 'skill01': 'skill01', 'skill02': 'skill02' }
+    });
+    got = data.equips;
+    exp = {
+        head : [ 'head01', 'head02' ],
+        body : [ 'body01', 'body02' ],
+        arm  : [ 'arm01', 'arm02' ],
+        waist: [ 'waist01', 'waist02' ],
+        leg  : [ 'leg01', 'leg02' ]
+    };
+    QUnit.deepEqual(got, exp, 'equips');
+    got = data.decos;
+    exp = [ 'deco01', 'deco02' ];
+    QUnit.deepEqual(got, exp, 'decos');
+    got = data.skills;
+    exp = { 'skill01': 'skill01', 'skill02': 'skill02' };
+    QUnit.deepEqual(got, exp, 'skills');
 
-        got = data.decos;
-        exp = [ 'deco01', 'deco02' ];
-        QUnit.deepEqual(got, exp, 'decos');
+    // equips.body だけ更新
+    data.set({
+        equips: {
+            body : [ 'body11', 'body12' ]
+        }
+    });
+    got = data.equips;
+    exp = {
+        head : [ 'head01', 'head02' ],
+        body : [ 'body11', 'body12' ],
+        arm  : [ 'arm01', 'arm02' ],
+        waist: [ 'waist01', 'waist02' ],
+        leg  : [ 'leg01', 'leg02' ]
+    };
+    QUnit.deepEqual(got, exp, 'update only equips.body: equips');
+    got = data.decos;
+    exp = [ 'deco01', 'deco02' ];
+    QUnit.deepEqual(got, exp, 'update only equips.body: decos');
+    got = data.skills;
+    exp = { 'skill01': 'skill01', 'skill02': 'skill02' };
+    QUnit.deepEqual(got, exp, 'update only equips.body: skills');
 
-        got = data.skills;
-        exp = { 'skill01': 'skill01', 'skill02': 'skill02' };
-        QUnit.deepEqual(got, exp, 'skills');
-    })();
-
-    (function () {
-        data.set({
-            equips: {
-                body : [ 'body11', 'body12' ]
-            }
-        });
-
-        got = data.equips;
-        exp = {
-            head : [ 'head01', 'head02' ],
-            body : [ 'body11', 'body12' ],
-            arm  : [ 'arm01', 'arm02' ],
-            waist: [ 'waist01', 'waist02' ],
-            leg  : [ 'leg01', 'leg02' ]
-        };
-        QUnit.deepEqual(got, exp, 'only equips.body: equips');
-
-        got = data.decos;
-        exp = [ 'deco01', 'deco02' ];
-        QUnit.deepEqual(got, exp, 'only equips.body: decos');
-
-        got = data.skills;
-        exp = { 'skill01': 'skill01', 'skill02': 'skill02' };
-        QUnit.deepEqual(got, exp, 'only equips.body: skills');
-    })();
-
-    (function () {
-        data.set({ decos: [ 'deco11', 'deco12' ] });
-
-        got = data.equips;
-        exp = {
-            head : [ 'head01', 'head02' ],
-            body : [ 'body11', 'body12' ],
-            arm  : [ 'arm01', 'arm02' ],
-            waist: [ 'waist01', 'waist02' ],
-            leg  : [ 'leg01', 'leg02' ]
-        };
-        QUnit.deepEqual(got, exp, 'only decos: equips');
-
-        got = data.decos;
-        exp = [ 'deco11', 'deco12' ];
-        QUnit.deepEqual(got, exp, 'only decos: decos');
-
-        got = data.skills;
-        exp = { 'skill01': 'skill01', 'skill02': 'skill02' };
-        QUnit.deepEqual(got, exp, 'only decos: skills');
-    })();
+    // decos だけ更新
+    data.set({ decos: [ 'deco11', 'deco12' ] });
+    got = data.equips;
+    exp = {
+        head : [ 'head01', 'head02' ],
+        body : [ 'body11', 'body12' ],
+        arm  : [ 'arm01', 'arm02' ],
+        waist: [ 'waist01', 'waist02' ],
+        leg  : [ 'leg01', 'leg02' ]
+    };
+    QUnit.deepEqual(got, exp, 'update only decos: equips');
+    got = data.decos;
+    exp = [ 'deco11', 'deco12' ];
+    QUnit.deepEqual(got, exp, 'update only decos: decos');
+    got = data.skills;
+    exp = { 'skill01': 'skill01', 'skill02': 'skill02' };
+    QUnit.deepEqual(got, exp, 'update only decos: skills');
 });
 });
 })(typeof define !== 'undefined' ?

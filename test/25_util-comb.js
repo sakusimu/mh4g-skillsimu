@@ -49,7 +49,7 @@ QUnit.test('activates', function () {
     sc   = { a: 20, b: 10 };
     goal = null;
     var fn = function () { Comb.activates(sc, goal); };
-    QUnit.throws(fn, 'goal is required', 'goal is required');
+    QUnit.throws(fn, /goal is required/, 'goal is required');
 });
 
 QUnit.test('justActivates', function () {
@@ -88,7 +88,7 @@ QUnit.test('justActivates', function () {
     sc   = { a: 20, b: 10 };
     goal = null;
     var fn = function () { Comb.justActivates(sc, goal); };
-    QUnit.throws(fn, 'goal is required', 'goal is required');
+    QUnit.throws(fn, /goal is required/, 'goal is required');
 });
 
 QUnit.test('_calcMaxEachSkillPoint', function () {
@@ -495,7 +495,7 @@ QUnit.test('goal', function () {
     QUnit.strictEqual(got, null, 'null');
 
     var fn = function () { Comb.goal([ '攻撃大' ]); };
-    QUnit.throws(fn, 'skill not found: 攻撃大', 'not found');
+    QUnit.throws(fn, /skill not found: 攻撃大/, 'not found');
 });
 
 QUnit.test('isOverMaxEachSkill', function () {

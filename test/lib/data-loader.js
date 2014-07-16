@@ -2,7 +2,7 @@
     'use strict';
 
     if (typeof module === 'undefined' ||
-        typeof module.exports === 'undefined') throw 'browser not supported';
+        typeof module.exports === 'undefined') throw new Error('browser not supported');
 
     var fs    = require('fs'),
         path  = require('path'),
@@ -27,7 +27,7 @@
     });
 
     var len = _.keys(testdata).length;
-    if (len !== 7) throw 'length of key in testdata isnt 7: length=' + len;
+    if (len !== 7) throw new Error('length of key in testdata isnt 7: length=' + len);
 
     data.equips.head  = testdata.mh4equip_head;
     data.equips.body  = testdata.mh4equip_body;

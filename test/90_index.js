@@ -62,7 +62,7 @@ QUnit.test('simulateDeco', function () {
     };
     got = simu.simulateDeco([ '斬れ味レベル+1', '高級耳栓' ], equipSet);
     exp = 3;
-    QUnit.deepEqual(got.length, exp, 'simulate');
+    QUnit.strictEqual(got.length, exp, 'simulate');
 });
 
 });
