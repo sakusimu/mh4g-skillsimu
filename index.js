@@ -11,14 +11,15 @@ var Simulator = function () {
 Simulator.prototype.initialize = function () {
     this.equip = new EquipSimulator();
     this.deco  = new DecoSimulator();
+    this.data  = simu.data;
 };
 
 Simulator.prototype.simulateEquip = function (skillNames, opts) {
     return this.equip.simulate(skillNames, opts);
 };
 
-Simulator.prototype.simulateDeco = function (skillNames, equips, opts) {
-    return this.deco.simulate(skillNames, equips, opts);
+Simulator.prototype.simulateDeco = function (skillNames, equips) {
+    return this.deco.simulate(skillNames, equips);
 };
 
 return simu.Simulator = Simulator;

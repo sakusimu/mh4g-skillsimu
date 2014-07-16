@@ -20,6 +20,7 @@ QUnit.test('new', function () {
 
     QUnit.strictEqual(typeof simu.equip, 'object', 'equip');
     QUnit.strictEqual(typeof simu.deco, 'object', 'deco');
+    QUnit.strictEqual(typeof simu.data, 'object', 'data');
 });
 
 QUnit.test('initialize', function () {
@@ -33,17 +34,37 @@ QUnit.test('initialize', function () {
     QUnit.strictEqual(typeof simu.deco, 'object', 'deco');
 });
 
-QUnit.test('simulate', function () {
-//    var got, exp;
-//
-//    simu.engin = null;
-//
-//    got = simu.simulate([ '攻撃力UP【大】', '業物' ]);
-//    exp = 2788;
-//    QUnit.strictEqual(got.length, exp, "[ '攻撃力UP【大】', '業物' ]");
+QUnit.test('simulateEquip', function () {
+    var got, exp,
+        simu = new Simulator();
 
-    QUnit.ok(true, 'skip');
+    got = simu.simulateEquip([ '斬れ味レベル+1', '高級耳栓' ]);
+    exp = 1378;
+    QUnit.strictEqual(got.length, exp, 'simulate');
 });
+
+QUnit.test('simulateDeco', function () {
+    var got, exp,
+        simu = new Simulator();
+
+    var omas = [ [ '龍の護石',3,'匠',4,'氷耐性',-5 ] ];
+    omas = myapp.model.Oma.createSimuData(omas);
+
+    // 装備に胴系統倍化、武器スロ、お守りがある場合
+    var equipSet = {
+        head  : myapp.equips('head', 'ユクモノカサ・天')[0]  // スロ2
+      , body  : myapp.equips('body', '三眼の首飾り')[0]      // スロ3
+      , arm   : myapp.equips('arm', 'ユクモノコテ・天')[0]   // スロ2
+      , waist : myapp.equips('waist', 'バンギスコイル')[0]   // 胴系統倍化
+      , leg   : myapp.equips('leg', 'ユクモノハカマ・天')[0] // スロ2
+      , weapon: { name: 'slot2' }
+      , oma   : omas[0]
+    };
+    got = simu.simulateDeco([ '斬れ味レベル+1', '高級耳栓' ], equipSet);
+    exp = 3;
+    QUnit.deepEqual(got.length, exp, 'simulate');
+});
+
 });
 })(typeof define !== 'undefined' ?
    define :
@@ -54,6 +75,6 @@ QUnit.test('simulate', function () {
            test.apply(this, modules);
        } :
        function (deps, test) {
-           test(this.QUnit, this.simu.Simulator, this.simu.data, this.myapp);
+           test(this.QUnit, this.simu.Simulator, this.myapp);
        }
 );
