@@ -38,36 +38,6 @@ QUnit.test('initialize', function () {
     QUnit.strictEqual(got, 1, 'weaponSlot');
 });
 
-QUnit.test('_compact', function () {
-    var got, exp, combs, trees,
-        count = 1,
-        n = new Normalizer();
-
-    trees = [ 'a' ];
-    combs = [ { a: 1, b: 2 } ];
-    got = n._compact(trees, combs);
-    exp = [ { a: 1 } ];
-    QUnit.deepEqual(got, exp, 'case ' + count++);
-
-    trees = [ 'b' ];
-    combs = [ { a: 1 } ];
-    got = n._compact(trees, combs);
-    exp = [ { b: 0 } ];
-    QUnit.deepEqual(got, exp, 'case ' + count++);
-
-    trees = [ 'a', 'c' ];
-    combs = [ { a: 1, b: 2 }, { b: 1, c: -1 } ];
-    got = n._compact(trees, combs);
-    exp = [ { a: 1, c: 0 }, { a: 0, c: -1 } ];
-    QUnit.deepEqual(got, exp, 'case ' + count++);
-
-    trees = [ 'a' ];
-    combs = [];
-    got = n._compact(trees, combs);
-    exp = [ { a: 0 } ];
-    QUnit.deepEqual(got, exp, 'case ' + count++);
-});
-
 QUnit.test('_compareAny', function () {
     var src, dst,
         count = 1,

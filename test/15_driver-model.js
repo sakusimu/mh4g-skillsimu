@@ -22,7 +22,7 @@ QUnit.test('model.make', function () {
     numProps = { num: true };
     data = [ 'not a number' ];
     QUnit.throws(function () { model.make(data, props, numProps); },
-                  'num is NaN', 'not a number');
+                 /num is NaN/, 'not a number');
 });
 
 QUnit.test('equip: new', function () {
@@ -198,9 +198,9 @@ QUnit.test('equip: enabledEquips', function () {
     QUnit.deepEqual(got, [], 'empty');
 
     QUnit.throws(function () { model.Equip.enabledEquips(); },
-                 'part is required', 'part is required');
+                 /part is required/, 'part is required');
     QUnit.throws(function () { model.Equip.enabledEquips('hoge'); },
-                 'unknown part: hoge', 'unknown part');
+                 /unknown part: hoge/, 'unknown part');
 
     data.equips = backup;
 });
@@ -214,9 +214,9 @@ QUnit.test('equip: get', function () {
     QUnit.strictEqual(got.name, 'シルバーソルヘルム', 'name');
 
     QUnit.throws(function () { model.Equip.get(); },
-                 'part is required', 'part is required');
+                 /part is required/, 'part is required');
     QUnit.throws(function () { model.Equip.get('hoge'); },
-                 'unknown part: hoge', 'unknown part');
+                 /unknown part: hoge/, 'unknown part');
 
     got = model.Equip.get('head', null);
     QUnit.strictEqual(got, null, 'null');

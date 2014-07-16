@@ -105,22 +105,22 @@ QUnit.test('assembleEquip: summary', function () {
     actiCombs = c.combine(skills, norCombsSet);
     got = a.assembleEquip(actiCombs);
     exp = 26831;
-    QUnit.deepEqual(got.length, exp, "[ '攻撃力UP【大】', '業物' ]");
+    QUnit.strictEqual(got.length, exp, "[ '攻撃力UP【大】', '業物' ]");
 
     skills = [ '斬れ味レベル+1', '高級耳栓' ];
     norCombsSet = n.normalize(skills);
     actiCombs = c.combine(skills, norCombsSet);
     got = a.assembleEquip(actiCombs);
     exp = 1378;
-    QUnit.deepEqual(got.length, exp, "[ '斬れ味レベル+1', '高級耳栓' ]");
+    QUnit.strictEqual(got.length, exp, "[ '斬れ味レベル+1', '高級耳栓' ]");
 
     skills = [ '攻撃力UP【大】', '業物', '集中', '見切り+1', '弱点特効' ];
     norCombsSet = n.normalize(skills);
     actiCombs = c.combine(skills, norCombsSet);
     got = a.assembleEquip(actiCombs);
     exp = 0;
-    QUnit.deepEqual(got.length, exp,
-                    "[ '攻撃力UP【大】', '業物', '集中', '見切り+1', '弱点特効' ]");
+    QUnit.strictEqual(got.length, exp,
+                      "[ '攻撃力UP【大】', '業物', '集中', '見切り+1', '弱点特効' ]");
 });
 
 QUnit.test('assembleEquip: weaponSlot', function () {
@@ -139,7 +139,7 @@ QUnit.test('assembleEquip: weaponSlot', function () {
     actiCombs   = c.combine(skills, norCombsSet);
     got = a.assembleEquip(actiCombs);
     exp = 11;
-    QUnit.deepEqual(got.length, exp, 'weaponSlot: 2');
+    QUnit.strictEqual(got.length, exp, 'weaponSlot: 2');
 });
 
 QUnit.test('combine: oma', function () {
@@ -164,7 +164,7 @@ QUnit.test('combine: oma', function () {
     actiCombs   = c.combine(skills, norCombsSet);
     got = a.assembleEquip(actiCombs);
     exp = 3; // 頑シミュさんと同じ
-    QUnit.deepEqual(got.length, exp, 'oma');
+    QUnit.strictEqual(got.length, exp, 'oma');
 
     // 武器スロ0
     n.weaponSlot = 0;
@@ -172,7 +172,7 @@ QUnit.test('combine: oma', function () {
     actiCombs   = c.combine(skills, norCombsSet);
     got = a.assembleEquip(actiCombs);
     exp = 0;
-    QUnit.deepEqual(got.length, exp, 'oma: weaponSlot=0');
+    QUnit.strictEqual(got.length, exp, 'oma: weaponSlot=0');
 });
 });
 })(typeof define !== 'undefined' ?

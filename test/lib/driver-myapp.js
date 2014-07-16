@@ -32,9 +32,9 @@ myapp.setup = function (ctx) {
 };
 
 myapp.equips = function (part, name) {
-    if (arguments.length !== 2) throw 'two arguments are required';
+    if (arguments.length !== 2) throw new Error('two arguments are required');
     var equips = data.equips[part];
-    if (equips == null) throw 'unknown part:' + part;
+    if (equips == null) throw new Error('unknown part:' + part);
     var names = _.isArray(name) ? name : [ name ];
     var ret = [];
     _.each(names, function (name) {

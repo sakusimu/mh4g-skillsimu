@@ -12,7 +12,7 @@ var make = model.make = function (data, props, numProps) {
         if (prop === undefined) continue;
         if (numProps[prop]) {
             ret[prop] = (value == null || value === '') ? 0 : +value;
-            if (isNaN(ret[prop])) throw prop + ' is NaN';
+            if (isNaN(ret[prop])) throw new TypeError(prop + ' is NaN');
             continue;
         }
         ret[prop] = value === undefined ? null : value;
@@ -88,8 +88,8 @@ Equip.prototype.simuData = function () {
  * (例えば、女の剣士なら性別は 0 or 2 でタイプは 0 or 1 の装備の集まりとなる)
  */
 Equip.enabledEquips = function (part) {
-    if (part == null) throw 'part is required';
-    if (data.equips[part] == null) throw 'unknown part: ' + part;
+    if (part == null) throw new Error('part is required');
+    if (data.equips[part] == null) throw new Error('unknown part: ' + part);
 
     var equips = [];
     _.each(data.equips[part], function (list) {
@@ -101,8 +101,8 @@ Equip.enabledEquips = function (part) {
 };
 
 Equip.get = function (part, id) {
-    if (part == null) throw 'part is required';
-    if (data.equips[part] == null) throw 'unknown part: ' + part;
+    if (part == null) throw new Error('part is required');
+    if (data.equips[part] == null) throw new Error('unknown part: ' + part);
     var e = data.equips[part][id];
     if (e == null) return null;
     return new Equip(e);

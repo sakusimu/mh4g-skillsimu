@@ -85,20 +85,20 @@ QUnit.test('combine: summary', function () {
     norCombsSet = n.normalize(skills);
     got = c.combine(skills, norCombsSet);
     exp = 18564;
-    QUnit.deepEqual(got.length, exp, "[ '攻撃力UP【大】', '業物' ]");
+    QUnit.strictEqual(got.length, exp, "[ '攻撃力UP【大】', '業物' ]");
 
     skills = [ '斬れ味レベル+1', '高級耳栓' ];
     norCombsSet = n.normalize(skills);
     got = c.combine(skills, norCombsSet);
     exp = 418;
-    QUnit.deepEqual(got.length, exp, "[ '斬れ味レベル+1', '高級耳栓' ]");
+    QUnit.strictEqual(got.length, exp, "[ '斬れ味レベル+1', '高級耳栓' ]");
 
     skills = [ '攻撃力UP【大】', '業物', '集中', '見切り+1', '弱点特効' ];
     norCombsSet = n.normalize(skills);
     got = c.combine(skills, norCombsSet);
     exp = 0;
-    QUnit.deepEqual(got.length, exp,
-                    "[ '攻撃力UP【大】', '業物', '集中', '見切り+1', '弱点特効' ]");
+    QUnit.strictEqual(got.length, exp,
+                      "[ '攻撃力UP【大】', '業物', '集中', '見切り+1', '弱点特効' ]");
 });
 
 QUnit.test('combine: weaponSlot', function () {
@@ -115,7 +115,7 @@ QUnit.test('combine: weaponSlot', function () {
 
     got = c.combine(skills, norCombsSet);
     exp = 6;
-    QUnit.deepEqual(got.length, exp, 'weaponSlot: 2');
+    QUnit.strictEqual(got.length, exp, 'weaponSlot: 2');
 });
 
 QUnit.test('combine: oma', function () {
@@ -139,7 +139,7 @@ QUnit.test('combine: oma', function () {
 
     got = c.combine(skills, norCombsSet);
     exp = 12;
-    QUnit.deepEqual(got.length, exp, 'oma');
+    QUnit.strictEqual(got.length, exp, 'oma');
 
     // 武器スロ0
     n.weaponSlot = 0;
@@ -147,7 +147,7 @@ QUnit.test('combine: oma', function () {
 
     got = c.combine(skills, norCombsSet);
     exp = 0;
-    QUnit.deepEqual(got.length, exp, 'oma');
+    QUnit.strictEqual(got.length, exp, 'oma');
 });
 });
 })(typeof define !== 'undefined' ?
