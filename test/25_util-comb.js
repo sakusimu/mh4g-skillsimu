@@ -554,62 +554,6 @@ QUnit.test('isOverMaxSumSkill', function () {
     QUnit.equal(got, false, 'not over: no c');
 });
 
-QUnit.test('unify', function () {
-    var got, exp, setOrList;
-
-    setOrList = {
-        head: { skillComb: { a: 1 } },
-        body: { skillComb: { a: 1, b: 1 } },
-         arm: { skillComb: { b: 1 } },
-       waist: { skillComb: { '胴系統倍化': 1 } },
-         leg: { skillComb: { c: 1 } },
-      weapon: {},
-         oma: null
-    };
-    got = Comb.unify(setOrList);
-    exp = { a: 3, b: 3, c: 1 };
-    QUnit.deepEqual(got, exp, '_unifySet');
-
-    setOrList = {
-        head: { skillComb: { a: 1 } },
-        body: null,
-         arm: { skillComb: { b: 1 } },
-       waist: { skillComb: { '胴系統倍化': 1 } },
-         leg: { skillComb: { c: 1 } },
-      weapon: {},
-         oma: null
-    };
-    got = Comb.unify(setOrList);
-    exp = { a: 1, b: 1, c: 1 };
-    QUnit.deepEqual(got, exp, '_unifySet: body is null');
-
-    setOrList = [
-        { skillComb: { a: 1, b: 1 } },
-        { skillComb: { a: 1 } },
-        { skillComb: { b: 1 } },
-        { skillComb: { '胴系統倍化': 1 } },
-        { skillComb: { c: 1 } },
-        {},
-        null
-    ];
-    got = Comb.unify(setOrList);
-    exp = { a: 3, b: 3, c: 1};
-    QUnit.deepEqual(got, exp, '_unifyList');
-
-    setOrList = [
-        null,
-        { skillComb: { a: 1 } },
-        { skillComb: { b: 1 } },
-        { skillComb: { '胴系統倍化': 1 } },
-        { skillComb: { c: 1 } },
-        {},
-        null
-    ];
-    got = Comb.unify(setOrList);
-    exp = { a: 1, b: 1, c: 1 };
-    QUnit.deepEqual(got, exp, '_unifyList: body is null');
-});
-
 });
 })(typeof define !== 'undefined' ?
    define :
