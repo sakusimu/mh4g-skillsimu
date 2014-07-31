@@ -43,6 +43,7 @@ module.exports = function(grunt) {
                   , 'lib/deco.js'
                   , 'lib/deco/normalizer.js'
                   , 'lib/deco/combinator.js'
+                  , 'lib/deco/assembler.js'
                   , 'lib/deco/simulator.js'
                   , 'index.js'
                 ],
