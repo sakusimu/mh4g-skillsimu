@@ -102,35 +102,38 @@ QUnit.test('_makeDecombs', function () {
 
     decoCombsBySlot = Deco.combs([ '研ぎ師' ]);
     got = n._makeDecombs(decoCombsBySlot, 1);
-    exp = [ { names: [ '研磨珠【１】' ], slot: 1, skillComb: { '研ぎ師': 2 } } ];
+    exp = [ { names: [], slot: 0, skillComb: {} }
+          , { names: [ '研磨珠【１】' ], slot: 1, skillComb: { '研ぎ師': 2 } } ];
     QUnit.deepEqual(got, exp, "slot1: [ '研ぎ師' ]");
 
     decoCombsBySlot = Deco.combs([ '匠' ]);
     got = n._makeDecombs(decoCombsBySlot, 1);
-    exp = [];
+    exp = [ { names: [], slot: 0, skillComb: {} } ];
     QUnit.deepEqual(got, exp, "slot1: [ '匠' ]");
 
     decoCombsBySlot = Deco.combs([ '匠', '研ぎ師' ]);
     got = n._makeDecombs(decoCombsBySlot, 3);
     exp = [
-        { names: [ '研磨珠【１】' ], slot: 1, skillComb: { '研ぎ師': 2 } },
-        { names: [ '研磨珠【１】', '研磨珠【１】' ],
-          slot: 2, skillComb: { '研ぎ師': 4 } },
-        { names: [ '匠珠【２】' ], slot: 2, skillComb: { '匠': 1, '斬れ味': -1 } },
-        { names: [ '研磨珠【１】', '研磨珠【１】', '研磨珠【１】' ],
-          slot: 3, skillComb: { '研ぎ師': 6 } },
-        { names: [ '匠珠【２】', '研磨珠【１】' ],
-          slot: 3, skillComb: { '匠': 1, '斬れ味': -1, '研ぎ師': 2 } },
-        { names: [ '匠珠【３】' ], slot: 3, skillComb: { '匠': 2, '斬れ味': -2 } }
+        { names: [], slot: 0, skillComb: {} }
+      , { names: [ '研磨珠【１】' ], slot: 1, skillComb: { '研ぎ師': 2 } }
+      , { names: [ '研磨珠【１】', '研磨珠【１】' ],
+          slot: 2, skillComb: { '研ぎ師': 4 } }
+      , { names: [ '匠珠【２】' ], slot: 2, skillComb: { '匠': 1, '斬れ味': -1 } }
+      , { names: [ '研磨珠【１】', '研磨珠【１】', '研磨珠【１】' ],
+          slot: 3, skillComb: { '研ぎ師': 6 } }
+      , { names: [ '匠珠【２】', '研磨珠【１】' ],
+          slot: 3, skillComb: { '匠': 1, '斬れ味': -1, '研ぎ師': 2 } }
+      , { names: [ '匠珠【３】' ], slot: 3, skillComb: { '匠': 2, '斬れ味': -2 } }
     ];
     QUnit.deepEqual(got, exp, "slot3: [ '匠', '研ぎ師' ]");
 
     decoCombsBySlot = Deco.combs([ '匠' ]);
     got = n._makeDecombs(decoCombsBySlot, 3);
     exp = [
-        { names: [ '匠珠【２】' ], slot: 2, skillComb: { '匠': 1, '斬れ味': -1 } },
-        { names: [ '匠珠【２】' ], slot: 3, skillComb: { '匠': 1, '斬れ味': -1 } },
-        { names: [ '匠珠【３】' ], slot: 3, skillComb: { '匠': 2, '斬れ味': -2 } }
+        { names: [], slot: 0, skillComb: {} }
+      , { names: [ '匠珠【２】' ], slot: 2, skillComb: { '匠': 1, '斬れ味': -1 } }
+      , { names: [ '匠珠【２】' ], slot: 3, skillComb: { '匠': 1, '斬れ味': -1 } }
+      , { names: [ '匠珠【３】' ], slot: 3, skillComb: { '匠': 2, '斬れ味': -2 } }
     ];
     QUnit.deepEqual(got, exp, "slot3: [ '匠' ]");
 });
@@ -150,35 +153,39 @@ QUnit.test('normalize', function () {
     normalized = n.normalize([ '斬れ味レベル+1', '砥石使用高速化' ], equipSet);
     got = normalized.decombsSet;
     exp = {
-        head:
-        [ { names: [ '研磨珠【１】' ], slot: 1, skillComb: { '匠': 0, '研ぎ師': 2 } },
-          { names: [ '研磨珠【１】', '研磨珠【１】' ],
-            slot: 2, skillComb: { '匠': 0, '研ぎ師': 4 } },
-          { names: [ '匠珠【２】' ], slot: 2, skillComb: { '匠': 1, '研ぎ師': 0 } } ]
-      , body:
-        [ { names: [ '研磨珠【１】' ], slot: 1, skillComb: { '匠': 0, '研ぎ師': 2 } },
-          { names: [ '研磨珠【１】', '研磨珠【１】' ],
-            slot: 2, skillComb: { '匠': 0, '研ぎ師': 4 } },
-          { names: [ '匠珠【２】' ], slot: 2, skillComb: { '匠': 1, '研ぎ師': 0 } },
-          { names: [ '研磨珠【１】', '研磨珠【１】', '研磨珠【１】' ],
-            slot: 3, skillComb: { '匠': 0, '研ぎ師': 6 } },
-          { names: [ '匠珠【２】', '研磨珠【１】' ],
-            slot: 3, skillComb: { '匠': 1, '研ぎ師': 2 } },
-          { names: [ '匠珠【３】' ], slot: 3, skillComb: { '匠': 2, '研ぎ師': 0 } } ]
-      , arm:
-        [ { names: [ '研磨珠【１】' ], slot: 1, skillComb: { '匠': 0, '研ぎ師': 2 } },
-          { names: [ '研磨珠【１】', '研磨珠【１】' ],
-            slot: 2, skillComb: { '匠': 0, '研ぎ師': 4 } },
-          { names: [ '匠珠【２】' ], slot: 2, skillComb: { '匠': 1, '研ぎ師': 0 } } ]
-      , waist:
-        [ { names: [], slot: 0, skillComb: { '匠': 0, '研ぎ師': 0, '胴系統倍化': 1 } } ]
-      , leg:
-        [ { names: [ '研磨珠【１】' ], slot: 1, skillComb: { '匠': 0, '研ぎ師': 2 } },
-          { names: [ '研磨珠【１】', '研磨珠【１】' ],
-            slot: 2, skillComb: { '匠': 0, '研ぎ師': 4 } },
-          { names: [ '匠珠【２】' ], slot: 2, skillComb: { '匠': 1, '研ぎ師': 0 } } ]
-      , weapon: []
-      , oma: []
+        head: [
+            { names: [], slot: 0, skillComb: { '匠': 0, '研ぎ師': 0 } }
+          , { names: [ '研磨珠【１】' ], slot: 1, skillComb: { '匠': 0, '研ぎ師': 2 } }
+          , { names: [ '研磨珠【１】', '研磨珠【１】' ],
+              slot: 2, skillComb: { '匠': 0, '研ぎ師': 4 } }
+          , { names: [ '匠珠【２】' ], slot: 2, skillComb: { '匠': 1, '研ぎ師': 0 } } ],
+        body: [
+            { names: [], slot: 0, skillComb: { '匠': 0, '研ぎ師': 0 } }
+          , { names: [ '研磨珠【１】' ], slot: 1, skillComb: { '匠': 0, '研ぎ師': 2 } }
+          , { names: [ '研磨珠【１】', '研磨珠【１】' ],
+              slot: 2, skillComb: { '匠': 0, '研ぎ師': 4 } }
+          , { names: [ '匠珠【２】' ], slot: 2, skillComb: { '匠': 1, '研ぎ師': 0 } }
+          , { names: [ '研磨珠【１】', '研磨珠【１】', '研磨珠【１】' ],
+              slot: 3, skillComb: { '匠': 0, '研ぎ師': 6 } }
+          , { names: [ '匠珠【２】', '研磨珠【１】' ],
+              slot: 3, skillComb: { '匠': 1, '研ぎ師': 2 } }
+          , { names: [ '匠珠【３】' ], slot: 3, skillComb: { '匠': 2, '研ぎ師': 0 } } ],
+        arm: [
+            { names: [], slot: 0, skillComb: { '匠': 0, '研ぎ師': 0 } }
+          , { names: [ '研磨珠【１】' ], slot: 1, skillComb: { '匠': 0, '研ぎ師': 2 } }
+          , { names: [ '研磨珠【１】', '研磨珠【１】' ],
+              slot: 2, skillComb: { '匠': 0, '研ぎ師': 4 } }
+          , { names: [ '匠珠【２】' ], slot: 2, skillComb: { '匠': 1, '研ぎ師': 0 } } ],
+        waist: [
+            { names: [], slot: 0, skillComb: { '匠': 0, '研ぎ師': 0, '胴系統倍化': 1 } } ],
+        leg: [
+            { names: [], slot: 0, skillComb: { '匠': 0, '研ぎ師': 0 } }
+          , { names: [ '研磨珠【１】' ], slot: 1, skillComb: { '匠': 0, '研ぎ師': 2 } }
+          , { names: [ '研磨珠【１】', '研磨珠【１】' ],
+              slot: 2, skillComb: { '匠': 0, '研ぎ師': 4 } }
+          , { names: [ '匠珠【２】' ], slot: 2, skillComb: { '匠': 1, '研ぎ師': 0 } } ],
+        weapon: [],
+        oma: []
     };
     QUnit.deepEqual(got, exp, 'case 1');
 
@@ -197,44 +204,49 @@ QUnit.test('normalize', function () {
     normalized = n.normalize([ '斬れ味レベル+1', '砥石使用高速化' ], equipSet);
     got = normalized.decombsSet;
     exp = {
-        head:
-        [ { names: [ '研磨珠【１】' ], slot: 1, skillComb: { '匠': 0, '研ぎ師': 2 } },
-          { names: [ '研磨珠【１】', '研磨珠【１】' ],
-            slot: 2, skillComb: { '匠': 0, '研ぎ師': 4 } },
-          { names: [ '匠珠【２】' ], slot: 2, skillComb: { '匠': 1, '研ぎ師': 0 } } ]
-      , body:
-        [ { names: [ '研磨珠【１】' ], slot: 1, skillComb: { '匠': 0, '研ぎ師': 2 } },
-          { names: [ '研磨珠【１】', '研磨珠【１】' ],
-            slot: 2, skillComb: { '匠': 0, '研ぎ師': 4 } },
-          { names: [ '匠珠【２】' ], slot: 2, skillComb: { '匠': 1, '研ぎ師': 0 } },
-          { names: [ '研磨珠【１】', '研磨珠【１】', '研磨珠【１】' ],
-            slot: 3, skillComb: { '匠': 0, '研ぎ師': 6 } },
-          { names: [ '匠珠【２】', '研磨珠【１】' ],
-            slot: 3, skillComb: { '匠': 1, '研ぎ師': 2 } },
-          { names: [ '匠珠【３】' ], slot: 3, skillComb: { '匠': 2, '研ぎ師': 0 } } ]
-      , arm: []
-      , waist:
-        [ { names: [], slot: 0, skillComb: { '匠': 0, '研ぎ師': 0, '胴系統倍化': 1 } } ]
-      , leg:
-        [ { names: [ '研磨珠【１】' ], slot: 1, skillComb: { '匠': 0, '研ぎ師': 2 } },
-          { names: [ '研磨珠【１】', '研磨珠【１】' ],
-            slot: 2, skillComb: { '匠': 0, '研ぎ師': 4 } },
-          { names: [ '匠珠【２】' ], slot: 2, skillComb: { '匠': 1, '研ぎ師': 0 } } ]
-      , weapon:
-        [ { names: [ '研磨珠【１】' ], slot: 1, skillComb: { '匠': 0, '研ぎ師': 2 } },
-          { names: [ '研磨珠【１】', '研磨珠【１】' ],
-            slot: 2, skillComb: { '匠': 0, '研ぎ師': 4 } },
-          { names: [ '匠珠【２】' ], slot: 2, skillComb: { '匠': 1, '研ぎ師': 0 } } ]
-      , oma:
-        [ { names: [ '研磨珠【１】' ], slot: 1, skillComb: { '匠': 0, '研ぎ師': 2 } },
-          { names: [ '研磨珠【１】', '研磨珠【１】' ],
-            slot: 2, skillComb: { '匠': 0, '研ぎ師': 4 } },
-          { names: [ '匠珠【２】' ], slot: 2, skillComb: { '匠': 1, '研ぎ師': 0 } },
-          { names: [ '研磨珠【１】', '研磨珠【１】', '研磨珠【１】' ],
-            slot: 3, skillComb: { '匠': 0, '研ぎ師': 6 } },
-          { names: [ '匠珠【２】', '研磨珠【１】' ],
-            slot: 3, skillComb: { '匠': 1, '研ぎ師': 2 } },
-          { names: [ '匠珠【３】' ], slot: 3, skillComb: { '匠': 2, '研ぎ師': 0 } } ]
+        head: [
+            { names: [], slot: 0, skillComb: { '匠': 0, '研ぎ師': 0 } }
+          , { names: [ '研磨珠【１】' ], slot: 1, skillComb: { '匠': 0, '研ぎ師': 2 } }
+          , { names: [ '研磨珠【１】', '研磨珠【１】' ],
+              slot: 2, skillComb: { '匠': 0, '研ぎ師': 4 } }
+          , { names: [ '匠珠【２】' ], slot: 2, skillComb: { '匠': 1, '研ぎ師': 0 } } ],
+        body: [
+            { names: [], slot: 0, skillComb: { '匠': 0, '研ぎ師': 0 } }
+          , { names: [ '研磨珠【１】' ], slot: 1, skillComb: { '匠': 0, '研ぎ師': 2 } }
+          , { names: [ '研磨珠【１】', '研磨珠【１】' ],
+              slot: 2, skillComb: { '匠': 0, '研ぎ師': 4 } }
+          , { names: [ '匠珠【２】' ], slot: 2, skillComb: { '匠': 1, '研ぎ師': 0 } }
+          , { names: [ '研磨珠【１】', '研磨珠【１】', '研磨珠【１】' ],
+            slot: 3, skillComb: { '匠': 0, '研ぎ師': 6 } }
+          , { names: [ '匠珠【２】', '研磨珠【１】' ],
+            slot: 3, skillComb: { '匠': 1, '研ぎ師': 2 } }
+          , { names: [ '匠珠【３】' ], slot: 3, skillComb: { '匠': 2, '研ぎ師': 0 } } ],
+        arm: [],
+        waist: [
+            { names: [], slot: 0, skillComb: { '匠': 0, '研ぎ師': 0, '胴系統倍化': 1 } } ],
+        leg: [
+            { names: [], slot: 0, skillComb: { '匠': 0, '研ぎ師': 0 } }
+          , { names: [ '研磨珠【１】' ], slot: 1, skillComb: { '匠': 0, '研ぎ師': 2 } }
+          , { names: [ '研磨珠【１】', '研磨珠【１】' ],
+              slot: 2, skillComb: { '匠': 0, '研ぎ師': 4 } }
+          , { names: [ '匠珠【２】' ], slot: 2, skillComb: { '匠': 1, '研ぎ師': 0 } } ],
+        weapon: [
+            { names: [], slot: 0, skillComb: { '匠': 0, '研ぎ師': 0 } }
+          , { names: [ '研磨珠【１】' ], slot: 1, skillComb: { '匠': 0, '研ぎ師': 2 } }
+          , { names: [ '研磨珠【１】', '研磨珠【１】' ],
+              slot: 2, skillComb: { '匠': 0, '研ぎ師': 4 } }
+          , { names: [ '匠珠【２】' ], slot: 2, skillComb: { '匠': 1, '研ぎ師': 0 } } ],
+        oma: [
+            { names: [], slot: 0, skillComb: { '匠': 0, '研ぎ師': 0 } }
+          , { names: [ '研磨珠【１】' ], slot: 1, skillComb: { '匠': 0, '研ぎ師': 2 } }
+          , { names: [ '研磨珠【１】', '研磨珠【１】' ],
+              slot: 2, skillComb: { '匠': 0, '研ぎ師': 4 } }
+          , { names: [ '匠珠【２】' ], slot: 2, skillComb: { '匠': 1, '研ぎ師': 0 } }
+          , { names: [ '研磨珠【１】', '研磨珠【１】', '研磨珠【１】' ],
+              slot: 3, skillComb: { '匠': 0, '研ぎ師': 6 } }
+          , { names: [ '匠珠【２】', '研磨珠【１】' ],
+              slot: 3, skillComb: { '匠': 1, '研ぎ師': 2 } }
+          , { names: [ '匠珠【３】' ], slot: 3, skillComb: { '匠': 2, '研ぎ師': 0 } } ]
     };
     QUnit.deepEqual(got, exp, 'case 2');
 
