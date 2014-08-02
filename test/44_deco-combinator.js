@@ -34,10 +34,10 @@ QUnit.test('combine', function () {
         n = new Normalizer(),
         c = new Combinator();
 
-    // 装備に胴系統倍化、武器スロ、お守りがある場合
     var omas = [ [ '龍の護石',3,'匠',4,'氷耐性',-5 ] ];
     omas = myapp.model.Oma.createSimuData(omas);
 
+    // 装備に胴系統倍化、武器スロ、お守りがある場合
     skills = [ '斬れ味レベル+1', '高級耳栓' ];
     equipSet = {
         head  : myapp.equips('head', 'ユクモノカサ・天')[0]  // スロ2
@@ -78,6 +78,27 @@ QUnit.test('combine', function () {
     ];
     QUnit.deepEqual(got, exp, 'all slot3');
 
+    // 後半にスロ3が出てくるパターン(前半のスロ1は使わないスロとして処理できるか)
+    skills = [ '斬れ味レベル+1', '高級耳栓' ];
+    equipSet = {
+        head  : myapp.equips('head', 'ミヅハ【烏帽子】')[0]  // スロ1
+      , body  : myapp.equips('body', 'エクスゼロメイル')[0]  // スロ1
+      , arm   : myapp.equips('arm', 'EXレックスアーム')[0]   // スロ2
+      , waist : myapp.equips('waist', 'クシャナアンダ')[0]   // スロ3
+      , leg   : myapp.equips('leg', 'ゾディアスグリーヴ')[0] // スロ3
+      , weapon: null
+      , oma   : null
+    };
+    normalized = n.normalize(skills, equipSet);
+    decombSets = c.combine(skills, normalized);
+    got = simplify(decombSets);
+    exp = [
+        '匠珠【２】,匠珠【３】,防音珠【１】,防音珠【３】',
+        '匠珠【２】,匠珠【３】,防音珠【１】,防音珠【１】,防音珠【１】,防音珠【１】,防音珠【１】'
+    ];
+    QUnit.deepEqual(got, exp, 'slot3 appear later');
+
+    // 既にスキルが発動
     skills = [ '斬れ味レベル+1' ];
     equipSet = {
         head  : myapp.equips('head', 'ユクモノカサ・天')[0]
