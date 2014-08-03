@@ -17,7 +17,7 @@ var simulate = function (skillNames, opts) {
     var ndone = Date.now();
     var actiCombs = c.combine(skillNames, norCombsSet);
     var cdone = Date.now();
-    var assems = a.assembleEquip(actiCombs);
+    var assems = a.assemble(actiCombs);
     var adone = Date.now();
 
     console.log('>', '[ ' + skillNames.join(', ') + ' ]');
@@ -54,6 +54,13 @@ simulate([ '回避性能+3', '回避距離UP', '斬れ味レベル+1' ]);
 simulate([ '攻撃力UP【大】', '業物' ]);
 simulate([ '斬れ味レベル+1', '高級耳栓' ]);
 simulate([ '攻撃力UP【大】', '業物', '集中', '見切り+1', '弱点特効' ]);
+
+// お守りあり
+var omas = myapp.model.Oma.createSimuData([
+    [ '龍の護石',3,'匠',4,'氷耐性',-5 ]
+]);
+data.omas = omas;
+simulate([ '斬れ味レベル+1', '高級耳栓' ]);
 
 });
 })(typeof define !== 'undefined' ?
