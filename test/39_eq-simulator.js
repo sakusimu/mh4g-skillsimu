@@ -37,7 +37,7 @@ QUnit.test('simulate', function () {
                       "[ '攻撃力UP【大】', '業物', '集中', '見切り+1', '弱点特効' ]");
 });
 
-QUnit.test('simulate: doubling', function () {
+QUnit.test('simulate: torsoUp', function () {
     var got, exp, equips,
         simu = new Simulator();
 

@@ -13,6 +13,14 @@ QUnit.test('Comb', function () {
     QUnit.strictEqual(typeof Comb, 'object', 'is object');
 });
 
+QUnit.test('parts', function () {
+    var got, exp;
+
+    got = Comb.parts;
+    exp = [ 'body', 'head', 'arm', 'waist', 'leg', 'weapon', 'oma' ];
+    QUnit.deepEqual(got, exp, 'parts');
+});
+
 QUnit.test('activates', function () {
     var got, goal, sc;
 

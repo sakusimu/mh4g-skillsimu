@@ -74,7 +74,7 @@ QUnit.test('_sort', function () {
             { skillComb: { '攻撃': 3, '斬れ味': 2 }, equips: [ 'l32' ] },
             { skillComb: { '攻撃': 4, '斬れ味': 1 }, equips: [ 'l41' ] },
             { skillComb: { '攻撃': 1, '斬れ味': 3 }, equips: [ 'l13' ] } ];
-    QUnit.deepEqual(got, exp, "doubling");
+    QUnit.deepEqual(got, exp, "torsoUp");
 });
 
 QUnit.test('_combineEquip', function () {
