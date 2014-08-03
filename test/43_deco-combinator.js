@@ -1,8 +1,8 @@
 (function (define) {
 'use strict';
-var deps = [ './lib/test-helper.js', 'underscore',
-             '../lib/deco/combinator.js', '../lib/util/comb.js', './lib/driver-myapp.js' ];
-define(deps, function (QUnit, _, Combinator, Comb, myapp) {
+var deps = [ './lib/test-helper.js', '../lib/deco/combinator.js',
+             '../lib/util/comb.js', './lib/driver-myapp.js' ];
+define(deps, function (QUnit, Combinator, Comb, myapp) {
 
 QUnit.module('43_deco-combinator', {
     setup: function () {
@@ -286,35 +286,6 @@ QUnit.test('_combineDecomb', function () {
     QUnit.deepEqual(got, exp, 'decombs is []');
 });
 
-QUnit.test('_brushUp', function () {
-    var got, exp, decombSets,
-        c = new Combinator();
-
-    decombSets = [ { body: 'comb1', cache: 'delete me' }, { body: 'comb2' } ];
-    got = c._brushUp(decombSets);
-    exp = [
-        { body: 'comb1', head: null, arm: null, waist: null, leg: null,
-          weapon: null, oma: null },
-        { body: 'comb2', head: null, arm: null, waist: null, leg: null,
-          weapon: null, oma: null }
-    ];
-    QUnit.deepEqual(got, exp, 'brush up');
-
-    decombSets = [ {} ];
-    got = c._brushUp(decombSets);
-    exp = [
-        { body: null, head: null, arm: null, waist: null, leg: null,
-          weapon: null, oma: null }
-    ];
-    QUnit.deepEqual(got, exp, '[ {} ]');
-
-    decombSets = [];
-    got = c._brushUp(decombSets);
-    exp = [];
-    QUnit.deepEqual(got, exp, '[]');
-
-});
-
 QUnit.test('_removeOverlap', function () {
     var got, exp, decombSets,
         c = new Combinator();
@@ -538,26 +509,26 @@ QUnit.test('_combine', function () {
 
     skillNames = [ '攻撃力UP【大】', '斬れ味レベル+1', '耳栓' ];
     decombsSet = {
-        body:
-        [ { skillComb: { '攻撃': 7, '匠': 0, '聴覚保護': 1 }, slot: 2 },
-          { skillComb: { '攻撃': 4, '匠': 2, '聴覚保護': 2 }, slot: 2 },
-          { skillComb: { '攻撃': 5, '匠': 2, '聴覚保護': 1 }, slot: 2 } ]
-      , head:
-        [ { skillComb: { '攻撃': 7, '匠': 1, '聴覚保護': 1 }, slot: 2 },
-          { skillComb: { '攻撃': 5, '匠': 2, '聴覚保護': 1 }, slot: 2 },
-          { skillComb: { '攻撃': 6, '匠': 2, '聴覚保護': 0 }, slot: 2 } ]
-      , arm:
-        [ { skillComb: { '攻撃': 6, '匠': 2, '聴覚保護': 0 }, slot: 2 },
-          { skillComb: { '攻撃': 3, '匠': 3, '聴覚保護': 1 }, slot: 2 },
-          { skillComb: { '攻撃': 4, '匠': 3, '聴覚保護': 0 }, slot: 2 } ]
-      , waist:
-        [ { skillComb: { '攻撃': 5, '匠': 2, '聴覚保護': 1 }, slot: 2 },
-          { skillComb: { '攻撃': 2, '匠': 3, '聴覚保護': 2 }, slot: 2 },
-          { skillComb: { '攻撃': 3, '匠': 3, '聴覚保護': 1 }, slot: 2 } ]
-      , leg:
-        [ { skillComb: { '攻撃': 6, '匠': 0, '聴覚保護': 4 }, slot: 2 },
-          { skillComb: { '攻撃': 3, '匠': 2, '聴覚保護': 4 }, slot: 2 },
-          { skillComb: { '攻撃': 4, '匠': 2, '聴覚保護': 3 }, slot: 2 } ]
+        body: [
+            { skillComb: { '攻撃': 7, '匠': 0, '聴覚保護': 1 }, slot: 2 },
+            { skillComb: { '攻撃': 4, '匠': 2, '聴覚保護': 2 }, slot: 2 },
+            { skillComb: { '攻撃': 5, '匠': 2, '聴覚保護': 1 }, slot: 2 } ],
+        head: [
+            { skillComb: { '攻撃': 7, '匠': 1, '聴覚保護': 1 }, slot: 2 },
+            { skillComb: { '攻撃': 5, '匠': 2, '聴覚保護': 1 }, slot: 2 },
+            { skillComb: { '攻撃': 6, '匠': 2, '聴覚保護': 0 }, slot: 2 } ],
+        arm: [
+            { skillComb: { '攻撃': 6, '匠': 2, '聴覚保護': 0 }, slot: 2 },
+            { skillComb: { '攻撃': 3, '匠': 3, '聴覚保護': 1 }, slot: 2 },
+            { skillComb: { '攻撃': 4, '匠': 3, '聴覚保護': 0 }, slot: 2 } ],
+        waist: [
+            { skillComb: { '攻撃': 5, '匠': 2, '聴覚保護': 1 }, slot: 2 },
+            { skillComb: { '攻撃': 2, '匠': 3, '聴覚保護': 2 }, slot: 2 },
+            { skillComb: { '攻撃': 3, '匠': 3, '聴覚保護': 1 }, slot: 2 } ],
+        leg: [
+            { skillComb: { '攻撃': 6, '匠': 0, '聴覚保護': 4 }, slot: 2 },
+            { skillComb: { '攻撃': 3, '匠': 2, '聴覚保護': 4 }, slot: 2 },
+            { skillComb: { '攻撃': 4, '匠': 2, '聴覚保護': 3 }, slot: 2 } ]
     };
     borderLine = Comb.calcBorderLine(decombsSet, skillNames);
     got = c._combine(decombsSet, borderLine);
@@ -575,29 +546,29 @@ QUnit.test('_combine', function () {
     // body が [] で胴系統倍化
     skillNames = [ '攻撃力UP【大】', '斬れ味レベル+1', '耳栓' ];
     decombsSet = {
-        body: []
-      , head:
-        [ { skillComb: { '攻撃': 7, '匠': 1, '聴覚保護': 1 }, slot: 2 },
-          { skillComb: { '攻撃': 5, '匠': 2, '聴覚保護': 1 }, slot: 2 },
-          { skillComb: { '攻撃': 6, '匠': 2, '聴覚保護': 0 }, slot: 2 } ]
-      , arm:
-        [ { skillComb: { '攻撃': 6, '匠': 2, '聴覚保護': 0 }, slot: 2 },
-          { skillComb: { '攻撃': 3, '匠': 3, '聴覚保護': 1 }, slot: 2 },
-          { skillComb: { '攻撃': 4, '匠': 3, '聴覚保護': 0 }, slot: 2 } ]
-      , waist:
-        [ { skillComb: { '胴系統倍化': 1 }, slot: 0 } ]
-      , leg:
-        [ { skillComb: { '攻撃': 7, '匠': 0, '聴覚保護': 1 }, slot: 2 },
-          { skillComb: { '攻撃': 4, '匠': 2, '聴覚保護': 2 }, slot: 2 },
-          { skillComb: { '攻撃': 5, '匠': 2, '聴覚保護': 1 }, slot: 2 } ]
-      , weapon:
-        [ { skillComb: { '攻撃': 5, '匠': 2, '聴覚保護': 1 }, slot: 2 },
-          { skillComb: { '攻撃': 2, '匠': 3, '聴覚保護': 2 }, slot: 2 },
-          { skillComb: { '攻撃': 3, '匠': 3, '聴覚保護': 1 }, slot: 2 } ]
-      , oma:
-        [ { skillComb: { '攻撃': 6, '匠': 0, '聴覚保護': 4 }, slot: 2 },
-          { skillComb: { '攻撃': 3, '匠': 2, '聴覚保護': 4 }, slot: 2 },
-          { skillComb: { '攻撃': 4, '匠': 2, '聴覚保護': 3 }, slot: 2 } ]
+        body: [],
+        head: [
+            { skillComb: { '攻撃': 7, '匠': 1, '聴覚保護': 1 }, slot: 2 },
+            { skillComb: { '攻撃': 5, '匠': 2, '聴覚保護': 1 }, slot: 2 },
+            { skillComb: { '攻撃': 6, '匠': 2, '聴覚保護': 0 }, slot: 2 } ],
+        arm: [
+            { skillComb: { '攻撃': 6, '匠': 2, '聴覚保護': 0 }, slot: 2 },
+            { skillComb: { '攻撃': 3, '匠': 3, '聴覚保護': 1 }, slot: 2 },
+            { skillComb: { '攻撃': 4, '匠': 3, '聴覚保護': 0 }, slot: 2 } ],
+        waist: [
+            { skillComb: { '胴系統倍化': 1 }, slot: 0 } ],
+        leg: [
+            { skillComb: { '攻撃': 7, '匠': 0, '聴覚保護': 1 }, slot: 2 },
+            { skillComb: { '攻撃': 4, '匠': 2, '聴覚保護': 2 }, slot: 2 },
+            { skillComb: { '攻撃': 5, '匠': 2, '聴覚保護': 1 }, slot: 2 } ],
+        weapon: [
+            { skillComb: { '攻撃': 5, '匠': 2, '聴覚保護': 1 }, slot: 2 },
+            { skillComb: { '攻撃': 2, '匠': 3, '聴覚保護': 2 }, slot: 2 },
+            { skillComb: { '攻撃': 3, '匠': 3, '聴覚保護': 1 }, slot: 2 } ],
+        oma: [
+            { skillComb: { '攻撃': 6, '匠': 0, '聴覚保護': 4 }, slot: 2 },
+            { skillComb: { '攻撃': 3, '匠': 2, '聴覚保護': 4 }, slot: 2 },
+            { skillComb: { '攻撃': 4, '匠': 2, '聴覚保護': 3 }, slot: 2 } ]
     };
     borderLine = Comb.calcBorderLine(decombsSet, skillNames);
     got = c._combine(decombsSet, borderLine);
@@ -625,7 +596,6 @@ QUnit.test('_combine', function () {
            test.apply(this, modules);
        } :
        function (deps, test) {
-           test(this.QUnit, this._,
-                this.simu.Deco.Combinator, this.simu.Util.Comb, this.myapp);
+           test(this.QUnit, this.simu.Deco.Combinator, this.simu.Util.Comb, this.myapp);
        }
 );
