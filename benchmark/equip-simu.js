@@ -61,6 +61,7 @@ var omas = myapp.model.Oma.createSimuData([
 ]);
 data.omas = omas;
 simulate([ '斬れ味レベル+1', '高級耳栓' ]);
+simulate([ '斬れ味レベル+1', '高級耳栓', '砥石使用高速化' ]);
 
 });
 })(typeof define !== 'undefined' ?
