@@ -104,7 +104,7 @@ QUnit.test('assemble: summary', function () {
     norCombsSet = n.normalize(skills);
     actiCombs = c.combine(skills, norCombsSet);
     got = a.assemble(actiCombs);
-    exp = 9999;
+    exp = 9477;
     QUnit.strictEqual(got.length, exp, "[ '攻撃力UP【大】', '業物' ]");
 
     skills = [ '斬れ味レベル+1', '高級耳栓' ];
