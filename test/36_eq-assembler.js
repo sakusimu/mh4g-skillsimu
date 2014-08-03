@@ -11,7 +11,7 @@ QUnit.module('36_eq-assembler', {
     }
 });
 
-QUnit.test('assembleEquip', function () {
+QUnit.test('assemble', function () {
     var got, exp, actiCombs,
         a = new Assembler();
 
@@ -31,7 +31,7 @@ QUnit.test('assembleEquip', function () {
             waist: { skillComb: { '胴系統倍化': 1 }, equips: [ '胴系統倍化' ] },
             leg: { skillComb: { '攻撃': 1, '斬れ味': 6 }, equips: [ 'バンギスグリーヴ' ] },
             weapon: { skillComb: { '攻撃': 0, '斬れ味': 0 }, equips: [ 'slot0' ] } } ];
-    got = a.assembleEquip(actiCombs);
+    got = a.assemble(actiCombs);
     exp = [ { head: 'レウスＳキャップ',
               body: 'slot0',
               arm: 'ジンオウＳフォールド',
@@ -83,17 +83,17 @@ QUnit.test('assembleEquip', function () {
               oma: null } ];
     QUnit.deepEqual(got, exp, 'assemble');
 
-    got = a.assembleEquip();
+    got = a.assemble();
     QUnit.deepEqual(got, [], 'nothing in');
-    got = a.assembleEquip(undefined);
+    got = a.assemble(undefined);
     QUnit.deepEqual(got, [], 'undefined');
-    got = a.assembleEquip(null);
+    got = a.assemble(null);
     QUnit.deepEqual(got, [], 'null');
-    got = a.assembleEquip([]);
+    got = a.assemble([]);
     QUnit.deepEqual(got, [], '[]');
 });
 
-QUnit.test('assembleEquip: summary', function () {
+QUnit.test('assemble: summary', function () {
     var got, exp, skills, norCombsSet, actiCombs,
         n = new Normalizer(),
         c = new Combinator(),
@@ -103,27 +103,27 @@ QUnit.test('assembleEquip: summary', function () {
 
     norCombsSet = n.normalize(skills);
     actiCombs = c.combine(skills, norCombsSet);
-    got = a.assembleEquip(actiCombs);
-    exp = 26831;
+    got = a.assemble(actiCombs);
+    exp = 9999;
     QUnit.strictEqual(got.length, exp, "[ '攻撃力UP【大】', '業物' ]");
 
     skills = [ '斬れ味レベル+1', '高級耳栓' ];
     norCombsSet = n.normalize(skills);
     actiCombs = c.combine(skills, norCombsSet);
-    got = a.assembleEquip(actiCombs);
+    got = a.assemble(actiCombs);
     exp = 1378;
     QUnit.strictEqual(got.length, exp, "[ '斬れ味レベル+1', '高級耳栓' ]");
 
     skills = [ '攻撃力UP【大】', '業物', '集中', '見切り+1', '弱点特効' ];
     norCombsSet = n.normalize(skills);
     actiCombs = c.combine(skills, norCombsSet);
-    got = a.assembleEquip(actiCombs);
+    got = a.assemble(actiCombs);
     exp = 0;
     QUnit.strictEqual(got.length, exp,
                       "[ '攻撃力UP【大】', '業物', '集中', '見切り+1', '弱点特効' ]");
 });
 
-QUnit.test('assembleEquip: weaponSlot', function () {
+QUnit.test('assemble: weaponSlot', function () {
     var got, exp, skills, norCombsSet, actiCombs,
         n = new Normalizer(),
         c = new Combinator(),
@@ -137,7 +137,7 @@ QUnit.test('assembleEquip: weaponSlot', function () {
     n.weaponSlot = 2; // 武器スロ2
     norCombsSet = n.normalize(skills);
     actiCombs   = c.combine(skills, norCombsSet);
-    got = a.assembleEquip(actiCombs);
+    got = a.assemble(actiCombs);
     exp = 11;
     QUnit.strictEqual(got.length, exp, 'weaponSlot: 2');
 });
@@ -162,7 +162,7 @@ QUnit.test('combine: oma', function () {
     n.weaponSlot = 3; // 武器スロ3
     norCombsSet = n.normalize(skills);
     actiCombs   = c.combine(skills, norCombsSet);
-    got = a.assembleEquip(actiCombs);
+    got = a.assemble(actiCombs);
     exp = 3; // 頑シミュさんと同じ
     QUnit.strictEqual(got.length, exp, 'oma');
 
@@ -170,7 +170,7 @@ QUnit.test('combine: oma', function () {
     n.weaponSlot = 0;
     norCombsSet = n.normalize(skills);
     actiCombs   = c.combine(skills, norCombsSet);
-    got = a.assembleEquip(actiCombs);
+    got = a.assemble(actiCombs);
     exp = 0;
     QUnit.strictEqual(got.length, exp, 'oma: weaponSlot=0');
 });

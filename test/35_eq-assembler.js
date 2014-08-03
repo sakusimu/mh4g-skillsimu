@@ -21,7 +21,7 @@ QUnit.test('new', function () {
     QUnit.strictEqual(got, exp, 'parts');
 });
 
-QUnit.test('_simplifyActivableCombs', function () {
+QUnit.test('_simplify', function () {
     var got, exp, actiCombs,
         a = new Assembler();
 
@@ -56,7 +56,7 @@ QUnit.test('_simplifyActivableCombs', function () {
                       equips: [ 'slot1' ] },
             oma   : { skillComb: { '攻撃': 2, '斬れ味': 0 },
                       equips: [ 'slot2' ] } } ];
-    got = a._simplifyActivableCombs(actiCombs);
+    got = a._simplify(actiCombs);
     exp = [ { head  : [ 'バギィキャップ', 'レウスヘルム', 'slot3',
                         'レウスＳヘルム', 'シルバーソルキャップ' ],
               body  : [ 'slot1' ],
@@ -88,7 +88,7 @@ QUnit.test('_simplifyActivableCombs', function () {
             leg   : { skillComb: { '攻撃': 2, '斬れ味': 6 },
                       equips: [ 'シルバーソルグリーヴ' ] },
             oma   : null } ];
-    got = a._simplifyActivableCombs(actiCombs);
+    got = a._simplify(actiCombs);
     exp = [ { head  : [ 'シルバーソルキャップ' ],
               body  : [ 'slot1' ],
               arm   : [ 'シルバーソルアーム' ],
@@ -202,7 +202,7 @@ QUnit.test('_uniqActivableCombs', function () {
     QUnit.deepEqual(got, exp, 'weapon & oma is []');
 });
 
-QUnit.test('_assembleEquip', function () {
+QUnit.test('_assemble', function () {
     var got, exp, actiComb,
         a = new Assembler();
 
@@ -214,7 +214,7 @@ QUnit.test('_assembleEquip', function () {
                  leg   : [ 'leg01' ],
                  weapon: [ 'wpn01' ],
                  oma   : [ 'oma01' ] };
-    got = a._assembleEquip(actiComb);
+    got = a._assemble(actiComb);
     exp = [ [ 'head01', 'body01', 'arm01', 'waist01', 'leg01', 'wpn01', 'oma01' ] ];
     QUnit.deepEqual(got, exp, 'case 1');
 
@@ -226,7 +226,7 @@ QUnit.test('_assembleEquip', function () {
                  leg   : [ 'leg01' ],
                  weapon: [],
                  oma   : [] };
-    got = a._assembleEquip(actiComb);
+    got = a._assemble(actiComb);
     exp = [ [ 'head01', 'body01', 'arm01', 'waist01', 'leg01', null, null ] ];
     QUnit.deepEqual(got, exp, 'case 2');
 
@@ -238,7 +238,7 @@ QUnit.test('_assembleEquip', function () {
                  leg   : [ 'leg01', 'leg02' ],
                  weapon: [],
                  oma   : [] };
-    got = a._assembleEquip(actiComb);
+    got = a._assemble(actiComb);
     exp = [ [ 'head01', 'body01', 'arm01', 'waist01', 'leg01', null, null ],
             [ 'head01', 'body01', 'arm01', 'waist01', 'leg02', null, null ],
             [ 'head01', 'body01', 'arm02', 'waist01', 'leg01', null, null ],
@@ -250,17 +250,6 @@ QUnit.test('_assembleEquip', function () {
     QUnit.deepEqual(got, exp, 'case 3');
 });
 
-QUnit.test('_uniqAssembies', function () {
-    var got, exp, assems,
-        a = new Assembler();
-    assems = [ [ 'head01', 'body01', 'arm01', 'waist01', 'leg01' ],
-               [ 'head01', 'body01', 'arm02', 'waist01', 'leg01' ],
-               [ 'head01', 'body01', 'arm01', 'waist01', 'leg01' ] ];
-    got = a._uniqAssemblies(assems);
-    exp = [ [ 'head01', 'body01', 'arm01', 'waist01', 'leg01' ],
-            [ 'head01', 'body01', 'arm02', 'waist01', 'leg01' ] ];
-    QUnit.deepEqual(got, exp, 'uniq');
-});
 });
 })(typeof define !== 'undefined' ?
    define :
