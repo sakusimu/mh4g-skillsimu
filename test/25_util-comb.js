@@ -13,6 +13,14 @@ QUnit.test('Comb', function () {
     QUnit.strictEqual(typeof Comb, 'object', 'is object');
 });
 
+QUnit.test('parts', function () {
+    var got, exp;
+
+    got = Comb.parts;
+    exp = [ 'body', 'head', 'arm', 'waist', 'leg', 'weapon', 'oma' ];
+    QUnit.deepEqual(got, exp, 'parts');
+});
+
 QUnit.test('activates', function () {
     var got, goal, sc;
 
@@ -552,6 +560,33 @@ QUnit.test('isOverMaxSumSkill', function () {
                    sum: { arm: 12 } };
     got = Comb.isOverMaxSumSkill(skillComb, borderLine, 'arm');
     QUnit.equal(got, false, 'not over: no c');
+});
+
+QUnit.test('brushUp', function () {
+    var got, exp, sets;
+
+    sets = [ { body: 'comb1', cache: 'delete me' }, { body: 'comb2' } ];
+    got = Comb.brushUp(sets);
+    exp = [
+        { body: 'comb1', head: null, arm: null, waist: null, leg: null,
+          weapon: null, oma: null },
+        { body: 'comb2', head: null, arm: null, waist: null, leg: null,
+          weapon: null, oma: null }
+    ];
+    QUnit.deepEqual(got, exp, 'brush up');
+
+    sets = [ {} ];
+    got = Comb.brushUp(sets);
+    exp = [
+        { body: null, head: null, arm: null, waist: null, leg: null,
+          weapon: null, oma: null }
+    ];
+    QUnit.deepEqual(got, exp, '[ {} ]');
+
+    sets = [];
+    got = Comb.brushUp(sets);
+    exp = [];
+    QUnit.deepEqual(got, exp, '[]');
 });
 
 });

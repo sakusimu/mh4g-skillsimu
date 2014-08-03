@@ -12,7 +12,7 @@ QUnit.test('parts', function () {
     var got, exp;
 
     got = Util.parts;
-    exp = [ 'body', 'head', 'arm', 'waist', 'leg', 'weapon', 'oma' ];
+    exp = [ 'head', 'body', 'arm', 'waist', 'leg', 'weapon', 'oma' ];
     QUnit.deepEqual(got, exp, 'parts');
 });
 
@@ -77,18 +77,6 @@ QUnit.test('isObject', function () {
     QUnit.strictEqual(got, false, 'null');
     got = Util.isObject();
     QUnit.strictEqual(got, false, 'nothing in');
-});
-
-QUnit.test('keys', function () {
-    var got, exp;
-
-    got = Util.keys({ a: 'A', b: 'B' });
-    exp = [ 'a', 'b' ];
-    QUnit.deepEqual(got, exp, 'keys');
-
-    got = Util.keys(null);
-    exp = [];
-    QUnit.deepEqual(got, exp, 'null');
 });
 
 });

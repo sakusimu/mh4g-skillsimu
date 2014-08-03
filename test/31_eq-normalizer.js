@@ -148,7 +148,7 @@ QUnit.test('_normalize1', function () {
     equips = myapp.equips('body', names);
     if (equips.length !== 7) throw new Error('error: equips.length=' + equips.length);
 
-    got = n._normalize1([ '攻撃', '斬れ味' ], equips);
+    got = n._normalize1(equips, [ '攻撃', '斬れ味' ]);
     exp = { 'ジャギィＳメイル':
             [ { '攻撃': 3, '研ぎ師': 1, '効果持続': -2, '気絶': 2, '防御': -1 },
               { '攻撃': 2, '研ぎ師': 1, '効果持続': -2, '気絶': 2, '斬れ味': 1, '匠': -1 } ],
@@ -188,7 +188,7 @@ QUnit.test('_normalize1', function () {
     equips = myapp.equips('body', names);
     if (equips.length !== 4) throw new Error('error: equips.length=' + equips.length);
 
-    got = n._normalize1([ '匠', '斬れ味' ], equips);
+    got = n._normalize1(equips, [ '匠', '斬れ味' ]);
     exp = { 'ゴアメイル': [ { '細菌学': 2, '匠': 2, '闘魂': 2, '火耐性': -3 } ],
             'アカムトウルンテ': [ { '匠': 1, '達人': 3, '聴覚保護': 1, '斬れ味': -1 } ],
             'シルバーソルメイル':
@@ -211,7 +211,7 @@ QUnit.test('_normalize1', function () {
     equips = myapp.equips('leg', names);
     if (equips.length !== 5) throw new Error('error: equips.length=' + equips.length);
 
-    got = n._normalize1([ '攻撃', '斬れ味' ], equips);
+    got = n._normalize1(equips, [ '攻撃', '斬れ味' ]);
     exp = { 'クックＳグリーヴ':
             [ { '攻撃': 5, '聴覚保護': -2, 'スタミナ': 2, '火耐性': 2, '防御': -1 },
               { '攻撃': 4, '聴覚保護': -2, 'スタミナ': 2, '火耐性': 2, '斬れ味': 1, '匠': -1 } ],
@@ -226,17 +226,17 @@ QUnit.test('_normalize1', function () {
               { '攻撃': 4, '斬れ味': 4, '腹減り': -2, '防御': -1, '匠': -1 },
               { '攻撃': 6, '斬れ味': 3, '腹減り': -2, '防御': -1 },
               { '攻撃': 1, '斬れ味': 7, '腹減り': -2, '匠': -2 } ] };
-    QUnit.deepEqual(got, exp, 'case 3: doubling');
+    QUnit.deepEqual(got, exp, 'case 3: torsoUp');
 
     QUnit.deepEqual(n._normalize1(), null, 'nothing in');
     QUnit.deepEqual(n._normalize1(undefined), null, 'undefined');
     QUnit.deepEqual(n._normalize1(null), null, 'null');
     QUnit.deepEqual(n._normalize1(''), null, 'empy string');
 
-    QUnit.deepEqual(n._normalize1([ '攻撃' ]), null, 'skill only');
-    QUnit.deepEqual(n._normalize1([ '攻撃' ], undefined), null, 'skill, undefined');
-    QUnit.deepEqual(n._normalize1([ '攻撃' ], null), null, 'skill, null');
-    QUnit.deepEqual(n._normalize1([ '攻撃' ], []), null, 'skill, []');
+    QUnit.deepEqual(n._normalize1([ 'equip' ]), null, 'equips only');
+    QUnit.deepEqual(n._normalize1([ 'equip' ], undefined), null, 'equips, undefined');
+    QUnit.deepEqual(n._normalize1([ 'equip' ], null), null, 'equips, null');
+    QUnit.deepEqual(n._normalize1([ 'equip' ], []), null, 'equips, []');
 });
 
 QUnit.test('_normalize1 (none deco)', function () {
@@ -256,7 +256,7 @@ QUnit.test('_normalize1 (none deco)', function () {
     equips = myapp.equips('body', names);
     if (equips.length !== 7) throw new Error('equips is not 7: ' + equips.length);
 
-    got = n._normalize1([ '攻撃', '斬れ味' ], equips);
+    got = n._normalize1(equips, [ '攻撃', '斬れ味' ]);
     exp = { slot1: [],
             slot0: [],
             'ジャギィＳメイル':
@@ -287,7 +287,7 @@ QUnit.test('_normalize2', function () {
                 { '斬れ味': 2, '匠': -2 } ],
               'レザーベスト':
               [ { '高速収集': 3, '採取': 3, '気まぐれ': 2 } ] };
-    got = n._normalize2([ '攻撃', '斬れ味' ], combs);
+    got = n._normalize2(combs, [ '攻撃', '斬れ味' ]);
     exp = { 'ジャギィＳメイル':
             [ { '攻撃': 3, '斬れ味': 0 }, { '攻撃': 2, '斬れ味': 1 } ],
             slot0: [ { '攻撃': 0, '斬れ味': 0 } ],
@@ -313,7 +313,7 @@ QUnit.test('_normalize2', function () {
                 { '痛撃': 1, '斬れ味': 3, '攻撃': 5, '体力': -2, '防御': -1, '匠': -1 },
                 { '痛撃': 1, '斬れ味': 2, '攻撃': 7, '体力': -2, '防御': -1 },
                 { '痛撃': 1, '斬れ味': 6, '攻撃': 2, '体力': -2, '匠': -2 } ] };
-    got = n._normalize2([ '攻撃', '斬れ味' ], combs);
+    got = n._normalize2(combs, [ '攻撃', '斬れ味' ]);
     exp = { 'ジャギィＳグリーヴ':
             [ { '攻撃': 5, '斬れ味': 0 }, { '攻撃': 4, '斬れ味': 1 } ],
             '胴系統倍化': [ { '胴系統倍化': 1 } ],
@@ -327,17 +327,17 @@ QUnit.test('_normalize2', function () {
               { '攻撃': 5, '斬れ味': 3 },
               { '攻撃': 7, '斬れ味': 2 },
               { '攻撃': 2, '斬れ味': 6 } ] };
-    QUnit.deepEqual(got, exp, "doubling");
+    QUnit.deepEqual(got, exp, "torsoUp");
 
     QUnit.deepEqual(n._normalize2(), null, 'nothing in');
     QUnit.deepEqual(n._normalize2(undefined), null, 'undefined');
     QUnit.deepEqual(n._normalize2(null), null, 'null');
     QUnit.deepEqual(n._normalize2([]), null, '[]');
 
-    QUnit.deepEqual(n._normalize2([ '攻撃' ]), null, '[ skill ]');
-    QUnit.deepEqual(n._normalize2([ '攻撃' ], undefined), null, '[ skill, undefined ]');
-    QUnit.deepEqual(n._normalize2([ '攻撃' ], null), null, '[ skill, null ]');
-    QUnit.deepEqual(n._normalize2([ '攻撃' ], {}), {}, '[ skill, {} ]');
+    QUnit.deepEqual(n._normalize2([ {} ]), null, 'combs onliy');
+    QUnit.deepEqual(n._normalize2([ {} ], undefined), null, 'combs, undefined');
+    QUnit.deepEqual(n._normalize2([ {} ], null), null, 'combs, null');
+    QUnit.deepEqual(n._normalize2([ {} ], []), null, 'combs, []');
 });
 
 QUnit.test('_normalize3', function () {
@@ -484,7 +484,7 @@ QUnit.test('_normalize4', function () {
             { skillComb: { '攻撃': 5, '斬れ味': 3 }, equips: [ 'シルバーソルグリーヴ' ] },
             { skillComb: { '攻撃': 2, '斬れ味': 6 }, equips: [ 'シルバーソルグリーヴ' ] },
             { skillComb: { '攻撃': 7, '斬れ味': 2 }, equips: [ 'シルバーソルグリーヴ' ] } ];
-    QUnit.deepEqual(sorter(got), sorter(exp), "dupli");
+    QUnit.deepEqual(sorter(got), sorter(exp), "torsoUp");
 
     QUnit.deepEqual(n._normalize4(), [], 'nothing in');
     QUnit.deepEqual(n._normalize4(undefined), [], 'undefined');

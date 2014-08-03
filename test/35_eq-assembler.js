@@ -10,15 +10,9 @@ QUnit.test('Assembler', function () {
 });
 
 QUnit.test('new', function () {
-    var got, exp;
-
     var a = new Assembler();
     QUnit.strictEqual(typeof a, 'object', 'is object');
     QUnit.strictEqual(typeof a.initialize, 'function', 'has initialie()');
-
-    got = a.parts.join(',');
-    exp = 'head,body,arm,waist,leg,weapon,oma';
-    QUnit.strictEqual(got, exp, 'parts');
 });
 
 QUnit.test('_simplify', function () {
