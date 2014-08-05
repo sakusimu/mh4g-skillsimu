@@ -1,23 +1,27 @@
 (function (define) {
 'use strict';
 var deps = [ 'underscore', '../test/lib/driver-myapp.js',
-             '../lib/deco/normalizer.js', '../lib/deco/combinator.js' ];
-define(deps, function (_, myapp, Normalizer, Combinator) {
+             '../lib/deco/normalizer.js', '../lib/deco/combinator.js',
+             '../lib/deco/assembler.js' ];
+define(deps, function (_, myapp, Normalizer, Combinator, Assembler) {
 
 var simulate = function (skillNames, quipSet) {
     var n = new Normalizer(),
-        c = new Combinator();
+        c = new Combinator(),
+        a = new Assembler();
 
     var start = Date.now();
     var normalized = n.normalize(skillNames, equipSet);
     var ndone = Date.now();
     var decombSets = c.combine(skillNames, normalized);
     var cdone = Date.now();
+    var assems = a.assemble(decombSets);
     var adone = Date.now();
 
     console.log('>', '[ ' + skillNames.join(', ') + ' ]');
     console.log('n:', resultNormalizer(normalized));
     console.log('c:', decombSets.length);
+    console.log('a:', assems.length);
 
     var time = (adone - start) + ' ('
             + 'n=' + (ndone - start)
