@@ -423,11 +423,10 @@ QUnit.test('_groupByFreeSlot', function () {
 });
 
 QUnit.test('_getJustActivated', function () {
-    var got, exp, decombsSets,
+    var got, exp, decombsSets, goal,
         c = new Combinator();
 
-    var goal = { '匠': 6, '聴覚保護': 10 };
-
+    goal = { '匠': 6, '聴覚保護': 10 };
     decombsSets = [
         // { '匠': 6, '聴覚保護': 10 }
         { body  : { skillComb: { '匠': 1, '聴覚保護': 1 } },
@@ -457,6 +456,25 @@ QUnit.test('_getJustActivated', function () {
     got = c._getJustActivated(decombsSets, goal);
     exp = [ decombsSets[0], decombsSets[1] ];
     QUnit.deepEqual(got, exp, 'just activates');
+
+    // 装備で匠のポイントがオーバーしている場合
+    // 組み合わせ例
+    //   女性、村のみ、武器スロなし
+    //   ディアブロヘルム、ガルルガメイル、フィリアアーム、ガルルガフォールド、フィリアグリーヴ
+    //   龍の護石(スロ3,匠+4,氷耐性-5)
+    goal = { '匠': -1, '聴覚保護': 10 };
+    decombsSets = [
+        { body  : { skillComb: { '匠': 0, '聴覚保護': 0 } },
+          head  : { skillComb: { '匠': 0, '聴覚保護': 2 } },
+          arm   : { skillComb: { '匠': 0, '聴覚保護': 1 } },
+          waist : { skillComb: { '匠': 0, '聴覚保護': 2 } },
+          leg   : { skillComb: { '匠': 0, '聴覚保護': 2 } },
+          weapon: null,
+          oma   : { skillComb: { '匠': 0, '聴覚保護': 3 } } }
+    ];
+    got = c._getJustActivated(decombsSets, goal);
+    exp = [ decombsSets[0] ];
+    QUnit.deepEqual(got, exp, 'goal within minus');
 
     got = c._getJustActivated([], goal);
     exp = [];
@@ -496,9 +514,9 @@ QUnit.test('_removePointOver', function () {
     ];
     got = c._removePointOver(decombsSets, 12, goal);
     exp = [ decombsSets[1], decombsSets[0] ];
-    QUnit.deepEqual(got, exp, 'just activates');
+    QUnit.deepEqual(got, exp, 'remove');
 
-    got = c._getJustActivated([], goal);
+    got = c._removePointOver([], 0, goal);
     exp = [];
     QUnit.deepEqual(got, exp, '[]');
 });
