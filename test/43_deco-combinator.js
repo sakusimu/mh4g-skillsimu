@@ -482,11 +482,11 @@ QUnit.test('_getJustActivated', function () {
 });
 
 QUnit.test('_removePointOver', function () {
-    var got, exp,
+    var got, exp, goal, decombsSets,
         c = new Combinator();
 
-    var goal = { '匠': 6, '聴覚保護': 10 };
-    var decombsSets = [
+    goal = { '匠': 6, '聴覚保護': 10 };
+    decombsSets = [
         // スロ12, { '匠': 6, '聴覚保護': 10 }
         { body  : { slot: 2, skillComb: { '匠': 1, '聴覚保護': 1 } },
           head  : { slot: 2, skillComb: { '匠': 0, '聴覚保護': 4 } },
@@ -515,6 +515,21 @@ QUnit.test('_removePointOver', function () {
     got = c._removePointOver(decombsSets, 12, goal);
     exp = [ decombsSets[1], decombsSets[0] ];
     QUnit.deepEqual(got, exp, 'remove');
+
+    // ちょうどスキルが発動している組み合わせがない
+    goal = { '匠': 0, '聴覚保護': 13, '研ぎ師': 7 };
+    decombsSets = [
+        // スロ14, { '匠': 0, '聴覚保護': 13, '研ぎ師': 8 }
+        { body : null,
+          head : { slot: 2, skillComb: { '匠': 0, '聴覚保護': 1, '研ぎ師': 2 } },
+          arm  : { slot: 3, skillComb:  { '匠': 0, '聴覚保護': 0, '研ぎ師': 6 } },
+          waist: { slot: 3, skillComb: { '匠': 0, '聴覚保護': 4, '研ぎ師': 0 } },
+          leg  : { slot: 3, skillComb: { '匠': 0, '聴覚保護': 4, '研ぎ師': 0 } },
+          oma  : { slot: 3, skillComb: { '匠': 0, '聴覚保護': 4, '研ぎ師': 0 } } }
+    ];
+    got = c._removePointOver(decombsSets, 14, goal);
+    exp = [ decombsSets[0] ];
+    QUnit.deepEqual(got, exp, 'single comb & point over');
 
     got = c._removePointOver([], 0, goal);
     exp = [];
