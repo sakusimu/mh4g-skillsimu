@@ -1,6 +1,6 @@
 {
   "name": "mh4-skillsimu",
-  "version": "0.2.3",
+  "version": "0.2.4",
   "description": "Skill Simulator for MH4",
   "author": "sakusimu.net",
   "scripts": { "test": "grunt test" },
