@@ -20,6 +20,8 @@ var simulate = function (skillNames, opts) {
     var assems = a.assemble(actiCombs);
     var adone = Date.now();
 
+//printAssems(assems);
+
     console.log('>', '[ ' + skillNames.join(', ') + ' ]');
     console.log('n:', resultNormalizer(norCombsSet));
     console.log('c:', actiCombs.length);
@@ -42,17 +44,26 @@ var resultNormalizer = function (norCombsSet) {
     return '[ ' + list.join(', ') + ' ]';
 };
 
+var printAssems = function (assems) {
+    assems.forEach(function (assem) {
+        var list = [];
+        for (var part in assem) list.push(assem[part]);
+        console.log(list.join('\t'));
+    });
+};
+
 //myapp.setup({ hr: 1, vs: 6 });
 
 var list = [];
 for (var part in data.equips) list.push(part + ': ' + data.equips[part].length);
 console.log('data.equips:', '[ ' + list.join(', ') + ' ]');
 
-simulate([ '斬れ味レベル+1', '集中' ], { weaponSlot: 2});
+simulate([ '斬れ味レベル+1', '集中' ], { weaponSlot: 2 });
 
 simulate([ '回避性能+3', '回避距離UP', '斬れ味レベル+1' ]);
 simulate([ '攻撃力UP【大】', '業物' ]);
 simulate([ '斬れ味レベル+1', '高級耳栓' ]);
+simulate([ '斬れ味レベル+1', '高級耳栓', '砥石使用高速化' ], { weaponSlot: 3 });
 simulate([ '攻撃力UP【大】', '業物', '集中', '見切り+1', '弱点特効' ]);
 
 // お守りあり

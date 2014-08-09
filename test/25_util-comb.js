@@ -562,6 +562,30 @@ QUnit.test('isOverMaxSumSkill', function () {
     QUnit.equal(got, false, 'not over: no c');
 });
 
+QUnit.test('isOver', function () {
+    var got, a, b;
+
+    a = { a: 6, b: 4, c: 2 };
+    b = { a: 7, b: 4, c: 2 };
+    got = Comb.isOver(a, b);
+    QUnit.equal(got, true, 'over');
+
+    a = { a: 6, b: 4, c: 2 };
+    b = { a: 6, b: 4, c: 2 };
+    got = Comb.isOver(a, b);
+    QUnit.equal(got, true, 'over: same');
+
+    a = { a: 6, b: 4, c: 2 };
+    b = { a: 7, b: 4, c: 1 };
+    got = Comb.isOver(a, b);
+    QUnit.equal(got, false, 'not over');
+
+    a = { a: 6, b: 4, c: 2 };
+    b = { a: 7, b: 4 };
+    got = Comb.isOver(a, b);
+    QUnit.equal(got, false, 'not over: no c');
+});
+
 QUnit.test('brushUp', function () {
     var got, exp, sets;
 
