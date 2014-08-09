@@ -1,8 +1,8 @@
 (function (define) {
 'use strict';
 var deps = [ './lib/test-helper.js', '../lib/equip/combinator.js',
-             '../lib/util/comb.js', './lib/driver-myapp.js' ];
-define(deps, function (QUnit, Combinator, Comb, myapp) {
+             '../lib/util/comb.js', '../lib/util/border-line.js', './lib/driver-myapp.js' ];
+define(deps, function (QUnit, Combinator, Comb, BorderLine, myapp) {
 
 QUnit.module('33_eq-combinator', {
     setup: function () {
@@ -20,246 +20,316 @@ QUnit.test('new', function () {
     QUnit.strictEqual(typeof c.initialize, 'function', 'has initialize()');
 });
 
-QUnit.test('_sort', function () {
-    var got, exp, norCombs,
+QUnit.test('_sortCombs', function () {
+    var got, exp, combs,
         c = new Combinator();
 
-    norCombs = [ { skillComb: { '攻撃': 3, '斬れ味': 2 }, equips: [ 'b32' ] },
-                 { skillComb: { '攻撃': 5, '斬れ味': 0 }, equips: [ 'b50' ] },
-                 { skillComb: { '攻撃': 0, '斬れ味': 0 }, equips: [ 'slot0' ] },
-                 { skillComb: { '攻撃': 0, '斬れ味': 1 }, equips: [ 'b01' ] },
-                 { skillComb: { '攻撃': 0, '斬れ味': 6 }, equips: [ 'b06' ] },
-                 { skillComb: { '攻撃': 1, '斬れ味': 3 }, equips: [ 'b13' ] },
-                 { skillComb: { '攻撃': 6, '斬れ味': 6 }, equips: [ 'b66' ] },
-                 { skillComb: { '攻撃': 1, '斬れ味': 0 }, equips: [ 'b10' ] },
-                 { skillComb: { '攻撃': 4, '斬れ味': 1 }, equips: [ 'b41' ] } ];
-    got = c._sort(norCombs);
-    exp = [ { skillComb: { '攻撃': 0, '斬れ味': 0 }, equips: [ 'slot0' ] },
-            { skillComb: { '攻撃': 6, '斬れ味': 6 }, equips: [ 'b66' ] },
-            { skillComb: { '攻撃': 0, '斬れ味': 6 }, equips: [ 'b06' ] },
-            { skillComb: { '攻撃': 3, '斬れ味': 2 }, equips: [ 'b32' ] },
-            { skillComb: { '攻撃': 5, '斬れ味': 0 }, equips: [ 'b50' ] },
-            { skillComb: { '攻撃': 4, '斬れ味': 1 }, equips: [ 'b41' ] },
-            { skillComb: { '攻撃': 1, '斬れ味': 3 }, equips: [ 'b13' ] },
-            { skillComb: { '攻撃': 0, '斬れ味': 1 }, equips: [ 'b01' ] },
-            { skillComb: { '攻撃': 1, '斬れ味': 0 }, equips: [ 'b10' ] } ];
+    combs = [
+        { skillComb: { '攻撃': 3, '斬れ味': 2 } },
+        { skillComb: { '攻撃': 0, '斬れ味': 0 } },
+        { skillComb: { '攻撃': 0, '斬れ味': 1 } },
+        { skillComb: { '攻撃': -2, '斬れ味': 2 } },
+        { skillComb: { '攻撃': 0, '斬れ味': 6 } },
+        { skillComb: { '攻撃': 5, '斬れ味': 0 } },
+        { skillComb: { '攻撃': 1, '斬れ味': 3 } },
+        { skillComb: { '攻撃': 6, '斬れ味': 6 } },
+        { skillComb: { '攻撃': 1, '斬れ味': -3 } },
+        { skillComb: { '攻撃': 1, '斬れ味': 0 } },
+        { skillComb: { '攻撃': 4, '斬れ味': 1 } }
+    ];
+    got = c._sortCombs(combs);
+    exp = [
+        { skillComb: { '攻撃': 6, '斬れ味': 6 } },
+        { skillComb: { '攻撃': 0, '斬れ味': 6 } },
+        { skillComb: { '攻撃': 3, '斬れ味': 2 } },
+        { skillComb: { '攻撃': 5, '斬れ味': 0 } },
+        { skillComb: { '攻撃': 4, '斬れ味': 1 } },
+        { skillComb: { '攻撃': 1, '斬れ味': 3 } },
+        { skillComb: { '攻撃': 0, '斬れ味': 1 } },
+        { skillComb: { '攻撃': 1, '斬れ味': 0 } },
+        { skillComb: { '攻撃': 0, '斬れ味': 0 } },
+        { skillComb: { '攻撃': -2, '斬れ味': 2 } },
+        { skillComb: { '攻撃': 1, '斬れ味': -3 } }
+    ];
     QUnit.deepEqual(got, exp, "sort");
 
-    // 合計が 0 やマイナスがあっても正しくソートできるか
-    norCombs = [ { skillComb: { '攻撃': 0, '斬れ味': 1 }, equips: [ 'b01' ] },
-                 { skillComb: { '攻撃': -2, '斬れ味': 2 }, equips: [ 'b-2-2' ] },
-                 { skillComb: { '攻撃': 0, '斬れ味': 0 }, equips: [ 'slot0' ] },
-                 { skillComb: { '攻撃': 1, '斬れ味': -3 }, equips: [ 'b1-3' ] },
-                 { skillComb: { '攻撃': -1, '斬れ味': 1 }, equips: [ 'b-11' ] },
-                 { skillComb: { '攻撃': 1, '斬れ味': 0 }, equips: [ 'b10' ] } ];
-    got = c._sort(norCombs);
-    exp = [ { skillComb: { '攻撃': 0, '斬れ味': 0 }, equips: [ 'slot0' ] },
-            { skillComb: { '攻撃': 0, '斬れ味': 1 }, equips: [ 'b01' ] },
-            { skillComb: { '攻撃': 1, '斬れ味': 0 }, equips: [ 'b10' ] },
-            { skillComb: { '攻撃': -2, '斬れ味': 2 }, equips: [ 'b-2-2' ] },
-            { skillComb: { '攻撃': -1, '斬れ味': 1 }, equips: [ 'b-11' ] },
-            { skillComb: { '攻撃': 1, '斬れ味': -3 }, equips: [ 'b1-3' ] } ];
-    QUnit.deepEqual(got, exp, "0 and minus");
-
     // 胴系統倍化
-    norCombs =
-        [ { skillComb: { '攻撃': 3, '斬れ味': 2 }, equips: [ 'l32' ] },
-          { skillComb: { '攻撃': 0, '斬れ味': 0 }, equips: [ 'slot0' ] },
-          { skillComb: { '攻撃': 1, '斬れ味': 3 }, equips: [ 'l13' ] },
-          { skillComb: { '胴系統倍化': 1 }, equips: [ 'l=b' ] },
-          { skillComb: { '攻撃': 4, '斬れ味': 1 }, equips: [ 'l41' ] } ];
-    got = c._sort(norCombs);
-    exp = [ { skillComb: { '攻撃': 0, '斬れ味': 0 }, equips: [ 'slot0' ] },
-            { skillComb: { '胴系統倍化': 1 }, equips: [ 'l=b' ] },
-            { skillComb: { '攻撃': 3, '斬れ味': 2 }, equips: [ 'l32' ] },
-            { skillComb: { '攻撃': 4, '斬れ味': 1 }, equips: [ 'l41' ] },
-            { skillComb: { '攻撃': 1, '斬れ味': 3 }, equips: [ 'l13' ] } ];
+    combs = [
+        { skillComb: { '攻撃': 3, '斬れ味': 2 } },
+        { skillComb: { '攻撃': 0, '斬れ味': 0 } },
+        { skillComb: { '攻撃': 1, '斬れ味': 3 } },
+        { skillComb: { '胴系統倍化': 1 } },
+        { skillComb: { '攻撃': 4, '斬れ味': 1 } }
+    ];
+    got = c._sortCombs(combs);
+    exp = [
+        { skillComb: { '胴系統倍化': 1 } },
+        { skillComb: { '攻撃': 3, '斬れ味': 2 } },
+        { skillComb: { '攻撃': 4, '斬れ味': 1 } },
+        { skillComb: { '攻撃': 1, '斬れ味': 3 } },
+        { skillComb: { '攻撃': 0, '斬れ味': 0 } }
+    ];
     QUnit.deepEqual(got, exp, "torsoUp");
+});
+
+QUnit.test('_makeCombsSetWithSlot0', function () {
+    var got, exp, combsSet,
+        c = new Combinator();
+
+    var combs = [
+        { skillComb: { '攻撃': 3, '斬れ味': 2 }, equips: [ '3,2' ] },
+        { skillComb: { '攻撃': 5, '斬れ味': 0 }, equips: [ '5,0' ] },
+        { skillComb: { '攻撃': 0, '斬れ味': 1 }, equips: [ '0,1' ] },
+        { skillComb: { '攻撃': 0, '斬れ味': 6 }, equips: [ '0,6' ] },
+        { skillComb: { '攻撃': 1, '斬れ味': 3 }, equips: [ '1,3' ] },
+        { skillComb: { '攻撃': 1, '斬れ味': 0 }, equips: [ '1,0' ] },
+        { skillComb: { '攻撃': 4, '斬れ味': 1 }, equips: [ '4,1' ] }
+    ];
+    var slot0 = [
+        { skillComb: { '攻撃': 0, '斬れ味': 0 }, equips: [ 'slot0' ] }
+    ];
+
+    combsSet = {
+        head : combs,
+        body : combs.concat(slot0),
+        arm  : combs,
+        waist: combs.concat(slot0),
+        leg  : combs,
+        // weapon: undefined
+        oma  : null
+    };
+    got = c._makeCombsSetWithSlot0(combsSet);
+    exp = [
+        { head : combs,
+          body : slot0,
+          arm  : combs,
+          waist: combs.concat(slot0),
+          leg  : combs,
+          weapon: null, oma: null },
+        { head : combs,
+          body : combs.concat(slot0),
+          arm  : combs,
+          waist: slot0,
+          leg  : combs,
+          weapon: null, oma: null }
+    ];
+    QUnit.deepEqual(got, exp, 'make');
 });
 
 QUnit.test('_combineEquip', function () {
     var got, exp,
-        combSet, combs, borderLine,
+        combsSet, borderLine, combSet, combs,
         c = new Combinator();
 
-    // body, head, arm まで終わってて、これから waist を処理するところ。
+    var skillNames = [ '攻撃力UP【大】', '業物' ];
+
+    // body, head, arm, waist まで終わってて、これから leg を処理するところ。
     // borderLine を上回るポイントとなる組み合わせを求める。
-    combSet = {
-        body: { skillComb: { '攻撃': 5, '匠': 0, '聴覚保護': 0 }, equips: [ 'b500' ] },
-        head: { skillComb: { '攻撃': 0, '匠': 3, '聴覚保護': 0 }, equips: [ 'h030' ] },
-        arm : { skillComb: { '攻撃': 0, '匠': 0, '聴覚保護': 1 }, equips: [ 'a001' ] },
-        cache: { '攻撃': 5, '匠': 3, '聴覚保護': 1 }
+    combsSet = {
+        head: [
+            { skillComb: { '攻撃': 1, '斬れ味': 3 } } ],
+        body: [
+            { skillComb: { '攻撃': 5, '斬れ味': 1 } } ],
+        arm: [
+            { skillComb: { '攻撃': 1, '斬れ味': 3 } } ],
+        waist: [
+            { skillComb: { '攻撃': 5, '斬れ味': 1 } } ],
+        leg: [
+            { skillComb: { '攻撃': 3, '斬れ味': 2 } },
+            { skillComb: { '攻撃': 6, '斬れ味': 0 } },
+            { skillComb: { '攻撃': 0, '斬れ味': 4 } },
+            { skillComb: { '攻撃': 1, '斬れ味': 3 } },
+            { skillComb: { '攻撃': 4, '斬れ味': 1 } } ],
+        oma: [
+            { skillComb: { '攻撃': 4, '斬れ味': 0 } },
+            { skillComb: { '攻撃': 0, '斬れ味': 2 } } ]
     };
-    combs = [ { skillComb: { '攻撃': 4, '匠': 0, '聴覚保護': 0 }, equips: [ 'w400' ] },
-              { skillComb: { '攻撃': 3, '匠': 1, '聴覚保護': 0 }, equips: [ 'w310' ] },
-              { skillComb: { '攻撃': 3, '匠': 0, '聴覚保護': 1 }, equips: [ 'w301' ] },
-              { skillComb: { '攻撃': 2, '匠': 1, '聴覚保護': 1 }, equips: [ 'w211' ] },
-              { skillComb: { '攻撃': 0, '匠': 4, '聴覚保護': 0 }, equips: [ 'w040' ] },
-              { skillComb: { '攻撃': 1, '匠': 3, '聴覚保護': 0 }, equips: [ 'w130' ] },
-              { skillComb: { '攻撃': 0, '匠': 3, '聴覚保護': 1 }, equips: [ 'w031' ] },
-              { skillComb: { '攻撃': 1, '匠': 2, '聴覚保護': 1 }, equips: [ 'w121' ] },
-              { skillComb: { '攻撃': 0, '匠': 0, '聴覚保護': 4 }, equips: [ 'w004' ] },
-              { skillComb: { '攻撃': 1, '匠': 0, '聴覚保護': 3 }, equips: [ 'w103' ] },
-              { skillComb: { '攻撃': 0, '匠': 1, '聴覚保護': 3 }, equips: [ 'w013' ] },
-              { skillComb: { '攻撃': 1, '匠': 1, '聴覚保護': 2 }, equips: [ 'w112' ] } ];
-    borderLine = { waist: { '攻撃': 6, '匠': 4, '聴覚保護': 2 },
-                   sum: { waist: 12 } };
-    got = c._combineEquip(combSet, combs, borderLine, 'waist');
-    exp = [
-        { body : { skillComb: { '攻撃': 5, '匠': 0, '聴覚保護': 0 }, equips: [ 'b500' ] },
-          head : { skillComb: { '攻撃': 0, '匠': 3, '聴覚保護': 0 }, equips: [ 'h030' ] },
-          arm  : { skillComb: { '攻撃': 0, '匠': 0, '聴覚保護': 1 }, equips: [ 'a001' ] },
-          waist: { skillComb: { '攻撃': 2, '匠': 1, '聴覚保護': 1 }, equips: [ 'w211' ] },
-          cache: { '攻撃': 7, '匠': 4, '聴覚保護': 2 } },
-        { body : { skillComb: { '攻撃': 5, '匠': 0, '聴覚保護': 0 }, equips: [ 'b500' ] },
-          head : { skillComb: { '攻撃': 0, '匠': 3, '聴覚保護': 0 }, equips: [ 'h030' ] },
-          arm  : { skillComb: { '攻撃': 0, '匠': 0, '聴覚保護': 1 }, equips: [ 'a001' ] },
-          waist: { skillComb: { '攻撃': 1, '匠': 2, '聴覚保護': 1 }, equips: [ 'w121' ] },
-          cache: { '攻撃': 6, '匠': 5, '聴覚保護': 2 } },
-        { body : { skillComb: { '攻撃': 5, '匠': 0, '聴覚保護': 0 }, equips: [ 'b500' ] },
-          head : { skillComb: { '攻撃': 0, '匠': 3, '聴覚保護': 0 }, equips: [ 'h030' ] },
-          arm  : { skillComb: { '攻撃': 0, '匠': 0, '聴覚保護': 1 }, equips: [ 'a001' ] },
-          waist: { skillComb: { '攻撃': 1, '匠': 1, '聴覚保護': 2 }, equips: [ 'w112' ] },
-          cache: { '攻撃': 6, '匠': 4, '聴覚保護': 3 } }
+    borderLine = new BorderLine(skillNames, combsSet);
+    combSet = {
+        head : { skillComb: { '攻撃': 1, '斬れ味': 3 } },
+        body : { skillComb: { '攻撃': 5, '斬れ味': 1 } },
+        arm  : { skillComb: { '攻撃': 1, '斬れ味': 3 } },
+        waist: { skillComb: { '攻撃': 5, '斬れ味': 1 } },
+        cache: { '攻撃': 12, '斬れ味': 8 }
+    };
+    combs = [
+        { skillComb: { '攻撃': 6, '斬れ味': 0 } },
+        { skillComb: { '攻撃': 4, '斬れ味': 1 } },
+        { skillComb: { '攻撃': 3, '斬れ味': 2 } },
+        { skillComb: { '攻撃': 0, '斬れ味': 4 } },
+        { skillComb: { '攻撃': 1, '斬れ味': 3 } }
     ];
-    QUnit.deepEqual(got, exp, 'combine waist (done: body, head, arm)');
+    got = c._combineEquip(combSet, combs, borderLine, 'leg');
+    exp = [
+        { head : { skillComb: { '攻撃': 1, '斬れ味': 3 } },
+          body : { skillComb: { '攻撃': 5, '斬れ味': 1 } },
+          arm  : { skillComb: { '攻撃': 1, '斬れ味': 3 } },
+          waist: { skillComb: { '攻撃': 5, '斬れ味': 1 } },
+          leg  : { skillComb: { '攻撃': 6, '斬れ味': 0 } },
+          cache: { '攻撃': 18, '斬れ味': 8 } }
+    ];
+    QUnit.deepEqual(got, exp, 'combine leg (done: body, head, arm, waist)');
 
     // combs がソートされていないとちゃんと動かない
     combSet = {
-        body: { skillComb: { '攻撃': 5, '匠': 0, '聴覚保護': 0 }, equips: [ 'b500' ] },
-        head: { skillComb: { '攻撃': 0, '匠': 3, '聴覚保護': 0 }, equips: [ 'h030' ] },
-        arm : { skillComb: { '攻撃': 0, '匠': 0, '聴覚保護': 1 }, equips: [ 'a001' ] },
-        cache: { '攻撃': 5, '匠': 3, '聴覚保護': 1 }
+        head : { skillComb: { '攻撃': 1, '斬れ味': 3 } },
+        body : { skillComb: { '攻撃': 5, '斬れ味': 1 } },
+        arm  : { skillComb: { '攻撃': 1, '斬れ味': 3 } },
+        waist: { skillComb: { '攻撃': 5, '斬れ味': 1 } },
+        cache: { '攻撃': 12, '斬れ味': 8 }
     };
-    combs = [ { skillComb: { '攻撃': 0, '匠': 0, '聴覚保護': 1 }, equips: [ 'w001' ] },
-              { skillComb: { '攻撃': 2, '匠': 1, '聴覚保護': 1 }, equips: [ 'w211' ] } ];
-    borderLine = { waist: { '攻撃': 6, '匠': 4, '聴覚保護': 2 },
-                   sum: { waist: 12 } };
-    got = c._combineEquip(combSet, combs, borderLine, 'waist');
-    exp = [];
-    QUnit.deepEqual(got, exp, 'combine waist (not sort)');
-
-    // slot0 は先にあってもOK
-    combSet = {
-        body: { skillComb: { '攻撃': 5, '匠': 0, '聴覚保護': 0 }, equips: [ 'b500' ] },
-        head: { skillComb: { '攻撃': 0, '匠': 3, '聴覚保護': 0 }, equips: [ 'h030' ] },
-        arm : { skillComb: { '攻撃': 0, '匠': 0, '聴覚保護': 1 }, equips: [ 'a001' ] },
-        cache: { '攻撃': 5, '匠': 3, '聴覚保護': 1 }
-    };
-    combs = [ { skillComb: { '攻撃': 0, '匠': 0, '聴覚保護': 0 }, equips: [ 'slot0' ] },
-              { skillComb: { '攻撃': 2, '匠': 1, '聴覚保護': 1 }, equips: [ 'w211' ] } ];
-    borderLine = { waist: { '攻撃': 6, '匠': 4, '聴覚保護': 2 },
-                   sum: { waist: 12 } };
-    got = c._combineEquip(combSet, combs, borderLine, 'waist');
-    exp = [
-        { body : { skillComb: { '攻撃': 5, '匠': 0, '聴覚保護': 0 }, equips: [ 'b500' ] },
-          head : { skillComb: { '攻撃': 0, '匠': 3, '聴覚保護': 0 }, equips: [ 'h030' ] },
-          arm  : { skillComb: { '攻撃': 0, '匠': 0, '聴覚保護': 1 }, equips: [ 'a001' ] },
-          waist: { skillComb: { '攻撃': 2, '匠': 1, '聴覚保護': 1 }, equips: [ 'w211' ] },
-          cache: { '攻撃': 7, '匠': 4, '聴覚保護': 2 } }
+    combs = [
+        { skillComb: { '攻撃': 3, '斬れ味': 2 } },
+        { skillComb: { '攻撃': 6, '斬れ味': 0 } },
+        { skillComb: { '攻撃': 0, '斬れ味': 4 } },
+        { skillComb: { '攻撃': 1, '斬れ味': 3 } },
+        { skillComb: { '攻撃': 4, '斬れ味': 1 } }
     ];
-    QUnit.deepEqual(got, exp, 'combine waist (slot0)');
+    got = c._combineEquip(combSet, combs, borderLine, 'leg');
+    exp = [];
+    QUnit.deepEqual(got, exp, 'combine leg (not sort)');
 
-    // 胴系統倍化も先にあってもOK
-    combSet = {
-        body : { skillComb: { '攻撃': 4, '斬れ味': 2 }, equips: [ 'b42' ] },
-        head : { skillComb: { '胴系統倍化': 1 }, equips: [ 'h=b' ] },
-        arm  : { skillComb: { '攻撃': 3, '斬れ味': 3 }, equips: [ 'a33' ] },
-        waist: { skillComb: { '攻撃': 5, '斬れ味': 1 }, equips: [ 'w51' ] },
-        cache: { '攻撃': 16, '斬れ味': 8 }
+    // 胴系統倍化は先にあってもOK
+    combsSet = {
+        head: [
+            { skillComb: { '攻撃': 1, '斬れ味': 3 } } ],
+        body: [
+            { skillComb: { '攻撃': 5, '斬れ味': 1 } } ],
+        arm: [
+            { skillComb: { '攻撃': 1, '斬れ味': 3 } } ],
+        waist: [
+            { skillComb: { '胴系統倍化': 1 } } ],
+        leg: [
+            { skillComb: { '胴系統倍化': 1 } },
+            { skillComb: { '攻撃': 3, '斬れ味': 2 } },
+            { skillComb: { '攻撃': 6, '斬れ味': 0 } },
+            { skillComb: { '攻撃': 0, '斬れ味': 4 } },
+            { skillComb: { '攻撃': 1, '斬れ味': 3 } },
+            { skillComb: { '攻撃': 4, '斬れ味': 1 } } ],
+        oma: [
+            { skillComb: { '攻撃': 4, '斬れ味': 0 } },
+            { skillComb: { '攻撃': 0, '斬れ味': 2 } } ]
     };
-    combs = [ { skillComb: { '攻撃': 0, '斬れ味': 0 }, equips: [ 'slot0' ] },
-              { skillComb: { '胴系統倍化': 1 }, equips: [ 'l=b' ] },
-              { skillComb: { '攻撃': 3, '斬れ味': 3 }, equips: [ 'l33' ] },
-              { skillComb: { '攻撃': 5, '斬れ味': 0 }, equips: [ 'l50' ] },
-              { skillComb: { '攻撃': 0, '斬れ味': 4 }, equips: [ 'l04' ] } ];
-    borderLine = { leg: { '攻撃': 20, '斬れ味': 10 },
-                   sum: { leg: 30 } };
+    borderLine = new BorderLine(skillNames, combsSet);
+    combSet = {
+        head : { skillComb: { '攻撃': 1, '斬れ味': 3 } },
+        body : { skillComb: { '攻撃': 5, '斬れ味': 1 } },
+        arm  : { skillComb: { '攻撃': 1, '斬れ味': 3 } },
+        waist: { skillComb: { '胴系統倍化': 1 } },
+        cache: { '攻撃': 12, '斬れ味': 8 }
+    };
+    combs = [
+        { skillComb: { '胴系統倍化': 1 } },
+        { skillComb: { '攻撃': 6, '斬れ味': 0 } },
+        { skillComb: { '攻撃': 4, '斬れ味': 1 } },
+        { skillComb: { '攻撃': 3, '斬れ味': 2 } },
+        { skillComb: { '攻撃': 0, '斬れ味': 4 } },
+        { skillComb: { '攻撃': 1, '斬れ味': 3 } }
+    ];
     got = c._combineEquip(combSet, combs, borderLine, 'leg');
     exp = [
-        { body : { skillComb: { '攻撃': 4, '斬れ味': 2 }, equips: [ 'b42' ] },
-          head : { skillComb: { '胴系統倍化': 1 }, equips: [ 'h=b' ] },
-          arm  : { skillComb: { '攻撃': 3, '斬れ味': 3 }, equips: [ 'a33' ] },
-          waist: { skillComb: { '攻撃': 5, '斬れ味': 1 }, equips: [ 'w51' ] },
-          leg  : { skillComb: { '胴系統倍化': 1 }, equips: [ 'l=b' ] },
-          cache: { '攻撃': 20, '斬れ味': 10 } }
+        { head : { skillComb: { '攻撃': 1, '斬れ味': 3 } },
+          body : { skillComb: { '攻撃': 5, '斬れ味': 1 } },
+          arm  : { skillComb: { '攻撃': 1, '斬れ味': 3 } },
+          waist: { skillComb: { '胴系統倍化': 1 } },
+          leg  : { skillComb: { '胴系統倍化': 1 } },
+          cache: { '攻撃': 17, '斬れ味': 9 } },
+        { head : { skillComb: { '攻撃': 1, '斬れ味': 3 } },
+          body : { skillComb: { '攻撃': 5, '斬れ味': 1 } },
+          arm  : { skillComb: { '攻撃': 1, '斬れ味': 3 } },
+          waist: { skillComb: { '胴系統倍化': 1 } },
+          leg  : { skillComb: { '攻撃': 6, '斬れ味': 0 } },
+          cache: { '攻撃': 18, '斬れ味': 8 } }
     ];
     QUnit.deepEqual(got, exp, 'combine leg (torsoUp)');
 
     // これからスタートするところ(body を調べる)
+    combsSet = {
+        head: [
+            { skillComb: { '攻撃': 1, '斬れ味': 3 } } ],
+        body: [
+            { skillComb: { '攻撃': 3, '斬れ味': 2 } },
+            { skillComb: { '攻撃': 6, '斬れ味': 0 } },
+            { skillComb: { '攻撃': 0, '斬れ味': 4 } },
+            { skillComb: { '攻撃': 1, '斬れ味': 3 } },
+            { skillComb: { '攻撃': 4, '斬れ味': 1 } } ],
+        arm: [
+            { skillComb: { '攻撃': 1, '斬れ味': 3 } } ],
+        waist: [
+            { skillComb: { '攻撃': 5, '斬れ味': 1 } } ],
+        leg: [
+            { skillComb: { '攻撃': 5, '斬れ味': 1 } } ],
+        oma: [
+            { skillComb: { '攻撃': 4, '斬れ味': 0 } },
+            { skillComb: { '攻撃': 0, '斬れ味': 2 } } ]
+    };
+    borderLine = new BorderLine(skillNames, combsSet);
     combSet = {};
-    combs = [ { skillComb: { '攻撃': 4, '匠': 0, '聴覚保護': 0 }, equips: [ 'b400' ] },
-              { skillComb: { '攻撃': 3, '匠': 1, '聴覚保護': 0 }, equips: [ 'b310' ] },
-              { skillComb: { '攻撃': 3, '匠': 0, '聴覚保護': 1 }, equips: [ 'b301' ] },
-              { skillComb: { '攻撃': 2, '匠': 1, '聴覚保護': 1 }, equips: [ 'b211' ] },
-              { skillComb: { '攻撃': 0, '匠': 4, '聴覚保護': 0 }, equips: [ 'b040' ] },
-              { skillComb: { '攻撃': 1, '匠': 3, '聴覚保護': 0 }, equips: [ 'b130' ] },
-              { skillComb: { '攻撃': 0, '匠': 3, '聴覚保護': 1 }, equips: [ 'b031' ] },
-              { skillComb: { '攻撃': 1, '匠': 2, '聴覚保護': 1 }, equips: [ 'b121' ] },
-              { skillComb: { '攻撃': 0, '匠': 0, '聴覚保護': 4 }, equips: [ 'b004' ] },
-              { skillComb: { '攻撃': 1, '匠': 0, '聴覚保護': 3 }, equips: [ 'b103' ] },
-              { skillComb: { '攻撃': 0, '匠': 1, '聴覚保護': 3 }, equips: [ 'b013' ] },
-              { skillComb: { '攻撃': 1, '匠': 1, '聴覚保護': 2 }, equips: [ 'b112' ] } ];
-    borderLine = { body: { '攻撃': 1, '匠': 1, '聴覚保護': 1 },
-                   sum: { body: 3 } };
+    combs = [
+        { skillComb: { '攻撃': 6, '斬れ味': 0 } },
+        { skillComb: { '攻撃': 4, '斬れ味': 1 } },
+        { skillComb: { '攻撃': 3, '斬れ味': 2 } },
+        { skillComb: { '攻撃': 0, '斬れ味': 4 } },
+        { skillComb: { '攻撃': 1, '斬れ味': 3 } }
+    ];
     got = c._combineEquip(combSet, combs, borderLine, 'body');
     exp = [
-        { body: { skillComb: { '攻撃': 2, '匠': 1, '聴覚保護': 1 }, equips: [ 'b211' ] },
-          cache: { '攻撃': 2, '匠': 1, '聴覚保護': 1 } },
-        { body: { skillComb: { '攻撃': 1, '匠': 2, '聴覚保護': 1 }, equips: [ 'b121' ] },
-          cache: { '攻撃': 1, '匠': 2, '聴覚保護': 1 } },
-        { body: { skillComb: { '攻撃': 1, '匠': 1, '聴覚保護': 2 }, equips: [ 'b112' ] },
-          cache: { '攻撃': 1, '匠': 1, '聴覚保護': 2 } }
+        { body : { skillComb: { '攻撃': 6, '斬れ味': 0 } },
+          cache: { '攻撃': 6, '斬れ味': 0 } }
     ];
     QUnit.deepEqual(got, exp, 'combine body (done: none)');
 
-    got = c._combineEquip(null, combs, borderLine, 'body');
+    // combSet が null
+    combSet = null;
+    combs = [
+        { skillComb: { '攻撃': 6, '斬れ味': 0 } },
+        { skillComb: { '攻撃': 4, '斬れ味': 1 } },
+        { skillComb: { '攻撃': 3, '斬れ味': 2 } },
+        { skillComb: { '攻撃': 0, '斬れ味': 4 } },
+        { skillComb: { '攻撃': 1, '斬れ味': 3 } }
+    ];
+    got = c._combineEquip(combSet, combs, borderLine, 'body');
     exp = [
-        { body: { skillComb: { '攻撃': 2, '匠': 1, '聴覚保護': 1 }, equips: [ 'b211' ] },
-          cache: { '攻撃': 2, '匠': 1, '聴覚保護': 1 } },
-        { body: { skillComb: { '攻撃': 1, '匠': 2, '聴覚保護': 1 }, equips: [ 'b121' ] },
-          cache: { '攻撃': 1, '匠': 2, '聴覚保護': 1 } },
-        { body: { skillComb: { '攻撃': 1, '匠': 1, '聴覚保護': 2 }, equips: [ 'b112' ] },
-          cache: { '攻撃': 1, '匠': 1, '聴覚保護': 2 } }
+        { body : { skillComb: { '攻撃': 6, '斬れ味': 0 } },
+          cache: { '攻撃': 6, '斬れ味': 0 } }
     ];
     QUnit.deepEqual(got, exp, 'null');
 });
 
 QUnit.test('_combine', function () {
-    var got, exp, borderLine, norCombsSet, skillNames,
+    var got, exp, combsSet, skillNames,
         c = new Combinator();
 
     skillNames = [ '攻撃力UP【大】', '斬れ味レベル+1', '耳栓' ];
-    norCombsSet = {
+    combsSet = {
         body: [
-            { skillComb: { '攻撃': 7, '匠': 0, '聴覚保護': 1 }, equips: [ 'b701' ] },
-            { skillComb: { '攻撃': 4, '匠': 2, '聴覚保護': 2 }, equips: [ 'b422' ] },
-            { skillComb: { '攻撃': 5, '匠': 2, '聴覚保護': 1 }, equips: [ 'b521' ] } ],
+            { skillComb: { '攻撃': 7, '匠': 0, '聴覚保護': 1 } },
+            { skillComb: { '攻撃': 4, '匠': 2, '聴覚保護': 2 } },
+            { skillComb: { '攻撃': 5, '匠': 2, '聴覚保護': 1 } } ],
         head: [
-            { skillComb: { '攻撃': 7, '匠': 1, '聴覚保護': 1 }, equips: [ 'h711' ] },
-            { skillComb: { '攻撃': 5, '匠': 2, '聴覚保護': 1 }, equips: [ 'h521' ] },
-            { skillComb: { '攻撃': 6, '匠': 2, '聴覚保護': 0 }, equips: [ 'h620' ] } ],
+            { skillComb: { '攻撃': 7, '匠': 1, '聴覚保護': 1 } },
+            { skillComb: { '攻撃': 5, '匠': 2, '聴覚保護': 1 } },
+            { skillComb: { '攻撃': 6, '匠': 2, '聴覚保護': 0 } } ],
         arm: [
-            { skillComb: { '攻撃': 6, '匠': 2, '聴覚保護': 0 }, equips: [ 'a620' ] },
-            { skillComb: { '攻撃': 3, '匠': 3, '聴覚保護': 1 }, equips: [ 'a331' ] },
-            { skillComb: { '攻撃': 4, '匠': 3, '聴覚保護': 0 }, equips: [ 'a430' ] } ],
+            { skillComb: { '攻撃': 6, '匠': 2, '聴覚保護': 0 } },
+            { skillComb: { '攻撃': 3, '匠': 3, '聴覚保護': 1 } },
+            { skillComb: { '攻撃': 4, '匠': 3, '聴覚保護': 0 } } ],
         waist: [
-            { skillComb: { '攻撃': 5, '匠': 2, '聴覚保護': 1 }, equips: [ 'w521' ] },
-            { skillComb: { '攻撃': 2, '匠': 3, '聴覚保護': 2 }, equips: [ 'w232' ] },
-            { skillComb: { '攻撃': 3, '匠': 3, '聴覚保護': 1 }, equips: [ 'w331' ] } ],
+            { skillComb: { '攻撃': 5, '匠': 2, '聴覚保護': 1 } },
+            { skillComb: { '攻撃': 2, '匠': 3, '聴覚保護': 2 } },
+            { skillComb: { '攻撃': 3, '匠': 3, '聴覚保護': 1 } } ],
         leg: [
-            { skillComb: { '攻撃': 6, '匠': 0, '聴覚保護': 4 }, equips: [ 'l604' ] },
-            { skillComb: { '攻撃': 3, '匠': 2, '聴覚保護': 4 }, equips: [ 'l324' ] },
-            { skillComb: { '攻撃': 4, '匠': 2, '聴覚保護': 3 }, equips: [ 'l423' ] } ]
+            { skillComb: { '攻撃': 6, '匠': 0, '聴覚保護': 4 } },
+            { skillComb: { '攻撃': 3, '匠': 2, '聴覚保護': 4 } },
+            { skillComb: { '攻撃': 4, '匠': 2, '聴覚保護': 3 } } ]
     };
-    borderLine = Comb.calcBorderLine(norCombsSet, skillNames);
-    got = c._combine(norCombsSet, borderLine);
+    got = c._combine(skillNames, combsSet);
     exp = [
-        { body  : { skillComb: { '攻撃': 4, '匠': 2, '聴覚保護': 2 }, equips: [ 'b422' ] },
-          head  : { skillComb: { '攻撃': 5, '匠': 2, '聴覚保護': 1 }, equips: [ 'h521' ] },
-          arm   : { skillComb: { '攻撃': 3, '匠': 3, '聴覚保護': 1 }, equips: [ 'a331' ] },
-          waist : { skillComb: { '攻撃': 2, '匠': 3, '聴覚保護': 2 }, equips: [ 'w232' ] },
-          leg   : { skillComb: { '攻撃': 6, '匠': 0, '聴覚保護': 4 }, equips: [ 'l604' ] },
+        { body  : { skillComb: { '攻撃': 4, '匠': 2, '聴覚保護': 2 } },
+          head  : { skillComb: { '攻撃': 5, '匠': 2, '聴覚保護': 1 } },
+          arm   : { skillComb: { '攻撃': 3, '匠': 3, '聴覚保護': 1 } },
+          waist : { skillComb: { '攻撃': 2, '匠': 3, '聴覚保護': 2 } },
+          leg   : { skillComb: { '攻撃': 6, '匠': 0, '聴覚保護': 4 } },
           weapon: null,
           oma   : null,
           cache : { '攻撃': 20, '匠': 10, '聴覚保護': 10 } }
@@ -268,44 +338,86 @@ QUnit.test('_combine', function () {
 
     // body が [] で胴系統倍化
     skillNames = [ '攻撃力UP【大】', '斬れ味レベル+1', '耳栓' ];
-    norCombsSet = {
+    combsSet = {
         body: [],
         head: [
-            { skillComb: { '攻撃': 7, '匠': 1, '聴覚保護': 1 }, equips: [ 'h711' ] },
-            { skillComb: { '攻撃': 5, '匠': 2, '聴覚保護': 1 }, equips: [ 'h521' ] },
-            { skillComb: { '攻撃': 6, '匠': 2, '聴覚保護': 0 }, equips: [ 'h620' ] } ],
+            { skillComb: { '攻撃': 7, '匠': 1, '聴覚保護': 1 } },
+            { skillComb: { '攻撃': 5, '匠': 2, '聴覚保護': 1 } },
+            { skillComb: { '攻撃': 6, '匠': 2, '聴覚保護': 0 } } ],
         arm: [
-            { skillComb: { '攻撃': 6, '匠': 2, '聴覚保護': 0 }, equips: [ 'a620' ] },
-            { skillComb: { '攻撃': 3, '匠': 3, '聴覚保護': 1 }, equips: [ 'a331' ] },
-            { skillComb: { '攻撃': 4, '匠': 3, '聴覚保護': 0 }, equips: [ 'a430' ] } ],
+            { skillComb: { '攻撃': 6, '匠': 2, '聴覚保護': 0 } },
+            { skillComb: { '攻撃': 3, '匠': 3, '聴覚保護': 1 } },
+            { skillComb: { '攻撃': 4, '匠': 3, '聴覚保護': 0 } } ],
         waist: [
-            { skillComb: { '胴系統倍化': 1 }, equips: [ 'torsoUp' ] } ],
+            { skillComb: { '胴系統倍化': 1 } } ],
         leg: [
-            { skillComb: { '攻撃': 7, '匠': 0, '聴覚保護': 1 }, equips: [ 'l701' ] },
-            { skillComb: { '攻撃': 4, '匠': 2, '聴覚保護': 2 }, equips: [ 'l422' ] },
-            { skillComb: { '攻撃': 5, '匠': 2, '聴覚保護': 1 }, equips: [ 'l521' ] } ],
+            { skillComb: { '攻撃': 7, '匠': 0, '聴覚保護': 1 } },
+            { skillComb: { '攻撃': 4, '匠': 2, '聴覚保護': 2 } },
+            { skillComb: { '攻撃': 5, '匠': 2, '聴覚保護': 1 } } ],
         weapon: [
-            { skillComb: { '攻撃': 5, '匠': 2, '聴覚保護': 1 }, equips: [ 'w521' ] },
-            { skillComb: { '攻撃': 2, '匠': 3, '聴覚保護': 2 }, equips: [ 'w232' ] },
-            { skillComb: { '攻撃': 3, '匠': 3, '聴覚保護': 1 }, equips: [ 'w331' ] } ],
+            { skillComb: { '攻撃': 5, '匠': 2, '聴覚保護': 1 } },
+            { skillComb: { '攻撃': 2, '匠': 3, '聴覚保護': 2 } },
+            { skillComb: { '攻撃': 3, '匠': 3, '聴覚保護': 1 } } ],
         oma: [
-            { skillComb: { '攻撃': 6, '匠': 0, '聴覚保護': 4 }, equips: [ 'o604' ] },
-            { skillComb: { '攻撃': 3, '匠': 2, '聴覚保護': 4 }, equips: [ 'o324' ] },
-            { skillComb: { '攻撃': 4, '匠': 2, '聴覚保護': 3 }, equips: [ 'o423' ] } ]
+            { skillComb: { '攻撃': 6, '匠': 0, '聴覚保護': 4 } },
+            { skillComb: { '攻撃': 3, '匠': 2, '聴覚保護': 4 } },
+            { skillComb: { '攻撃': 4, '匠': 2, '聴覚保護': 3 } } ]
     };
-    borderLine = Comb.calcBorderLine(norCombsSet, skillNames);
-    got = c._combine(norCombsSet, borderLine);
+    got = c._combine(skillNames, combsSet);
     exp = [
         { body  : null,
-          head  : { skillComb: { '攻撃': 5, '匠': 2, '聴覚保護': 1 }, equips: [ 'h521' ] },
-          arm   : { skillComb: { '攻撃': 3, '匠': 3, '聴覚保護': 1 }, equips: [ 'a331' ] },
-          waist : { skillComb: { '胴系統倍化': 1 }, equips: [ 'torsoUp' ] },
-          leg   : { skillComb: { '攻撃': 4, '匠': 2, '聴覚保護': 2 }, equips: [ 'l422' ] },
-          weapon: { skillComb: { '攻撃': 2, '匠': 3, '聴覚保護': 2 }, equips: [ 'w232' ] },
-          oma   : { skillComb: { '攻撃': 6, '匠': 0, '聴覚保護': 4 }, equips: [ 'o604' ] },
+          head  : { skillComb: { '攻撃': 5, '匠': 2, '聴覚保護': 1 } },
+          arm   : { skillComb: { '攻撃': 3, '匠': 3, '聴覚保護': 1 } },
+          waist : { skillComb: { '胴系統倍化': 1 } },
+          leg   : { skillComb: { '攻撃': 4, '匠': 2, '聴覚保護': 2 } },
+          weapon: { skillComb: { '攻撃': 2, '匠': 3, '聴覚保護': 2 } },
+          oma   : { skillComb: { '攻撃': 6, '匠': 0, '聴覚保護': 4 } },
           cache : { '攻撃': 20, '匠': 10, '聴覚保護': 10 } }
     ];
     QUnit.deepEqual(got, exp, 'body is [] and torsoUp');
+});
+
+QUnit.test('_combineUsedSlot0', function () {
+    var got, exp, combsSet, skillNames,
+        c = new Combinator();
+
+    skillNames = [ '攻撃力UP【大】', '業物' ];
+    combsSet = {
+        head: [
+            { skillComb: { '攻撃': 4, '斬れ味': 2 }, equips: [ '4,2' ] },
+            { skillComb: { '攻撃': 0, '斬れ味': 0 }, equips: [ 'slot0' ] } ],
+        body: [
+            { skillComb: { '攻撃': 8, '斬れ味': 0 }, equips: [ '8,0' ] },
+            { skillComb: { '攻撃': 6, '斬れ味': 2 }, equips: [ '6,2' ] } ],
+        arm: [
+            { skillComb: { '攻撃': 4, '斬れ味': 2 }, equips: [ '4,2' ] },
+            { skillComb: { '攻撃': 0, '斬れ味': 0 }, equips: [ 'slot0' ] } ],
+        waist: [
+            { skillComb: { '攻撃': 8, '斬れ味': 0 }, equips: [ '8,0' ] },
+            { skillComb: { '攻撃': 6, '斬れ味': 2 }, equips: [ '6,2' ] } ],
+        leg: [
+            { skillComb: { '攻撃': 4, '斬れ味': 4 }, equips: [ '4,4' ] },
+            { skillComb: { '攻撃': 5, '斬れ味': 3 }, equips: [ '5,3' ] } ]
+    };
+    got = c._combineUsedSlot0(skillNames, combsSet);
+    exp = [
+        { body : { skillComb: { '攻撃': 6, '斬れ味': 2 }, equips: [ '6,2' ] },
+          head : { skillComb: { '攻撃': 0, '斬れ味': 0 }, equips: [ 'slot0' ] },
+          arm  : { skillComb: { '攻撃': 4, '斬れ味': 2 }, equips: [ '4,2' ] },
+          waist: { skillComb: { '攻撃': 6, '斬れ味': 2 }, equips: [ '6,2' ] },
+          leg  : { skillComb: { '攻撃': 4, '斬れ味': 4 }, equips: [ '4,4' ] },
+          weapon: null, oma: null,
+          cache: { '攻撃': 20, '斬れ味': 10 } }
+        // 先に頭に slot0 を使った組み合わせが見つかるので↓は出てこない
+        //{ body : { skillComb: { '攻撃': 6, '斬れ味': 2 }, equips: [ '6,2' ] },
+        //  head : { skillComb: { '攻撃': 4, '斬れ味': 2 }, equips: [ '4,2' ] },
+        //  arm  : { skillComb: { '攻撃': 0, '斬れ味': 0 }, equips: [ 'slot0' ] },
+        //  waist: { skillComb: { '攻撃': 6, '斬れ味': 2 }, equips: [ '6,2' ] },
+        //  leg  : { skillComb: { '攻撃': 4, '斬れ味': 4 }, equips: [ '4,4' ] },
+        //  weapon: null, oma: null,
+        //  cache: { '攻撃': 20, '斬れ味': 10 } }
+    ];
+    QUnit.deepEqual(got, exp, 'combine');
 });
 
 });
@@ -318,6 +430,7 @@ QUnit.test('_combine', function () {
            test.apply(this, modules);
        } :
        function (deps, test) {
-           test(this.QUnit, this.simu.Equip.Combinator, this.simu.Util.Comb, this.myapp);
+           test(this.QUnit, this.simu.Equip.Combinator,
+                this.simu.Util.Comb, this.simu.Util.BorderLine, this.myapp);
        }
 );
