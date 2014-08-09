@@ -35,6 +35,7 @@ module.exports = function(grunt) {
                   , 'lib/data.js'
                   , 'lib/util.js'
                   , 'lib/util/skill.js', 'lib/util/deco.js', 'lib/util/comb.js'
+                  , 'lib/util/border-line.js'
                   , 'lib/equip.js'
                   , 'lib/equip/normalizer.js'
                   , 'lib/equip/combinator.js'
