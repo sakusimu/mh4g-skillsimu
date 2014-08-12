@@ -273,6 +273,30 @@ QUnit.test('_normalize1 (none deco)', function () {
     myapp.initialize(); // 装飾品なしを元に戻す
 });
 
+QUnit.test('_normalize1 (fix)', function () {
+    var got, exp, equips,
+        n = new Normalizer();
+
+    equips = myapp.equips('body', '三眼の首飾り');
+    got = n._normalize1(equips, [ '攻撃', '斬れ味' ]);
+    exp = { '三眼の首飾り':
+            [ { '攻撃': 3, '防御': -3 },
+              { '攻撃': 2, '防御': -2, '斬れ味': 1, '匠': -1 },
+              { '攻撃': 1, '防御': -1, '斬れ味': 2, '匠': -2 },
+              { '斬れ味': 3, '匠': -3 },
+              { '攻撃': 4, '防御': -2 },
+              { '攻撃': 3, '防御': -1, '斬れ味': 1, '匠': -1 },
+              { '攻撃': 5, '防御': -1 },
+              { '斬れ味': 4, '匠': -2 } ] };
+    QUnit.deepEqual(got, exp, 'fix');
+
+    // 胴系統倍化
+    equips = myapp.equips('waist', 'バンギスコイル');
+    got = n._normalize1(equips, [ '攻撃', '斬れ味' ]);
+    exp = { 'バンギスコイル': [ { '胴系統倍化': 1 } ] };
+    QUnit.deepEqual(got, exp, 'fix: torsoUp');
+});
+
 QUnit.test('_normalize2', function () {
     var got, exp, combs,
         n = new Normalizer();

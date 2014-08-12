@@ -53,7 +53,7 @@ QUnit.test('simulate: torsoUp', function () {
 
     got = simu.simulate([ '斬れ味レベル+1', '砥石使用高速化' ]);
     exp = [ { head  : 'ユクモノカサ・天',
-              body  : 'slot3',
+              body  : '三眼の首飾り',
               arm   : 'ユクモノコテ・天',
               waist : '胴系統倍化',
               leg   : 'ユクモノハカマ・天',
