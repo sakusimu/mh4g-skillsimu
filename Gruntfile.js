@@ -78,20 +78,9 @@ module.exports = function(grunt) {
             }
         },
 
-        'build-data': {
-            testdata: { src: 'data', dest : 'data' }
-        },
-
         'test-prove': {
             all: { src: 'test/*.js' },
             one: {}
-        },
-
-        'test-onbrowser': {
-            options: {
-                data: { dest: 'data/testdata.js' }
-            },
-            test: {}
         }
     });
 
