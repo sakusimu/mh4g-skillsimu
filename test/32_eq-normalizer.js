@@ -120,35 +120,30 @@ var summary = function (norCombs) {
 };
 
 QUnit.test('normalize: selected equips', function () {
-    var got, exp, names, equips,
+    var got, exp,
         n = new Normalizer();
 
     // スキルポイントがマイナスの装備で固定
-    names = [ 'アカムトウルンテ' ]; // 斬れ味-2, スロ1
-    equips = myapp.equips('body', names);
-    if (equips.length !== 1) throw new Error('error: equips.length=' + equips.length);
-    data.equips.body = equips;
-
+    data.equips.body = [
+        myapp.equip('body', 'アカムトウルンテ') // 斬れ味-2, スロ1
+    ];
     got = n.normalize([ '攻撃力UP【大】', '業物' ]);
     exp = [ { skillComb: { '攻撃': 1, '斬れ味': -2 }, equips: [ 'アカムトウルンテ' ] },
             { skillComb: { '攻撃': 0, '斬れ味': -1 }, equips: [ 'アカムトウルンテ' ] } ];
     QUnit.deepEqual(got.body, exp, 'fixed equip');
-    exp = { head: 37, body: 2, arm: 29, waist: 30, leg: 34, weapon: null, oma: null };
+    exp = { head: 37, body: 2, arm: 29, waist: 30, leg: 36, weapon: null, oma: null };
     QUnit.deepEqual(summary(got), exp, 'fixed equip: summary');
 
     myapp.initialize();
 
     // スキルポイントがマイナスの装備で固定
-    names = [ 'ブナハＳスーツ'   // 攻撃-2, スロ0
-            , 'リベリオンメイル' // 攻撃-4, スロ1
-            , 'アカムトウルンテ' // 斬れ味-2, スロ1
+    data.equips.body = [
+        myapp.equip('body', 'ブナハＳスーツ')   // 攻撃-2, スロ0
+      , myapp.equip('body', 'リベリオンメイル') // 攻撃-4, スロ1
+      , myapp.equip('body', 'アカムトウルンテ') // 斬れ味-2, スロ1
     ];
-    equips = myapp.equips('body', names);
-    if (equips.length !== 3) throw new Error('error: equips.length=' + equips.length);
-    data.equips.body = equips;
-
     got = n.normalize([ '攻撃力UP【大】', '業物' ]);
-    exp = { head: 37, body: 5, arm: 29, waist: 30, leg: 34, weapon: null, oma: null };
+    exp = { head: 37, body: 5, arm: 29, waist: 30, leg: 36, weapon: null, oma: null };
     QUnit.deepEqual(summary(got), exp, 'selected equip');
 });
 
@@ -177,13 +172,11 @@ QUnit.test('normalize: oma', function () {
     // 村のみに装備をしぼってスキルの組み合わせ
     myapp.setup({ hr: 1, vs: 6 });
 
-    var omas = [
-        [ '龍の護石',3,'匠',4,'氷耐性',-5 ],
-        [ '龍の護石',0,'溜め短縮',5,'攻撃',9 ],
-        [ '龍の護石',3,'痛撃',4 ]
+    n.omas = [
+        myapp.oma([ '龍の護石',3,'匠',4,'氷耐性',-5 ]),
+        myapp.oma([ '龍の護石',0,'溜め短縮',5,'攻撃',9 ]),
+        myapp.oma([ '龍の護石',3,'痛撃',4 ])
     ];
-    n.omas = myapp.model.Oma.createSimuData(omas);
-
     got = n.normalize([ '斬れ味レベル+1', '攻撃力UP【中】', '耳栓' ]);
     // slot3 は「龍の護石(スロ3,痛撃+4)」の分
     exp = [ { skillComb: { '匠': 0, '攻撃': 0, '聴覚保護': 3 },
@@ -212,7 +205,7 @@ QUnit.test('normalize: summary', function () {
         n = new Normalizer();
 
     got = n.normalize([ '攻撃力UP【大】', '業物' ]);
-    exp = { head: 37, body: 29, arm: 29, waist: 30, leg: 34, weapon: null, oma: null };
+    exp = { head: 37, body: 29, arm: 29, waist: 30, leg: 36, weapon: null, oma: null };
     QUnit.deepEqual(summary(got), exp, "[ '攻撃力UP【大】', '業物' ]");
 
     got = n.normalize([ '斬れ味レベル+1', '高級耳栓' ]);
@@ -225,7 +218,7 @@ QUnit.test('normalize: summary', function () {
     QUnit.deepEqual(summary(got), exp, "[ '斬れ味レベル+1', '耳栓' ]");
 
     got = n.normalize([ '攻撃力UP【大】', '業物', '集中', '見切り+1', '弱点特効' ]);
-    exp = { head: 444, body: 229, arm: 250, waist: 343, leg: 268, weapon: null, oma: null };
+    exp = { head: 444, body: 229, arm: 250, waist: 343, leg: 282, weapon: null, oma: null };
     QUnit.deepEqual(summary(got), exp,
                     "[ '攻撃力UP【大】', '業物', '集中', '見切り+1', '弱点特効' ]");
 });

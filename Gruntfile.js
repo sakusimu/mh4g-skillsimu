@@ -63,20 +63,24 @@ module.exports = function(grunt) {
             }
         },
 
-        'build-data': {
-            testdata: { src: 'data', dest : 'data' }
+        testdata: {
+            mh4: {
+                dest: 'tmp/testdata.js',
+                urls: {
+                    'equip_head' : 'http://sakusimu.net/data/mh4/equip_head.json',
+                    'equip_body' : 'http://sakusimu.net/data/mh4/equip_body.json',
+                    'equip_arm'  : 'http://sakusimu.net/data/mh4/equip_arm.json',
+                    'equip_waist': 'http://sakusimu.net/data/mh4/equip_waist.json',
+                    'equip_leg'  : 'http://sakusimu.net/data/mh4/equip_leg.json',
+                    'deco' : 'http://sakusimu.net/data/mh4/deco.json',
+                    'skill': 'http://sakusimu.net/data/mh4/skill.json'
+                }
+            }
         },
 
         'test-prove': {
             all: { src: 'test/*.js' },
             one: {}
-        },
-
-        'test-onbrowser': {
-            options: {
-                data: { dest: 'data/testdata.js' }
-            },
-            test: {}
         }
     });
 

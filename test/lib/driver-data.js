@@ -1,7 +1,6 @@
 (function (define) {
 'use strict';
-var deps = [ 'underscore', './driver-namespace' ];
-define(deps, function (_, myapp) {
+define([ './driver-namespace', './data-loader.js' ], function (myapp, testdata) {
 
 /**
  * シミュレータのユーザ側クラス。
@@ -12,14 +11,14 @@ var Data = function () {
 };
 
 Data.prototype.initialize = function () {
-    var parts = [ 'head', 'body', 'arm', 'waist', 'leg' ];
-
     this.equips = {};
-    _.each(parts, function (part) { this.equips[part] = {}; }, this);
-
-    this.decos  = {};
-    this.skills = {};
-    this.omas   = [];
+    this.equips.head  = testdata.equips.head;
+    this.equips.body  = testdata.equips.body;
+    this.equips.arm   = testdata.equips.arm;
+    this.equips.waist = testdata.equips.waist;
+    this.equips.leg   = testdata.equips.leg;
+    this.decos        = testdata.decos;
+    this.skills       = testdata.skills;
 };
 
 return myapp.data = new Data();
@@ -31,9 +30,8 @@ return myapp.data = new Data();
            var modules = [], len = deps.length;
            for (var i = 0; i < len; ++i) modules.push(require(deps[i]));
            module.exports = factory.apply(this, modules);
-           require('./data-loader.js');
        } :
        function (deps, factory) {
-           factory(this._, this.myapp);
+           factory(this.myapp, this.testdata);
        }
 );

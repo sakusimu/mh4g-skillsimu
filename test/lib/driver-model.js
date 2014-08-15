@@ -1,7 +1,7 @@
 (function (define) {
 'use strict';
-var deps = [ 'underscore', './driver-namespace', './driver-data.js', './driver-context.js' ];
-define(deps, function (_, myapp, data, context) {
+var deps = [ './driver-namespace', './driver-data.js' ];
+define(deps, function (myapp, data) {
 
 var model = {};
 
@@ -40,11 +40,11 @@ var Equip = function () {
 
 /**
  * 引数の equip は以下を要素とする配列。
- * ID,名前,"性別(0=両,1=男,2=女)","タイプ(0=両方,1=剣士,2=ガンナー)",レア度,スロット数,入手時期／HR（99=集会場入手不可）,入手時期／村☆（99=村入手不可）,初期防御力,最終防御力,火耐性,水耐性,氷耐性,雷耐性,龍耐性,スキル系統1,スキル値1,スキル系統2,スキル値2,スキル系統3,スキル値3,スキル系統4,スキル値4,スキル系統5,スキル値5,生産素材1,個数,生産素材2,個数,生産素材3,個数,生産素材4,個数
+ * 名前,"性別(0=両,1=男,2=女)","タイプ(0=両方,1=剣士,2=ガンナー)",レア度,スロット数,入手時期／HR（99=集会場入手不可）,入手時期／村☆（99=村入手不可）,初期防御力,最終防御力,火耐性,水耐性,氷耐性,雷耐性,龍耐性,スキル系統1,スキル値1,スキル系統2,スキル値2,スキル系統3,スキル値3,スキル系統4,スキル値4,スキル系統5,スキル値5,生産素材1,個数,生産素材2,個数,生産素材3,個数,生産素材4,個数
  */
 Equip.prototype.initialize = function (equip) {
     equip = equip || [];
-    var props = [ 'id', 'name', 'sex', 'type', 'rarity', 'slot',
+    var props = [ 'name', 'sex', 'type', 'rarity', 'slot',
                   'availableHR', 'availableVS', '','','','','','','',
                   'skillTree1', 'skillPt1', 'skillTree2', 'skillPt2',
                   'skillTree3', 'skillPt3', 'skillTree4', 'skillPt4',
@@ -56,6 +56,12 @@ Equip.prototype.initialize = function (equip) {
 
     var model = make(equip, props, numProps);
     for (var prop in model) this[prop] = model[prop];
+
+    this.id = [ this.name, this.sex, this.type ].join(',');
+};
+
+Equip.prototype.toString = function () {
+    return this.name;
 };
 
 Equip.prototype.isEnabled = function (context) {
@@ -83,31 +89,46 @@ Equip.prototype.simuData = function () {
     };
 };
 
+var Equips = function () {
+    this.initialize.apply(this, arguments);
+};
+
+Equips.prototype.initialize = function () {
+    var equips = {};
+    for (var part in data.equips) {
+        var list = data.equips[part];
+        equips[part] = {};
+        for (var i = 0, len = list.length; i < len; ++i) {
+            var eq = new Equip(list[i]);
+            equips[part][eq.id] = eq;
+        }
+    }
+    this.data = equips;
+};
+
 /**
  * コンテキスト(性別やタイプなど)をふまえた、装備データを返す。
  * (例えば、女の剣士なら性別は 0 or 2 でタイプは 0 or 1 の装備の集まりとなる)
  */
-Equip.enabledEquips = function (part) {
+Equips.prototype.enabled = function (part, context) {
     if (part == null) throw new Error('part is required');
-    if (data.equips[part] == null) throw new Error('unknown part: ' + part);
+    var equips = this.data[part];
+    if (equips == null) throw new Error('unknown part: ' + part);
 
-    var equips = [];
-    _.each(data.equips[part], function (list) {
-        var e = new model.Equip(list);
-        if(e.isEnabled(context)) equips.push(e);
-    });
-
-    return equips;
+    var ret = [];
+    for (var id in equips) {
+        var eq = equips[id];
+        if(eq.isEnabled(context)) ret.push(eq);
+    }
+    return ret;
 };
 
-Equip.get = function (part, id) {
+Equips.prototype.get = function (part, id) {
     if (part == null) throw new Error('part is required');
-    if (data.equips[part] == null) throw new Error('unknown part: ' + part);
-    var e = data.equips[part][id];
-    if (e == null) return null;
-    return new Equip(e);
+    if (this.data[part] == null) throw new Error('unknown part: ' + part);
+    var eq = this.data[part][id];
+    return eq ? eq : null;
 };
-
 
 /**
  * シミュレータのユーザ側にあたるクラス。
@@ -133,6 +154,10 @@ Deco.prototype.initialize = function (deco) {
     for (var prop in model) this[prop] = model[prop];
 };
 
+Deco.prototype.toString = function () {
+    return this.name;
+};
+
 Deco.prototype.isEnabled = function (context) {
     var c = context;
 
@@ -150,24 +175,36 @@ Deco.prototype.simuData = function () {
     };
 };
 
+var Decos = function () {
+    this.initialize.apply(this, arguments);
+};
+
+Decos.prototype.initialize = function () {
+    var decos = {},
+        list  = data.decos;
+    for (var i = 0, len = list.length; i < len; ++i) {
+        var deco = new Deco(list[i]);
+        decos[deco.name] = deco;
+    }
+    this.data = decos;
+};
+
 /**
  * コンテキスト(HRなど)をふまえた、装飾品データを返す。
  */
-Deco.enabledDecos = function () {
-    var decos = [];
-    _.each(data.decos, function (list) {
-        var d = new model.Deco(list);
-        if(d.isEnabled(context)) decos.push(d);
-    });
-    return decos;
+Decos.prototype.enabled = function (context) {
+    var ret = [];
+    for (var name in this.data) {
+        var deco = this.data[name];
+        if(deco.isEnabled(context)) ret.push(deco);
+    }
+    return ret;
 };
 
-Deco.get = function (name) {
-    var d = data.decos[name];
-    if (d == null) return null;
-    return new Deco(d);
+Decos.prototype.get = function (name) {
+    var deco = this.data[name];
+    return deco ? deco : null;
 };
-
 
 /**
  * シミュレータのユーザ側にあたるクラス。
@@ -198,21 +235,33 @@ Skill.prototype.simuData = function () {
     };
 };
 
-Skill.enabledSkills = function () {
-    var skills = [];
-    _.each(data.skills, function (list) {
-        var s = new model.Skill(list);
-        skills.push(s);
-    });
-    return skills;
+var Skills = function () {
+    this.initialize.apply(this, arguments);
 };
 
-Skill.get = function (skillName) {
-    var s = data.skills[skillName];
-    if (s == null) return null;
-    return new Skill(s);
+Skills.prototype.initialize = function () {
+    var skills = {},
+        list   = data.skills;
+    for (var i = 0, len = list.length; i < len; ++i) {
+        var skill = new Skill(list[i]);
+        skills[skill.name] = skill;
+    }
+    this.data = skills;
 };
 
+Skills.prototype.enabled = function () {
+    var ret = [];
+    for (var name in this.data) {
+        var skill = this.data[name];
+        ret.push(skill);
+    }
+    return ret;
+};
+
+Skills.prototype.get = function (name) {
+    var skill = this.data[name];
+    return skill ? skill : null;
+};
 
 /**
  * シミュレータのユーザ側にあたるクラス。
@@ -260,16 +309,14 @@ Oma.prototype.simuData = function () {
     };
 };
 
-Oma.createSimuData = function (omas) {
-    return _.map(omas, function (oma) {
-        return new Oma(oma).simuData();
-    });
-};
-
 model.Equip = Equip;
 model.Deco  = Deco;
 model.Skill = Skill;
 model.Oma   = Oma;
+
+model.equips = new Equips();
+model.decos  = new Decos();
+model.skills = new Skills();
 
 return myapp.model = model;
 });
@@ -282,6 +329,6 @@ return myapp.model = model;
            module.exports = factory.apply(this, modules);
        } :
        function (deps, factory) {
-           factory(this._, this.myapp, this.myapp.data, this.myapp.context);
+           factory(this.myapp, this.myapp.data);
        }
 );

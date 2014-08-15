@@ -75,13 +75,13 @@ QUnit.test('compact', function () {
 QUnit.test('contains', function () {
     var got, equip;
 
-    equip = myapp.model.Equip.get('body', 'ブレイブベスト,0,0').simuData();
+    equip = myapp.equip('body', 'ブレイブベスト');
     got = Skill.contains(equip.skillComb, '乗り');
     QUnit.ok(got, "'乗り'");
     got = Skill.contains(equip.skillComb, [ '乗り' ]);
     QUnit.ok(got, "[ '乗り' ]");
 
-    equip = myapp.model.Equip.get('body', 'レウスメイル,0,1').simuData();
+    equip = myapp.equip('body', 'レウスメイル');
     got = Skill.contains(equip.skillComb, [ '攻撃', '火属性攻撃' ]);
     QUnit.ok(got, "[ '攻撃', '火属性攻撃' ]");
     got = Skill.contains(equip.skillComb, [ '攻撃', '匠' ]);

@@ -3,7 +3,9 @@
   "version": "0.2.6",
   "description": "Skill Simulator for MH4",
   "author": "sakusimu.net",
-  "scripts": { "test": "grunt test" },
+  "scripts": {
+    "test": "grunt test"
+  },
   "licenses": [
     {
       "type": "MIT",
@@ -16,8 +18,8 @@
     "grunt-contrib-concat": "~0.3.0",
     "grunt-contrib-jshint": "~0.6.4",
     "grunt-contrib-uglify": "~0.2.4",
-    "qunitjs": "1.10.0",
     "qunit-tap": "~1.4.0",
-    "underscore": "~1.5.2"
+    "qunitjs": "1.10.0",
+    "request": "~2.40.0"
   }
 }

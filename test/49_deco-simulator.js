@@ -36,16 +36,15 @@ QUnit.test('simulate', function () {
         });
     };
 
-    var omas = [ [ '龍の護石',3,'匠',4,'氷耐性',-5 ] ];
-    omas = myapp.model.Oma.createSimuData(omas);
+    var omas = [ myapp.oma([ '龍の護石',3,'匠',4,'氷耐性',-5 ]) ];
 
     // 装備に胴系統倍化、武器スロ、お守りがある場合
     equipSet = {
-        head  : myapp.equips('head', 'ユクモノカサ・天')[0]  // スロ2
-      , body  : myapp.equips('body', '三眼の首飾り')[0]      // スロ3
-      , arm   : myapp.equips('arm', 'ユクモノコテ・天')[0]   // スロ2
-      , waist : myapp.equips('waist', 'バンギスコイル')[0]   // 胴系統倍化
-      , leg   : myapp.equips('leg', 'ユクモノハカマ・天')[0] // スロ2
+        head  : myapp.equip('head', 'ユクモノカサ・天')  // スロ2
+      , body  : myapp.equip('body', '三眼の首飾り')      // スロ3
+      , arm   : myapp.equip('arm', 'ユクモノコテ・天')   // スロ2
+      , waist : myapp.equip('waist', 'バンギスコイル')   // 胴系統倍化
+      , leg   : myapp.equip('leg', 'ユクモノハカマ・天') // スロ2
       , weapon: { name: 'slot2' }
       , oma   : omas[0]
     };
@@ -72,11 +71,11 @@ QUnit.test('simulate', function () {
 
     // ALL三眼, 武器スロ3, お守り(匠4,スロ3)
     equipSet = {
-        head  : myapp.equips('head', '三眼のピアス')[0]
-      , body  : myapp.equips('body', '三眼の首飾り')[0]
-      , arm   : myapp.equips('arm', '三眼の腕輪')[0]
-      , waist : myapp.equips('waist', '三眼の腰飾り')[0]
-      , leg   : myapp.equips('leg', '三眼の足輪')[0]
+        head  : myapp.equip('head', '三眼のピアス')
+      , body  : myapp.equip('body', '三眼の首飾り')
+      , arm   : myapp.equip('arm', '三眼の腕輪')
+      , waist : myapp.equip('waist', '三眼の腰飾り')
+      , leg   : myapp.equip('leg', '三眼の足輪')
       , weapon: { name: 'slot3' }
       , oma   : omas[0]
     };
@@ -99,11 +98,11 @@ QUnit.test('simulate', function () {
     // 1つだけ見つかるケース
     myapp.setup({ hr: 1, vs: 6 }); // 装備を村のみにしぼる
     equipSet = {
-        head  : myapp.equips('head', 'ガララキャップ')[0]  // スロ2
-      , body  : myapp.equips('body', 'レックスメイル')[0]  // スロ2
-      , arm   : myapp.equips('arm', 'ガルルガアーム')[0]   // スロ3
-      , waist : myapp.equips('waist', 'ゴアフォールド')[0] // スロ1
-      , leg   : myapp.equips('leg', 'アークグリーヴ')[0]   // スロ2
+        head  : myapp.equip('head', 'ガララキャップ')  // スロ2
+      , body  : myapp.equip('body', 'レックスメイル')  // スロ2
+      , arm   : myapp.equip('arm', 'ガルルガアーム')   // スロ3
+      , waist : myapp.equip('waist', 'ゴアフォールド') // スロ1
+      , leg   : myapp.equip('leg', 'アークグリーヴ')   // スロ2
       , weapon: { name: 'slot3' }
       , oma   : omas[0]
     };

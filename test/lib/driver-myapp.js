@@ -1,26 +1,30 @@
 (function (define) {
 'use strict';
-var deps = [ 'underscore', './driver-namespace.js', './driver-data.js',
+var deps = [ './driver-namespace.js',
              './driver-context.js', './driver-model.js', '../../lib/data.js' ];
-define(deps, function (_, myapp, mydata, context, model, data) {
+define(deps, function (myapp, Context, model, data) {
+
+var context = new Context();
 
 myapp.initialize = function () {
     this.setup();
 };
 
 myapp.setup = function (ctx) {
-    this.context.initialize(ctx);
+    context.initialize(ctx);
+
+    var simuData = function (obj) { return obj.simuData(); };
 
     var equips = {};
-    _.each(data.parts, function (part) {
-        var ee = model.Equip.enabledEquips(part);
-        equips[part] = _.map(ee, function (e) { return e.simuData(); });
+    [ 'head', 'body', 'arm', 'waist', 'leg' ].forEach(function (part) {
+        var list = model.equips.enabled(part, context);
+        equips[part] = list.map(simuData);
     });
-    var decos = _.map(model.Deco.enabledDecos(), function (d) {
-        return d.simuData();
-    });
+
+    var decos = model.decos.enabled(context).map(simuData);
+
     var skills = {};
-    _.each(model.Skill.enabledSkills(), function (s) {
+    model.skills.enabled().forEach(function (s) {
         skills[s.name] = s.simuData();
     });
 
@@ -31,19 +35,32 @@ myapp.setup = function (ctx) {
     });
 };
 
-myapp.equips = function (part, name) {
-    if (arguments.length !== 2) throw new Error('two arguments are required');
-    var equips = data.equips[part];
-    if (equips == null) throw new Error('unknown part:' + part);
-    var names = _.isArray(name) ? name : [ name ];
-    var ret = [];
-    _.each(names, function (name) {
-        var e = _.find(equips, function (equip) {
-            return equip.name === name;
-        });
-        if (e !== undefined) ret.push(e);
-    });
-    return ret;
+myapp.equip = function (part, name) {
+    var id, eq,
+        equips = model.equips,
+        sex  = context.sex === 'm' ? 1 : 2,
+        type = context.type === 'k' ? 1 : 2;
+
+    id = [ name, 0, 0 ].join(',');
+    eq = equips.get(part, id);
+    if (eq) return eq.simuData();
+    id = [ name, 0, type ].join(',');
+    eq = equips.get(part, id);
+    if (eq) return eq.simuData();
+
+    id = [ name, sex, 0 ].join(',');
+    eq = equips.get(part, id);
+    if (eq) return eq.simuData();
+    id = [ name, sex, type ].join(',');
+    eq = equips.get(part, id);
+    if (eq) return eq.simuData();
+
+    return null;
+};
+
+myapp.oma = function (list) {
+    var oma = new model.Oma(list);
+    return oma ? oma.simuData() : null;
 };
 
 myapp.initialize();
@@ -59,7 +76,6 @@ return myapp;
            module.exports = factory.apply(this, modules);
        } :
        function (deps, factory) {
-           factory(this._, this.myapp, this.myapp.data,
-                   this.myapp.context, this.myapp.model, this.simu.data);
+           factory(this.myapp, this.myapp.Context, this.myapp.model, this.simu.data);
        }
 );

@@ -60,13 +60,11 @@ QUnit.test('combine: oma', function () {
     // 装備を村のみにしぼる
     myapp.setup({ hr: 1, vs: 6 });
 
-    var omas = [
-        [ '龍の護石',3,'匠',4,'氷耐性',-5 ],
-        [ '龍の護石',0,'溜め短縮',5,'攻撃',9 ],
-        [ '龍の護石',3,'痛撃',4 ]
+    n.omas = [
+        myapp.oma([ '龍の護石',3,'匠',4,'氷耐性',-5 ]),
+        myapp.oma([ '龍の護石',0,'溜め短縮',5,'攻撃',9 ]),
+        myapp.oma([ '龍の護石',3,'痛撃',4 ])
     ];
-    n.omas = myapp.model.Oma.createSimuData(omas);
-
     skills = [ '斬れ味レベル+1', '攻撃力UP【大】', '耳栓' ];
     n.weaponSlot = 3; // 武器スロ3
     norCombsSet = n.normalize(skills);
