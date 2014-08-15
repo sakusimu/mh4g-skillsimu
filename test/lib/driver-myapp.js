@@ -2,9 +2,11 @@
 'use strict';
 var deps = [ 'underscore', './driver-namespace.js', './driver-data.js',
              './driver-context.js', './driver-model.js', '../../lib/data.js' ];
-define(deps, function (_, myapp, mydata, context, model, data) {
+define(deps, function (_, myapp, mydata, Context, model, data) {
 
 myapp.initialize = function () {
+    this.context = new Context();
+
     this.setup();
 };
 
@@ -60,6 +62,6 @@ return myapp;
        } :
        function (deps, factory) {
            factory(this._, this.myapp, this.myapp.data,
-                   this.myapp.context, this.myapp.model, this.simu.data);
+                   this.myapp.Context, this.myapp.model, this.simu.data);
        }
 );

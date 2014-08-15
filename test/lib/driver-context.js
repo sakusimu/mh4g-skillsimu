@@ -20,7 +20,7 @@ Context.prototype.initialize = function (args) {
     this.vs = args.vs || 6; // 進行度(村☆) vs=VillageStar
 };
 
-return myapp.context = new Context();
+return myapp.Context = Context;
 });
 })(typeof define !== 'undefined' ?
    define :
