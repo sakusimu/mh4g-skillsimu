@@ -93,7 +93,7 @@ simulate([ '斬れ味レベル+1', '高級耳栓' ], equipSet);
            test.apply(this, modules);
        } :
        function (deps, test) {
-           test(this._, this.myapp,
-                this.simu.Deco.Normalizer, this.simu.Deco.Combinator);
+           test(this._, this.myapp, this.simu.Deco.Normalizer,
+                this.simu.Deco.Combinator, this.simu.Deco.Assembler);
        }
 );
