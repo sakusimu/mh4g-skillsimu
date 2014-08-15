@@ -29,11 +29,11 @@ QUnit.test('_normalizeEquip', function () {
 
     // 普通に装備が5つ
     equipSet = {
-        head : myapp.equips('head', 'ユクモノカサ・天')[0]  // 匠+2, 研ぎ師+3
-      , body : myapp.equips('body', '三眼の首飾り')[0]
-      , arm  : myapp.equips('arm', 'ユクモノコテ・天')[0]   // 匠+1, 研ぎ師+3
-      , waist: myapp.equips('waist', 'バンギスコイル')[0]
-      , leg  : myapp.equips('leg', 'ユクモノハカマ・天')[0] // 匠+1, 研ぎ師+1
+        head : myapp.equip('head', 'ユクモノカサ・天')  // 匠+2, 研ぎ師+3
+      , body : myapp.equip('body', '三眼の首飾り')
+      , arm  : myapp.equip('arm', 'ユクモノコテ・天')   // 匠+1, 研ぎ師+3
+      , waist: myapp.equip('waist', 'バンギスコイル')
+      , leg  : myapp.equip('leg', 'ユクモノハカマ・天') // 匠+1, 研ぎ師+1
     };
     got = n._normalizeEquip(equipSet);
     exp = {
@@ -51,14 +51,13 @@ QUnit.test('_normalizeEquip', function () {
     QUnit.deepEqual(got, exp, '5 equips');
 
     // 装備に slotN と胴系統倍化、武器スロ、お守りがある場合
-    var omas = [ [ '龍の護石',3,'匠',4,'氷耐性',-5 ] ];
-    omas = myapp.model.Oma.createSimuData(omas);
+    var omas = [ myapp.oma([ '龍の護石',3,'匠',4,'氷耐性',-5 ]) ];
     equipSet = {
-        head  : myapp.equips('head', 'ユクモノカサ・天')[0]
+        head  : myapp.equip('head', 'ユクモノカサ・天')
       , body  : { name: 'slot3' }
       , arm   : { name: 'slot0' }
       , waist : { name: '胴系統倍化' }
-      , leg   : myapp.equips('leg', 'ユクモノハカマ・天')[0]
+      , leg   : myapp.equip('leg', 'ユクモノハカマ・天')
       , weapon: { name: 'slot2' }
       , oma   : omas[0]
     };
@@ -144,11 +143,11 @@ QUnit.test('normalize', function () {
 
     // 普通に装備が5つ
     equipSet = {
-        head : myapp.equips('head', 'ユクモノカサ・天')[0]  // 匠+2, 研ぎ師+3
-      , body : myapp.equips('body', '三眼の首飾り')[0]
-      , arm  : myapp.equips('arm', 'ユクモノコテ・天')[0]   // 匠+1, 研ぎ師+3
-      , waist: myapp.equips('waist', 'バンギスコイル')[0]
-      , leg  : myapp.equips('leg', 'ユクモノハカマ・天')[0] // 匠+1, 研ぎ師+1
+        head : myapp.equip('head', 'ユクモノカサ・天')  // 匠+2, 研ぎ師+3
+      , body : myapp.equip('body', '三眼の首飾り')
+      , arm  : myapp.equip('arm', 'ユクモノコテ・天')   // 匠+1, 研ぎ師+3
+      , waist: myapp.equip('waist', 'バンギスコイル')
+      , leg  : myapp.equip('leg', 'ユクモノハカマ・天') // 匠+1, 研ぎ師+1
     };
     normalized = n.normalize([ '斬れ味レベル+1', '砥石使用高速化' ], equipSet);
     got = normalized.decombsSet;
@@ -190,14 +189,13 @@ QUnit.test('normalize', function () {
     QUnit.deepEqual(got, exp, 'case 1');
 
     // 装備に slotN と胴系統倍化、武器スロ、お守りがある場合
-    var omas = [ [ '龍の護石',3,'匠',4,'氷耐性',-5 ] ];
-    omas = myapp.model.Oma.createSimuData(omas);
+    var omas = [ myapp.oma([ '龍の護石',3,'匠',4,'氷耐性',-5 ]) ];
     equipSet = {
-        head  : myapp.equips('head', 'ユクモノカサ・天')[0],
+        head  : myapp.equip('head', 'ユクモノカサ・天'),
         body  : { name: 'slot3' },
         arm   : { name: 'slot0' },
         waist : { name: '胴系統倍化' },
-        leg   : myapp.equips('leg', 'ユクモノハカマ・天')[0],
+        leg   : myapp.equip('leg', 'ユクモノハカマ・天'),
         weapon: { name: 'slot2' },
         oma   : omas[0]
     };

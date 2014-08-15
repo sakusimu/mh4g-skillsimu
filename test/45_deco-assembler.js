@@ -27,17 +27,16 @@ QUnit.test('assemble', function () {
         });
     };
 
-    var omas = [ [ '龍の護石',3,'匠',4,'氷耐性',-5 ] ];
-    omas = myapp.model.Oma.createSimuData(omas);
+    var omas = [ myapp.oma([ '龍の護石',3,'匠',4,'氷耐性',-5 ]) ];
 
     // 装備に胴系統倍化、武器スロ、お守りがある場合
     skills = [ '斬れ味レベル+1', '高級耳栓' ];
     equipSet = {
-        head  : myapp.equips('head', 'ユクモノカサ・天')[0]  // スロ2
-      , body  : myapp.equips('body', '三眼の首飾り')[0]      // スロ3
-      , arm   : myapp.equips('arm', 'ユクモノコテ・天')[0]   // スロ2
-      , waist : myapp.equips('waist', 'バンギスコイル')[0]   // 胴系統倍化
-      , leg   : myapp.equips('leg', 'ユクモノハカマ・天')[0] // スロ2
+        head  : myapp.equip('head', 'ユクモノカサ・天')  // スロ2
+      , body  : myapp.equip('body', '三眼の首飾り')      // スロ3
+      , arm   : myapp.equip('arm', 'ユクモノコテ・天')   // スロ2
+      , waist : myapp.equip('waist', 'バンギスコイル')   // 胴系統倍化
+      , leg   : myapp.equip('leg', 'ユクモノハカマ・天') // スロ2
       , weapon: { name: 'slot2' }
       , oma   : omas[0]
     };
@@ -67,11 +66,11 @@ QUnit.test('assemble', function () {
     // ALL三眼, 武器スロ3, お守り(匠4,スロ3)
     skills = [ '斬れ味レベル+1', '砥石使用高速化' ];
     equipSet = {
-        head  : myapp.equips('head', '三眼のピアス')[0]
-      , body  : myapp.equips('body', '三眼の首飾り')[0]
-      , arm   : myapp.equips('arm', '三眼の腕輪')[0]
-      , waist : myapp.equips('waist', '三眼の腰飾り')[0]
-      , leg   : myapp.equips('leg', '三眼の足輪')[0]
+        head  : myapp.equip('head', '三眼のピアス')
+      , body  : myapp.equip('body', '三眼の首飾り')
+      , arm   : myapp.equip('arm', '三眼の腕輪')
+      , waist : myapp.equip('waist', '三眼の腰飾り')
+      , leg   : myapp.equip('leg', '三眼の足輪')
       , weapon: { name: 'slot3' }
       , oma   : omas[0]
     };

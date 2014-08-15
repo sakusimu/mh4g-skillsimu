@@ -44,12 +44,15 @@ QUnit.test('simulate: torsoUp', function () {
     myapp.setup({ sex: 'w' });
 
     equips = data.equips;
-    equips.head  = myapp.equips('head', 'ユクモノカサ・天');
-    equips.body  = myapp.equips('body', '三眼の首飾り');
-    equips.arm   = myapp.equips('arm', 'ユクモノコテ・天');
-    var waists   = [ 'レザーベルト', 'バンギスコイル', 'シルバーソルコイル' ];
-    equips.waist = myapp.equips('waist', waists);
-    equips.leg   = myapp.equips('leg', 'ユクモノハカマ・天');
+    equips.head  = [ myapp.equip('head', 'ユクモノカサ・天') ];
+    equips.body  = [ myapp.equip('body', '三眼の首飾り') ];
+    equips.arm   = [ myapp.equip('arm', 'ユクモノコテ・天') ];
+    equips.waist = [
+        myapp.equip('waist', 'レザーベルト'),
+        myapp.equip('waist', 'バンギスコイル'),
+        myapp.equip('waist', 'シルバーソルコイル')
+    ];
+    equips.leg   = [ myapp.equip('leg', 'ユクモノハカマ・天') ];
 
     got = simu.simulate([ '斬れ味レベル+1', '砥石使用高速化' ]);
     exp = [ { head  : 'ユクモノカサ・天',

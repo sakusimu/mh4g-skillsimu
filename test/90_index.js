@@ -47,16 +47,15 @@ QUnit.test('simulateDeco', function () {
     var got, exp,
         simu = new Simulator();
 
-    var omas = [ [ '龍の護石',3,'匠',4,'氷耐性',-5 ] ];
-    omas = myapp.model.Oma.createSimuData(omas);
+    var omas = [ myapp.oma([ '龍の護石',3,'匠',4,'氷耐性',-5 ]) ];
 
     // 装備に胴系統倍化、武器スロ、お守りがある場合
     var equipSet = {
-        head  : myapp.equips('head', 'ユクモノカサ・天')[0]  // スロ2
-      , body  : myapp.equips('body', '三眼の首飾り')[0]      // スロ3
-      , arm   : myapp.equips('arm', 'ユクモノコテ・天')[0]   // スロ2
-      , waist : myapp.equips('waist', 'バンギスコイル')[0]   // 胴系統倍化
-      , leg   : myapp.equips('leg', 'ユクモノハカマ・天')[0] // スロ2
+        head  : myapp.equip('head', 'ユクモノカサ・天')  // スロ2
+      , body  : myapp.equip('body', '三眼の首飾り')      // スロ3
+      , arm   : myapp.equip('arm', 'ユクモノコテ・天')   // スロ2
+      , waist : myapp.equip('waist', 'バンギスコイル')   // 胴系統倍化
+      , leg   : myapp.equip('leg', 'ユクモノハカマ・天') // スロ2
       , weapon: { name: 'slot2' }
       , oma   : omas[0]
     };

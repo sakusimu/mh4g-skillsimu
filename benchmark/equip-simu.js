@@ -67,9 +67,9 @@ simulate([ '斬れ味レベル+1', '高級耳栓', '砥石使用高速化' ], { 
 simulate([ '攻撃力UP【大】', '業物', '集中', '見切り+1', '弱点特効' ]);
 
 // お守りあり
-var omas = myapp.model.Oma.createSimuData([
-    [ '龍の護石',3,'匠',4,'氷耐性',-5 ]
-]);
+var omas = [
+    myapp.oma([ '龍の護石',3,'匠',4,'氷耐性',-5 ])
+];
 data.omas = omas;
 simulate([ '斬れ味レベル+1', '高級耳栓' ]);
 simulate([ '斬れ味レベル+1', '高級耳栓', '砥石使用高速化' ]);

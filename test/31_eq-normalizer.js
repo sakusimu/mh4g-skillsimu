@@ -133,21 +133,19 @@ QUnit.test('_collectMaxSkill', function () {
 });
 
 QUnit.test('_normalize1', function () {
-    var got, exp, names, equips,
+    var got, exp, equips,
         n = new Normalizer();
 
     // case 1
-    names = [ 'ジャギィＳメイル'   // 攻撃+2, スロ1
-            , 'クックＳメイル'     // 攻撃+3, スロ2
-            , 'ギザミメイル'     // 斬れ味+2, スロ0
-            , 'レザーベスト'       // スロ0
-            , 'グラビドＵメイル'   // スロ3
-            , '三眼の首飾り'       // スロ3
-            , 'シルバーソルメイル' // 斬れ味+2, スロ3
+    equips = [
+        myapp.equip('body', 'ジャギィＳメイル')   // 攻撃+2, スロ1
+      , myapp.equip('body', 'クックＳメイル')     // 攻撃+3, スロ2
+      , myapp.equip('body', 'ギザミメイル')       // 斬れ味+2, スロ0
+      , myapp.equip('body', 'レザーベスト')       // スロ0
+      , myapp.equip('body', 'グラビドＵメイル')   // スロ3
+      , myapp.equip('body', '三眼の首飾り')       // スロ3
+      , myapp.equip('body', 'シルバーソルメイル') // 斬れ味+2, スロ3
     ];
-    equips = myapp.equips('body', names);
-    if (equips.length !== 7) throw new Error('error: equips.length=' + equips.length);
-
     got = n._normalize1(equips, [ '攻撃', '斬れ味' ]);
     exp = { 'ジャギィＳメイル':
             [ { '攻撃': 3, '研ぎ師': 1, '効果持続': -2, '気絶': 2, '防御': -1 },
@@ -180,14 +178,12 @@ QUnit.test('_normalize1', function () {
     QUnit.deepEqual(got, exp, 'case 1');
 
     // case 2: 斬れ味と匠みたくプラスマイナスが反発するポイントの場合
-    names = [ 'ゴアメイル'         // 匠+2, スロ0
-            , 'アカムトウルンテ'   // 匠+2, 斬れ味-2, スロ1
-            , 'シルバーソルメイル' // 斬れ味+2, スロ3
-            , 'ユクモノドウギ・天' // 匠+1, スロ2
+    equips = [
+        myapp.equip('body', 'ゴアメイル')         // 匠+2, スロ0
+      , myapp.equip('body', 'アカムトウルンテ')   // 匠+2, 斬れ味-2, スロ1
+      , myapp.equip('body', 'シルバーソルメイル') // 斬れ味+2, スロ3
+      , myapp.equip('body', 'ユクモノドウギ・天') // 匠+1, スロ2
     ];
-    equips = myapp.equips('body', names);
-    if (equips.length !== 4) throw new Error('error: equips.length=' + equips.length);
-
     got = n._normalize1(equips, [ '匠', '斬れ味' ]);
     exp = { 'ゴアメイル': [ { '細菌学': 2, '匠': 2, '闘魂': 2, '火耐性': -3 } ],
             'アカムトウルンテ': [ { '匠': 1, '達人': 3, '聴覚保護': 1, '斬れ味': -1 } ],
@@ -202,15 +198,13 @@ QUnit.test('_normalize1', function () {
     QUnit.deepEqual(got, exp, 'case 2');
 
     // case 3: 胴系統倍化
-    names = [ 'クックＳグリーヴ' // 攻撃+4, スロ1
-            , 'アシラグリーヴ'   // 胴系統倍化
-            , 'ブレイブパンツ'   // スロ0
-            , 'カブラＳグリーヴ' // 胴系統倍化
-            , 'バンギスグリーヴ' // 攻撃+1, 斬れ味+3, スロ3
+    equips = [
+        myapp.equip('leg', 'クックＳグリーヴ') // 攻撃+4, スロ1
+      , myapp.equip('leg', 'アシラグリーヴ')   // 胴系統倍化
+      , myapp.equip('leg', 'ブレイブパンツ')   // スロ0
+      , myapp.equip('leg', 'カブラＳグリーヴ') // 胴系統倍化
+      , myapp.equip('leg', 'バンギスグリーヴ') // 攻撃+1, 斬れ味+3, スロ3
     ];
-    equips = myapp.equips('leg', names);
-    if (equips.length !== 5) throw new Error('error: equips.length=' + equips.length);
-
     got = n._normalize1(equips, [ '攻撃', '斬れ味' ]);
     exp = { 'クックＳグリーヴ':
             [ { '攻撃': 5, '聴覚保護': -2, 'スタミナ': 2, '火耐性': 2, '防御': -1 },
@@ -240,22 +234,20 @@ QUnit.test('_normalize1', function () {
 });
 
 QUnit.test('_normalize1 (none deco)', function () {
-    var got, exp, names, equips,
+    var got, exp, equips,
         n = new Normalizer();
 
     data.decos = []; // 装飾品なし
 
-    names = [ 'ハンターメイル'     // スロ1
-            , 'レザーベスト'       // スロ0
-            , 'ジャギィＳメイル'   // 攻撃+2, スロ1
-            , 'クックＳメイル'     // 攻撃+3, スロ2
-            , 'バンギスメイル'     // 攻撃+4, 斬れ味+1, スロ0
-            , '三眼の首飾り'       // スロ3
-            , 'シルバーソルメイル' // 斬れ味+2, スロ3
+    equips = [
+        myapp.equip('body', 'ハンターメイル')     // スロ1
+      , myapp.equip('body', 'レザーベスト')       // スロ0
+      , myapp.equip('body', 'ジャギィＳメイル')   // 攻撃+2, スロ1
+      , myapp.equip('body', 'クックＳメイル')     // 攻撃+3, スロ2
+      , myapp.equip('body', 'バンギスメイル')     // 攻撃+4, 斬れ味+1, スロ0
+      , myapp.equip('body', '三眼の首飾り')       // スロ3
+      , myapp.equip('body', 'シルバーソルメイル') // 斬れ味+2, スロ3
     ];
-    equips = myapp.equips('body', names);
-    if (equips.length !== 7) throw new Error('equips is not 7: ' + equips.length);
-
     got = n._normalize1(equips, [ '攻撃', '斬れ味' ]);
     exp = { slot1: [],
             slot0: [],
@@ -277,7 +269,7 @@ QUnit.test('_normalize1 (fix)', function () {
     var got, exp, equips,
         n = new Normalizer();
 
-    equips = myapp.equips('body', '三眼の首飾り');
+    equips = [ myapp.equip('body', '三眼の首飾り') ];
     got = n._normalize1(equips, [ '攻撃', '斬れ味' ]);
     exp = { '三眼の首飾り':
             [ { '攻撃': 3, '防御': -3 },
@@ -291,7 +283,7 @@ QUnit.test('_normalize1 (fix)', function () {
     QUnit.deepEqual(got, exp, 'fix');
 
     // 胴系統倍化
-    equips = myapp.equips('waist', 'バンギスコイル');
+    equips = [ myapp.equip('waist', 'バンギスコイル') ];
     got = n._normalize1(equips, [ '攻撃', '斬れ味' ]);
     exp = { 'バンギスコイル': [ { '胴系統倍化': 1 } ] };
     QUnit.deepEqual(got, exp, 'fix: torsoUp');
