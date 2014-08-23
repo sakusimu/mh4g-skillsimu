@@ -38,98 +38,104 @@ QUnit.test('initialize', function () {
     QUnit.strictEqual(got, 1, 'weaponSlot');
 });
 
-QUnit.test('_compareAny', function () {
-    var src, dst,
-        count = 1,
+QUnit.test('compareAny', function () {
+    var got, src, dst,
         n = new Normalizer();
 
     src = { a: 1 }; dst = { a: 1 };
-    QUnit.ok(!n._compareAny(src, dst), 'case ' + count);
+    got = n._compareAny(src, dst);
+    QUnit.strictEqual(got, false, 'src equal dst: 1');
     src = { a: 1, b: 0 }; dst = { a: 1, b: 0 };
-    QUnit.ok(!n._compareAny(src, dst), 'case ' + count);
-    ++count;
+    got = n._compareAny(src, dst);
+    QUnit.strictEqual(got, false, 'src equal dst: 2');
 
     src = { a: 1 }; dst = { a: 2 };
-    QUnit.ok(n._compareAny(src, dst), 'case ' + count);
+    got = n._compareAny(src, dst);
+    QUnit.strictEqual(got, true, 'src < dst');
     src = { a: 2 }; dst = { a: 1 };
-    QUnit.ok(!n._compareAny(src, dst), 'case ' + count);
-    ++count;
+    got = n._compareAny(src, dst);
+    QUnit.strictEqual(got, false, 'src > dst');
 
     src = { a: -1 }; dst = { a: 1 };
-    QUnit.ok(n._compareAny(src, dst), 'case ' + count);
+    got = n._compareAny(src, dst);
+    QUnit.strictEqual(got, true, 'src < dst: minus');
     src = { a: 1 }; dst = { a: -1 };
-    QUnit.ok(!n._compareAny(src, dst), 'case ' + count);
-    ++count;
+    got = n._compareAny(src, dst);
+    QUnit.strictEqual(got, false, 'src > dst: minus');
 
     src = { a: -1 }; dst = { a: 0 };
-    QUnit.ok(n._compareAny(src, dst), 'case ' + count);
+    got = n._compareAny(src, dst);
+    QUnit.strictEqual(got, true, 'src < dst: minus & zero');
     src = { a: 0 }; dst = { a: -1 };
-    QUnit.ok(!n._compareAny(src, dst), 'case ' + count);
-    ++count;
+    got = n._compareAny(src, dst);
+    QUnit.strictEqual(got, false, 'src > dst: minus & zero');
 
     src = { a: 1, b: 1 }; dst = { a: 1, b: 2 };
-    QUnit.ok(n._compareAny(src, dst), 'case ' + count);
+    got = n._compareAny(src, dst);
+    QUnit.strictEqual(got, true, 'src < dst: multi skills');
     src = { a: 1, b: 2 }; dst = { a: 1, b: 1 };
-    QUnit.ok(!n._compareAny(src, dst), 'case ' + count);
-    ++count;
+    got = n._compareAny(src, dst);
+    QUnit.strictEqual(got, false, 'src > dst: multi skills');
 
     src = { a: 1, b: 1 }; dst = { a: 0, b: 2 };
-    QUnit.ok(n._compareAny(src, dst), 'case ' + count);
+    got = n._compareAny(src, dst);
+    QUnit.strictEqual(got, true, 'compare any: 1');
     src = { a: 0, b: 2 }; dst = { a: 1, b: 1 };
-    QUnit.ok(n._compareAny(src, dst), 'case ' + count);
-    ++count;
+    got = n._compareAny(src, dst);
+    QUnit.strictEqual(got, true, 'compare any: 2');
 
     src = { a: 0, b: 0 }; dst = { a: -1, b: 1 };
-    QUnit.ok(n._compareAny(src, dst), 'case ' + count);
+    got = n._compareAny(src, dst);
+    QUnit.strictEqual(got, true, 'compare any: with minus 1');
     src = { a: -1, b: 1 }; dst = { a: 0, b: 0 };
-    QUnit.ok(n._compareAny(src, dst), 'case ' + count);
-    ++count;
+    got = n._compareAny(src, dst);
+    QUnit.strictEqual(got, true, 'compare any: with minus 2');
 
     src = { a: 2, b: 1, c: 0 }; dst = { a: 1, b: 1, c: 1 };
-    QUnit.ok(n._compareAny(src, dst), 'case ' + count);
+    got = n._compareAny(src, dst);
+    QUnit.strictEqual(got, true, 'compare any: multi skills 1');
     src = { a: 1, b: 1, c: 1 }; dst = { a: 2, b: 1, c: 0 };
-    QUnit.ok(n._compareAny(src, dst), 'case ' + count);
-    ++count;
+    got = n._compareAny(src, dst);
+    QUnit.strictEqual(got, true, 'compare any: multi skills 2');
 });
 
 QUnit.test('_collectMaxSkill', function () {
     var got, exp, combs,
-         count = 1,
         n = new Normalizer();
 
     combs = [ { a: 1 } ];
     got = n._collectMaxSkill(combs);
     exp = [ { a: 1 } ];
-    QUnit.deepEqual(got, exp, 'case ' + count++);
+    QUnit.deepEqual(got, exp, 'equal 1');
 
     combs = [ { a: 1 }, { a: 2 } ];
     got = n._collectMaxSkill(combs);
     exp = [ { a: 2 } ];
-    QUnit.deepEqual(got, exp, 'case ' + count++);
+    QUnit.deepEqual(got, exp, 'equal 2');
 
     combs = [ { a: 1, b: 1 }, { a: 2, b: 1 } ];
     got = n._collectMaxSkill(combs);
     exp = [ { a: 2, b: 1 } ];
-    QUnit.deepEqual(got, exp, 'case ' + count++);
+    QUnit.deepEqual(got, exp, 'collect max');
 
     combs = [ { a: 1, b: -3 }, { a: 1, b: -1 }, { a: -1, b: 0 } ];
     got = n._collectMaxSkill(combs);
     exp = [ { a: 1, b: -1 }, { a: -1, b: 0 } ];
-    QUnit.deepEqual(got, exp, 'case ' + count++);
+    QUnit.deepEqual(got, exp, 'collect max: minus & 0');
 
     combs = [ { a: 1, b: 1, c: 0 }, { a: 2, b: 1, c: 0 },
               { a: 1, b: 1, c: 1 },
               { a: 0, b: 2, c: 1 }, { a: 0, b: 1, c: 1 } ];
     got = n._collectMaxSkill(combs);
     exp = [ { a: 2, b: 1, c: 0 }, { a: 1, b: 1, c: 1 }, { a: 0, b: 2, c: 1 } ];
-    QUnit.deepEqual(got, exp, 'case ' + count++);
+    QUnit.deepEqual(got, exp, 'collect max: complex');
 
     // 同じ組み合わせがあると正しく動かない
     combs = [ { a: 2, b: 0 }, { a: 1, b: 1 }, { a: 2, b: 0 } ];
     got = n._collectMaxSkill(combs);
     exp = [ { a: 1, b: 1 } ];
     //exp = [ { a: 2, b: 0 }, { a: 1, b: 1 } ]; // ホントの正しい結果はこれ
-    QUnit.deepEqual(got, exp, 'same comb');
+    QUnit.deepEqual(got, exp, 'not uniq');
 });
 
 QUnit.test('_normalize1', function () {
