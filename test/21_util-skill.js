@@ -143,66 +143,70 @@ QUnit.test('isEqual', function () {
     QUnit.ok(Skill.isEqual(a, b), 'case 4-' + count++);
 });
 
+QUnit.test('join', function () {
+    var got, exp;
+
+    var combs = [ { a: 1, b: -1 }, { c: 1, d: -1 } ];
+    got = Skill.join(combs);
+    exp = { a: 1, c: 1, b: -1, d: -1 };
+    QUnit.deepEqual(got, exp, 'join');
+    got = combs;
+    exp = [ { a: 1, b: -1 }, { c: 1, d: -1 } ];
+    QUnit.deepEqual(got, exp, 'join: STABLE');
+
+    got = Skill.join([ { a: 1 } ]);
+    exp = { a: 1 };
+    QUnit.deepEqual(got, exp, 'single');
+    got = Skill.join([ null ]);
+    exp = {};
+    QUnit.deepEqual(got, exp, 'single: null');
+
+    got = Skill.join([ { a: 1, b: -1 }, { a: 1 } ]);
+    exp = { a: 2, b: -1 };
+    QUnit.deepEqual(got, exp, 'add');
+    got = Skill.join([ { a: 1, b: -1 }, { b: -1 } ]);
+    exp = { a: 1, b: -2 };
+    QUnit.deepEqual(got, exp, 'remove');
+
+    got = Skill.join([ { a: 1, '胴系統倍化': 1 }, { a: 1 } ]);
+    exp = { a: 2, '胴系統倍化': 1 };
+    QUnit.deepEqual(got, exp, 'torso up 1');
+    got = Skill.join([ { a: 1, b: -1 }, { '胴系統倍化': 1 } ]);
+    exp = { a: 1, b: -1, '胴系統倍化': 1 };
+    QUnit.deepEqual(got, exp, 'torso up 2');
+    got = Skill.join([ { a: 1, '胴系統倍化': 1 }, { '胴系統倍化': 1 } ]);
+    exp = { a: 1, '胴系統倍化': 1 };
+    QUnit.deepEqual(got, exp, 'torso up 3');
+
+    got = Skill.join([ { a: 1 }, undefined ]);
+    exp = { a: 1 };
+    QUnit.deepEqual(got, exp, 'within undefined');
+    got = Skill.join([ { a: 1 }, null ]);
+    exp = { a: 1 };
+    QUnit.deepEqual(got, exp, 'within null');
+    got = Skill.join([ { a: 1 }, {} ]);
+    exp = { a: 1 };
+    QUnit.deepEqual(got, exp, 'within {}');
+
+    got = Skill.join();
+    QUnit.deepEqual(got, {}, 'nothing in');
+    got = Skill.join(undefined);
+    QUnit.deepEqual(got, {}, 'undefined');
+    got = Skill.join(null);
+    QUnit.deepEqual(got, {}, 'null');
+    got = Skill.join([]);
+    QUnit.deepEqual(got, {}, '[]');
+});
+
 QUnit.test('merge', function () {
     var got, exp;
 
-    var skillList = [ { a: 1, b: -1 }, { c: 1, d: -1 } ];
-    got = Skill.merge(skillList);
-    exp = { a: 1, c: 1, b: -1, d: -1 };
-    QUnit.deepEqual(got, exp, 'merge(list)');
-    exp = [ { a: 1, b: -1 }, { c: 1, d: -1 } ];
-    QUnit.deepEqual(skillList, exp, 'merge(list): STABLE');
-
-    got = Skill.merge([ { a: 1 } ]);
-    exp = { a: 1 };
-    QUnit.deepEqual(got, exp, 'merge(list): single');
-
-    got = Skill.merge([ { a: 1, b: -1 }, { a: 1 } ]);
-    exp = { a: 2, b: -1 };
-    QUnit.deepEqual(got, exp, 'merge(list): add');
-    got = Skill.merge([ { a: 1, b: -1 }, { b: -1 } ]);
-    exp = { a: 1, b: -2 };
-    QUnit.deepEqual(got, exp, 'merge(list): remove');
-
-    var skillComb = { a: 1, b: -1 };
-    got = Skill.merge(skillComb, { c: 1, d: -1 });
-    exp = { a: 1, c: 1, b: -1, d: -1 };
-    QUnit.deepEqual(got, exp, 'merge(args)');
-    exp = { a: 1, b: -1 };
-    QUnit.deepEqual(skillComb, exp, 'merge(args): STABLE');
-
     got = Skill.merge({ a: 1, b: -1 }, { a: 1 });
     exp = { a: 2, b: -1 };
-    QUnit.deepEqual(got, exp, 'merge(args): add');
+    QUnit.deepEqual(got, exp, 'add');
     got = Skill.merge({ a: 1, b: -1 }, { b: -1 });
     exp = { a: 1, b: -2 };
-    QUnit.deepEqual(got, exp, 'merge(args): remove');
-
-    got = Skill.merge({ a: 1, '胴系統倍化': 1 }, { a: 1 });
-    exp = { a: 2, '胴系統倍化': 1 };
-    QUnit.deepEqual(got, exp, 'merge: torso up 1');
-    got = Skill.merge({ a: 1, b: -1 }, { '胴系統倍化': 1 });
-    exp = { a: 1, b: -1, '胴系統倍化': 1 };
-    QUnit.deepEqual(got, exp, 'merge: torso up 2');
-    got = Skill.merge({ a: 1, '胴系統倍化': 1 }, { '胴系統倍化': 1 });
-    exp = { a: 1, '胴系統倍化': 1 };
-    QUnit.deepEqual(got, exp, 'merge: torso up 3');
-
-    got = Skill.merge();
-    QUnit.deepEqual(got, null, 'nothing in');
-    got = Skill.merge(undefined);
-    QUnit.deepEqual(got, {}, 'undefined');
-    got = Skill.merge(null);
-    QUnit.deepEqual(got, {}, 'null');
-    got = Skill.merge([]);
-    QUnit.deepEqual(got, {}, '[]');
-
-    got = Skill.merge({ a: 1 }, undefined);
-    QUnit.deepEqual(got, { a: 1 }, 'skill, undefined');
-    got = Skill.merge({ a: 1 }, null);
-    QUnit.deepEqual(got, { a: 1 }, 'skill, null');
-    got = Skill.merge({ a: 1 }, {});
-    QUnit.deepEqual(got, { a: 1 }, 'skill, {}');
+    QUnit.deepEqual(got, exp, 'remove');
 });
 
 QUnit.test('sum', function () {
