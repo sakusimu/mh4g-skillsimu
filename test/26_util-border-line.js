@@ -257,8 +257,8 @@ QUnit.test('_calcMaxSumSkillPoint', function () {
     QUnit.deepEqual(got, null, 'null');
 });
 
-QUnit.test('calc', function () {
-    var got, exp, bl, combsSet, skillNames;
+QUnit.test('calcEach & calcSum', function () {
+    var got, exp, combsSet, skillNames, bl, sc;
 
     skillNames = [ '攻撃力UP【大】', '業物' ];
     combsSet = {
@@ -281,22 +281,21 @@ QUnit.test('calc', function () {
             { skillComb: { '攻撃': 0, '斬れ味': 2 } } ]
     };
     bl = new BorderLine(skillNames, combsSet);
-    got = bl.calc('waist', { '攻撃': 5+1+5, '斬れ味': 1+3+1 });
-    exp = {
-        // 攻撃: 20 - (5+1+5) - (6+4), 斬れ味: 10 - (1+3+1) - (4+2)
-        waist: { '攻撃': -1, '斬れ味': -1 },
-        // 30 - (11 + 5) - 6 - 4
-        sum: 4
-    };
-    QUnit.deepEqual(got, exp, 'calc waist');
-    got = bl.calc('leg', { '攻撃': 5+1+5+1, '斬れ味': 1+3+1+3 });
-    exp = {
-        // 攻撃: 20 - (5+1+5+1) - (4), 斬れ味: 10 - (1+3+1+3) - (2)
-        leg: { '攻撃': 4, '斬れ味': 0 },
-        // 30 - (12 + 8) - 4
-        sum: 6
-    };
-    QUnit.deepEqual(got, exp, 'calc leg');
+    sc = { '攻撃': 5+1+5, '斬れ味': 1+3+1 };
+    got = bl.calcEach('waist', sc);
+    exp = { '攻撃': -1, '斬れ味': -1 }; // 攻撃: 20 - (5+1+5) - (6+4), 斬れ味: 10 - (1+3+1) - (4+2)
+    QUnit.deepEqual(got, exp, 'calcEach: waist');
+    got = bl.calcSum('waist', sc);
+    exp = 4; // 30 - (11 + 5) - 6 - 4
+    QUnit.strictEqual(got, exp, 'calcSum: waist');
+
+    sc = { '攻撃': 5+1+5+1, '斬れ味': 1+3+1+3 };
+    got = bl.calcEach('leg', sc);
+    exp = { '攻撃': 4, '斬れ味': 0 }; // 攻撃: 20 - (5+1+5+1) - (4), 斬れ味: 10 - (1+3+1+3) - (2)
+    QUnit.deepEqual(got, exp, 'calcEach: leg');
+    got = bl.calcSum('leg', sc);
+    exp = 6; // 30 - (12 + 8) - 4
+    QUnit.strictEqual(got, exp, 'calcSum: leg');
 
     // undefined, null, [] を含む場合
     skillNames = [ '攻撃力UP【大】', '業物' ];
@@ -315,14 +314,13 @@ QUnit.test('calc', function () {
             { skillComb: { '攻撃': 4, '斬れ味': 1 } } ]
     };
     bl = new BorderLine(skillNames, combsSet);
-    got = bl.calc('arm', { '攻撃': (8+6), '斬れ味': (4+6) });
-    exp = {
-        // 攻撃: 20 - (8+6) - (6), 斬れ味: 10 - (4+6) - (4)
-        arm: { '攻撃': 0, '斬れ味': -4 },
-        // 30 - (14 + 10) - 6
-        sum: 0
-    };
-    QUnit.deepEqual(got, exp, 'within: undefined, null, []');
+    sc = { '攻撃': (8+6), '斬れ味': (4+6) };
+    got = bl.calcEach('arm', sc);
+    exp = { '攻撃': 0, '斬れ味': -4 }; // 攻撃: 20 - (8+6) - (6), 斬れ味: 10 - (4+6) - (4)
+    QUnit.deepEqual(got, exp, 'calcEach: within undefined, null, []');
+    got = bl.calcSum('arm', sc);
+    exp = 0; // 30 - (14 + 10) - 6
+    QUnit.strictEqual(got, exp, 'calcSum: within undefined, null, []');
 
     // 胴系統倍化
     skillNames = [ '攻撃力UP【大】', '業物' ];
@@ -343,14 +341,13 @@ QUnit.test('calc', function () {
             { skillComb: { '胴系統倍化': 1 } } ]
     };
     bl = new BorderLine(skillNames, combsSet);
-    got = bl.calc('waist', { '攻撃': (4+4+3), '斬れ味': (2+2+3) });
-    exp = {
-        // 攻撃: 20 - (4+4+3) - (5), 斬れ味: 10 - (2+2+3) - (4)
-        waist: { '攻撃': 4, '斬れ味': -1 },
-        // 30 - (11 + 7) - 6(胴系統倍化)
-        sum: 6
-    };
-    QUnit.deepEqual(got, exp, 'torso up');
+    sc = { '攻撃': (4+4+3), '斬れ味': (2+2+3) };
+    got = bl.calcEach('waist', sc);
+    exp = { '攻撃': 4, '斬れ味': -1 }; // 攻撃: 20 - (4+4+3) - (5), 斬れ味: 10 - (2+2+3) - (4)
+    QUnit.deepEqual(got, exp, 'calcEach: torso up');
+    got = bl.calcSum('waist', sc);
+    exp = 6; // 30 - (11 + 7) - 6(胴系統倍化)
+    QUnit.strictEqual(got, exp, 'calcSum: torso up');
 
     // 胴系統倍化: body is null
     skillNames = [ '攻撃力UP【大】', '業物' ];
@@ -371,14 +368,13 @@ QUnit.test('calc', function () {
             { skillComb: { '攻撃': 4, '斬れ味': 3 } } ]
     };
     bl = new BorderLine(skillNames, combsSet);
-    got = bl.calc('waist', { '攻撃': (0+0+8), '斬れ味': (0+0+3) });
-    exp = {
-        // 攻撃: 20 - (8) - (5+4), 斬れ味: 10 - (3) - (4+3)
-        waist: { '攻撃': 3, '斬れ味': 0 },
-        // 30 - (8 + 3) - (6 + 7)
-        sum: 6
-    };
-    QUnit.deepEqual(got, exp, 'torso up: body is null');
+    sc = { '攻撃': (0+0+8), '斬れ味': (0+0+3) };
+    got = bl.calcEach('waist', sc);
+    exp = { '攻撃': 3, '斬れ味': 0 }; // 攻撃: 20 - (8) - (5+4), 斬れ味: 10 - (3) - (4+3)
+    QUnit.deepEqual(got, exp, 'calcEach: torso up(body is null)');
+    got = bl.calcSum('waist', sc);
+    exp = 6; // 30 - (8 + 3) - (6 + 7)
+    QUnit.strictEqual(got, exp, 'calcSum: torso up(body is null)');
 
     // skillComb が null
     skillNames = [ '攻撃力UP【大】', '業物' ];
@@ -402,15 +398,12 @@ QUnit.test('calc', function () {
             { skillComb: { '攻撃': 0, '斬れ味': 2 } } ]
     };
     bl = new BorderLine(skillNames, combsSet);
-    got = bl.calc('body', null);
-    exp = {
-        // 攻撃: 20 - (5+5+1+6+4), 斬れ味: 10 - (1+1+3+4+2)
-        body: { '攻撃': -1, '斬れ味': -1 },
-        // 30 - (11 + 5) - 6 - 4
-        sum: 4
-    };
-    QUnit.deepEqual(got, exp, 'calc waist');
-
+    got = bl.calcEach('body', null);
+    exp = { '攻撃': -1, '斬れ味': -1 }; // 攻撃: 20 - (5+5+1+6+4), 斬れ味: 10 - (1+1+3+4+2)
+    QUnit.deepEqual(got, exp, 'calcEach: sc is null');
+    got = bl.calcSum('body', null);
+    exp = 4; // 30 - (11 + 5) - 6 - 4
+    QUnit.strictEqual(got, exp, 'calcSum: sc is null');
 });
 
 });
