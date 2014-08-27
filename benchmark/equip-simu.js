@@ -13,17 +13,17 @@ var simulate = function (skillNames, opts) {
         a = new Assembler();
 
     var start = Date.now();
-    var norCombsSet = n.normalize(skillNames);
+    var bulksSet = n.normalize(skillNames);
     var ndone = Date.now();
-    var actiCombs = c.combine(skillNames, norCombsSet);
+    var actiCombs = c.combine(skillNames, bulksSet);
     var cdone = Date.now();
     var assems = a.assemble(actiCombs);
     var adone = Date.now();
 
-//printAssems(assems);
+    //printAssems(assems);
 
     console.log('>', '[ ' + skillNames.join(', ') + ' ]');
-    console.log('n:', resultNormalizer(norCombsSet));
+    console.log('n:', resultNormalizer(bulksSet));
     console.log('c:', actiCombs.length);
     console.log('a:', assems.length);
 
@@ -34,12 +34,12 @@ var simulate = function (skillNames, opts) {
     console.log('time:', time);
 };
 
-var resultNormalizer = function (norCombsSet) {
+var resultNormalizer = function (bulksSet) {
     var list = [];
-    for (var part in norCombsSet) {
-        var norCombs = norCombsSet[part];
-        if (norCombs == null) continue;
-        list.push(part + ': ' + norCombs.length);
+    for (var part in bulksSet) {
+        var bulks = bulksSet[part];
+        if (bulks == null) continue;
+        list.push(part + ': ' + bulks.length);
     }
     return '[ ' + list.join(', ') + ' ]';
 };
@@ -67,10 +67,9 @@ simulate([ '斬れ味レベル+1', '高級耳栓', '砥石使用高速化' ], { 
 simulate([ '攻撃力UP【大】', '業物', '集中', '見切り+1', '弱点特効' ]);
 
 // お守りあり
-var omas = [
+data.omas = [
     myapp.oma([ '龍の護石',3,'匠',4,'氷耐性',-5 ])
 ];
-data.omas = omas;
 simulate([ '斬れ味レベル+1', '高級耳栓' ]);
 simulate([ '斬れ味レベル+1', '高級耳栓', '砥石使用高速化' ]);
 

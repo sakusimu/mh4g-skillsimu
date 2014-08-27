@@ -45,10 +45,10 @@ QUnit.test('_goal', function () {
 });
 
 QUnit.test('_calcMaxEachSkillPoint', function () {
-    var got, exp, combsSet,
+    var got, exp, bulksSet,
         bl = new BorderLine();
 
-    combsSet = {
+    bulksSet = {
         head: [
             { skillComb: { 'a': 1, 'b': 0 } },
             { skillComb: { 'a': 0, 'b': 1 } } ]
@@ -71,13 +71,13 @@ QUnit.test('_calcMaxEachSkillPoint', function () {
       , oma: [
             { skillComb: {         'b': 1 } } ]
     };
-    got = bl._calcMaxEachSkillPoint(combsSet);
+    got = bl._calcMaxEachSkillPoint(bulksSet);
     exp = { 'a': { head: 1, body: 1, arm: 1, waist: 2, leg: 5, weapon: 1, oma: 0 },
             'b': { head: 1, body: 1, arm: 1, waist: 0, leg: 6, weapon: 0, oma: 1 } };
     QUnit.deepEqual(got, exp, 'calc');
 
     // undefined, null, [] を含む場合
-    combsSet = {
+    bulksSet = {
         head: [
             { skillComb: { 'a': 1, 'b': 0 } },
             { skillComb: { 'a': 0, 'b': 1 } } ]
@@ -88,14 +88,14 @@ QUnit.test('_calcMaxEachSkillPoint', function () {
       , weapon: [
             { skillComb: { 'c': 1 } } ]
     };
-    got = bl._calcMaxEachSkillPoint(combsSet);
+    got = bl._calcMaxEachSkillPoint(bulksSet);
     exp = { 'a': { head: 1, body: 1, arm: 0, waist: 0, leg: 0, weapon: 0, oma: 0 },
             'b': { head: 1, body: 1, arm: 0, waist: 0, leg: 0, weapon: 0, oma: 0 },
             'c': { head: 0, body: 0, arm: 0, waist: 0, leg: 0, weapon: 1, oma: 0 } };
     QUnit.deepEqual(got, exp, 'within: undefined, null, []');
 
     // 胴系統倍化
-    combsSet = {
+    bulksSet = {
         head: [
             { skillComb: { 'a': 1, 'b': 0 } },
             { skillComb: { 'a': 0, 'b': 1 } },
@@ -115,13 +115,13 @@ QUnit.test('_calcMaxEachSkillPoint', function () {
       , leg: [
             { skillComb: { '胴系統倍化': 1 } } ]
     };
-    got = bl._calcMaxEachSkillPoint(combsSet);
+    got = bl._calcMaxEachSkillPoint(bulksSet);
     exp = { 'a': { head: 2, body: 2, arm: 5, waist: 2, leg: 2, weapon: 0, oma: 0 },
             'b': { head: 2, body: 2, arm: 2, waist: 3, leg: 2, weapon: 0, oma: 0 } };
     QUnit.deepEqual(got, exp, 'torso up');
 
     // 胴系統倍化: body is null
-    combsSet = {
+    bulksSet = {
         head: [
             { skillComb: { 'a': 1, 'b': 0 } },
             { skillComb: { 'a': 0, 'b': 1 } },
@@ -140,7 +140,7 @@ QUnit.test('_calcMaxEachSkillPoint', function () {
       , leg: [
             { skillComb: { '胴系統倍化': 1 } } ]
     };
-    got = bl._calcMaxEachSkillPoint(combsSet);
+    got = bl._calcMaxEachSkillPoint(bulksSet);
     exp = { 'a': { head: 1, body: 0, arm: 5, waist: 1, leg: 0, weapon: 0, oma: 0 },
             'b': { head: 1, body: 0, arm: 2, waist: 3, leg: 0, weapon: 0, oma: 0 } };
     QUnit.deepEqual(got, exp, 'torso up: body is null');
@@ -154,10 +154,10 @@ QUnit.test('_calcMaxEachSkillPoint', function () {
 });
 
 QUnit.test('_calcMaxSumSkillPoint', function () {
-    var got, exp, combsSet,
+    var got, exp, bulksSet,
         bl = new BorderLine();
 
-    combsSet = {
+    bulksSet = {
         head: [
             { skillComb: { 'a': 1, 'b': 0 } },
             { skillComb: { 'a': 0, 'b': 1 } } ]
@@ -180,12 +180,12 @@ QUnit.test('_calcMaxSumSkillPoint', function () {
       , oma: [
             { skillComb: {         'b': 1 } } ]
     };
-    got = bl._calcMaxSumSkillPoint(combsSet);
+    got = bl._calcMaxSumSkillPoint(bulksSet);
     exp = { head: 1, body: 2, arm: 1, waist: 2, leg: 6, weapon: 1, oma: 1 };
     QUnit.deepEqual(got, exp, 'calc');
 
     // undefined, null, [] を含む場合
-    combsSet = {
+    bulksSet = {
         head: [
             { skillComb: { 'a': 1, 'b': 0 } },
             { skillComb: { 'a': 0, 'b': 1 } } ]
@@ -196,12 +196,12 @@ QUnit.test('_calcMaxSumSkillPoint', function () {
       , weapon: [
             { skillComb: { 'c': 1 } } ]
     };
-    got = bl._calcMaxSumSkillPoint(combsSet);
+    got = bl._calcMaxSumSkillPoint(bulksSet);
     exp = { head: 1, body: 2, arm: 0, waist: 0, leg: 0, weapon: 1, oma: 0 };
     QUnit.deepEqual(got, exp, 'within: undefined, null, []');
 
     // 胴系統倍化
-    combsSet = {
+    bulksSet = {
         head: [
             { skillComb: { 'a': 1, 'b': 0 } },
             { skillComb: { 'a': 0, 'b': 1 } },
@@ -221,12 +221,12 @@ QUnit.test('_calcMaxSumSkillPoint', function () {
       , leg: [
             { skillComb: { '胴系統倍化': 1 } } ]
     };
-    got = bl._calcMaxSumSkillPoint(combsSet);
+    got = bl._calcMaxSumSkillPoint(bulksSet);
     exp = { head: 4, body: 4, arm: 5, waist: 4, leg: 4, weapon: 0, oma: 0 };
     QUnit.deepEqual(got, exp, 'torso up');
 
     // 胴系統倍化: body is null
-    combsSet = {
+    bulksSet = {
         head: [
             { skillComb: { 'a': 1, 'b': 0 } },
             { skillComb: { 'a': 0, 'b': 1 } },
@@ -245,7 +245,7 @@ QUnit.test('_calcMaxSumSkillPoint', function () {
       , leg: [
             { skillComb: { '胴系統倍化': 1 } } ]
     };
-    got = bl._calcMaxSumSkillPoint(combsSet);
+    got = bl._calcMaxSumSkillPoint(bulksSet);
     exp = { head: 1, body: 0, arm: 5, waist: 3, leg: 0, weapon: 0, oma: 0 };
     QUnit.deepEqual(got, exp, 'torso up: body is null');
 
@@ -258,10 +258,10 @@ QUnit.test('_calcMaxSumSkillPoint', function () {
 });
 
 QUnit.test('calcEach & calcSum', function () {
-    var got, exp, combsSet, skillNames, bl, sc;
+    var got, exp, bulksSet, skillNames, bl, sc;
 
     skillNames = [ '攻撃力UP【大】', '業物' ];
-    combsSet = {
+    bulksSet = {
         head: [
             { skillComb: { '攻撃': 5, '斬れ味': 1 } } ],
         body: [
@@ -280,7 +280,7 @@ QUnit.test('calcEach & calcSum', function () {
             { skillComb: { '攻撃': 4, '斬れ味': 0 } },
             { skillComb: { '攻撃': 0, '斬れ味': 2 } } ]
     };
-    bl = new BorderLine(skillNames, combsSet);
+    bl = new BorderLine(skillNames, bulksSet);
     sc = { '攻撃': 5+1+5, '斬れ味': 1+3+1 };
     got = bl.calcEach('waist', sc);
     exp = { '攻撃': -1, '斬れ味': -1 }; // 攻撃: 20 - (5+1+5) - (6+4), 斬れ味: 10 - (1+3+1) - (4+2)
@@ -299,7 +299,7 @@ QUnit.test('calcEach & calcSum', function () {
 
     // undefined, null, [] を含む場合
     skillNames = [ '攻撃力UP【大】', '業物' ];
-    combsSet = {
+    bulksSet = {
         head: [
             { skillComb: { '攻撃': 8, '斬れ味': 4 } } ],
         body: [
@@ -313,7 +313,7 @@ QUnit.test('calcEach & calcSum', function () {
             { skillComb: { '攻撃': 1, '斬れ味': 3 } },
             { skillComb: { '攻撃': 4, '斬れ味': 1 } } ]
     };
-    bl = new BorderLine(skillNames, combsSet);
+    bl = new BorderLine(skillNames, bulksSet);
     sc = { '攻撃': (8+6), '斬れ味': (4+6) };
     got = bl.calcEach('arm', sc);
     exp = { '攻撃': 0, '斬れ味': -4 }; // 攻撃: 20 - (8+6) - (6), 斬れ味: 10 - (4+6) - (4)
@@ -324,7 +324,7 @@ QUnit.test('calcEach & calcSum', function () {
 
     // 胴系統倍化
     skillNames = [ '攻撃力UP【大】', '業物' ];
-    combsSet = {
+    bulksSet = {
         head: [
             { skillComb: { '胴系統倍化': 1 } } ],
         body: [
@@ -340,7 +340,7 @@ QUnit.test('calcEach & calcSum', function () {
             { skillComb: { '攻撃': 0, '斬れ味': 4 } },
             { skillComb: { '胴系統倍化': 1 } } ]
     };
-    bl = new BorderLine(skillNames, combsSet);
+    bl = new BorderLine(skillNames, bulksSet);
     sc = { '攻撃': (4+4+3), '斬れ味': (2+2+3) };
     got = bl.calcEach('waist', sc);
     exp = { '攻撃': 4, '斬れ味': -1 }; // 攻撃: 20 - (4+4+3) - (5), 斬れ味: 10 - (2+2+3) - (4)
@@ -351,7 +351,7 @@ QUnit.test('calcEach & calcSum', function () {
 
     // 胴系統倍化: body is null
     skillNames = [ '攻撃力UP【大】', '業物' ];
-    combsSet = {
+    bulksSet = {
         head: [
             { skillComb: { '胴系統倍化': 1 } } ],
         body: null,
@@ -367,7 +367,7 @@ QUnit.test('calcEach & calcSum', function () {
         oma: [
             { skillComb: { '攻撃': 4, '斬れ味': 3 } } ]
     };
-    bl = new BorderLine(skillNames, combsSet);
+    bl = new BorderLine(skillNames, bulksSet);
     sc = { '攻撃': (0+0+8), '斬れ味': (0+0+3) };
     got = bl.calcEach('waist', sc);
     exp = { '攻撃': 3, '斬れ味': 0 }; // 攻撃: 20 - (8) - (5+4), 斬れ味: 10 - (3) - (4+3)
@@ -378,7 +378,7 @@ QUnit.test('calcEach & calcSum', function () {
 
     // skillComb が null
     skillNames = [ '攻撃力UP【大】', '業物' ];
-    combsSet = {
+    bulksSet = {
         head: [
             { skillComb: { '攻撃': 5, '斬れ味': 1 } } ],
         body: [
@@ -397,7 +397,7 @@ QUnit.test('calcEach & calcSum', function () {
             { skillComb: { '攻撃': 4, '斬れ味': 0 } },
             { skillComb: { '攻撃': 0, '斬れ味': 2 } } ]
     };
-    bl = new BorderLine(skillNames, combsSet);
+    bl = new BorderLine(skillNames, bulksSet);
     got = bl.calcEach('body', null);
     exp = { '攻撃': -1, '斬れ味': -1 }; // 攻撃: 20 - (5+5+1+6+4), 斬れ味: 10 - (1+1+3+4+2)
     QUnit.deepEqual(got, exp, 'calcEach: sc is null');

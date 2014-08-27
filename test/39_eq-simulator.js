@@ -20,21 +20,23 @@ QUnit.test('new', function () {
 });
 
 QUnit.test('simulate', function () {
-    var got, exp,
+    var got, exp, skills,
         simu = new Simulator();
 
-    got = simu.simulate([ '攻撃力UP【大】', '業物' ]);
+    skills = [ '攻撃力UP【大】', '業物' ];
+    got = simu.simulate(skills);
     exp = 8;
-    QUnit.strictEqual(got.length, exp, "[ '攻撃力UP【大】', '業物' ]");
+    QUnit.strictEqual(got.length, exp, skills.join(', '));
 
-    got = simu.simulate([ '斬れ味レベル+1', '高級耳栓' ]);
+    skills = [ '斬れ味レベル+1', '高級耳栓' ];
+    got = simu.simulate(skills);
     exp = 1378;
-    QUnit.strictEqual(got.length, exp, "[ '斬れ味レベル+1', '高級耳栓' ]");
+    QUnit.strictEqual(got.length, exp, skills.join(', '));
 
-    got = simu.simulate([ '攻撃力UP【大】', '業物', '集中', '見切り+1', '弱点特効' ]);
+    skills = [ '攻撃力UP【大】', '業物', '集中', '見切り+1', '弱点特効' ];
+    got = simu.simulate(skills);
     exp = 0;
-    QUnit.strictEqual(got.length, exp,
-                      "[ '攻撃力UP【大】', '業物', '集中', '見切り+1', '弱点特効' ]");
+    QUnit.strictEqual(got.length, exp, skills.join(', '));
 });
 
 QUnit.test('simulate: torsoUp', function () {
@@ -62,7 +64,7 @@ QUnit.test('simulate: torsoUp', function () {
               leg   : 'ユクモノハカマ・天',
               weapon: null,
               oma   : null } ];
-    QUnit.deepEqual(got, exp, "[ '斬れ味レベル+1', '砥石使用高速化' ]");
+    QUnit.deepEqual(got, exp, 'torsoUp');
 });
 });
 })(typeof define !== 'undefined' ?

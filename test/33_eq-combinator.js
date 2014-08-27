@@ -20,11 +20,11 @@ QUnit.test('new', function () {
     QUnit.strictEqual(typeof c.initialize, 'function', 'has initialize()');
 });
 
-QUnit.test('_sortCombs', function () {
-    var got, exp, combs,
+QUnit.test('_sortBulks', function () {
+    var got, exp, bulks,
         c = new Combinator();
 
-    combs = [
+    bulks = [
         { skillComb: { '攻撃': 3, '斬れ味': 2 } },
         { skillComb: { '攻撃': 0, '斬れ味': 0 } },
         { skillComb: { '攻撃': 0, '斬れ味': 1 } },
@@ -37,7 +37,7 @@ QUnit.test('_sortCombs', function () {
         { skillComb: { '攻撃': 1, '斬れ味': 0 } },
         { skillComb: { '攻撃': 4, '斬れ味': 1 } }
     ];
-    got = c._sortCombs(combs);
+    got = c._sortBulks(bulks);
     exp = [
         { skillComb: { '攻撃': 6, '斬れ味': 6 } },
         { skillComb: { '攻撃': 0, '斬れ味': 6 } },
@@ -54,14 +54,14 @@ QUnit.test('_sortCombs', function () {
     QUnit.deepEqual(got, exp, "sort");
 
     // 胴系統倍化
-    combs = [
+    bulks = [
         { skillComb: { '攻撃': 3, '斬れ味': 2 } },
         { skillComb: { '攻撃': 0, '斬れ味': 0 } },
         { skillComb: { '攻撃': 1, '斬れ味': 3 } },
         { skillComb: { '胴系統倍化': 1 } },
         { skillComb: { '攻撃': 4, '斬れ味': 1 } }
     ];
-    got = c._sortCombs(combs);
+    got = c._sortBulks(bulks);
     exp = [
         { skillComb: { '胴系統倍化': 1 } },
         { skillComb: { '攻撃': 3, '斬れ味': 2 } },
@@ -72,11 +72,11 @@ QUnit.test('_sortCombs', function () {
     QUnit.deepEqual(got, exp, "torsoUp");
 });
 
-QUnit.test('_makeCombsSetWithSlot0', function () {
-    var got, exp, combsSet,
+QUnit.test('_makeBulksSetWithSlot0', function () {
+    var got, exp, bulksSet,
         c = new Combinator();
 
-    var combs = [
+    var bulks = [
         { skillComb: { '攻撃': 3, '斬れ味': 2 }, equips: [ '3,2' ] },
         { skillComb: { '攻撃': 5, '斬れ味': 0 }, equips: [ '5,0' ] },
         { skillComb: { '攻撃': 0, '斬れ味': 1 }, equips: [ '0,1' ] },
@@ -89,28 +89,28 @@ QUnit.test('_makeCombsSetWithSlot0', function () {
         { skillComb: { '攻撃': 0, '斬れ味': 0 }, equips: [ 'slot0' ] }
     ];
 
-    combsSet = {
-        head : combs,
-        body : combs.concat(slot0),
-        arm  : combs,
-        waist: combs.concat(slot0),
-        leg  : combs,
+    bulksSet = {
+        head : bulks,
+        body : bulks.concat(slot0),
+        arm  : bulks,
+        waist: bulks.concat(slot0),
+        leg  : bulks,
         // weapon: undefined
         oma  : null
     };
-    got = c._makeCombsSetWithSlot0(combsSet);
+    got = c._makeBulksSetWithSlot0(bulksSet);
     exp = [
-        { head : combs,
+        { head : bulks,
           body : slot0,
-          arm  : combs,
-          waist: combs.concat(slot0),
-          leg  : combs,
+          arm  : bulks,
+          waist: bulks.concat(slot0),
+          leg  : bulks,
           weapon: null, oma: null },
-        { head : combs,
-          body : combs.concat(slot0),
-          arm  : combs,
+        { head : bulks,
+          body : bulks.concat(slot0),
+          arm  : bulks,
           waist: slot0,
-          leg  : combs,
+          leg  : bulks,
           weapon: null, oma: null }
     ];
     QUnit.deepEqual(got, exp, 'make');
@@ -118,14 +118,14 @@ QUnit.test('_makeCombsSetWithSlot0', function () {
 
 QUnit.test('_combineEquip', function () {
     var got, exp,
-        combsSet, borderLine, combSet, combs,
+        bulksSet, bulks, borderLine, combSet,
         c = new Combinator();
 
     var skillNames = [ '攻撃力UP【大】', '業物' ];
 
     // body, head, arm, waist まで終わってて、これから leg を処理するところ。
     // borderLine を上回るポイントとなる組み合わせを求める。
-    combsSet = {
+    bulksSet = {
         head: [
             { skillComb: { '攻撃': 1, '斬れ味': 3 } } ],
         body: [
@@ -144,7 +144,7 @@ QUnit.test('_combineEquip', function () {
             { skillComb: { '攻撃': 4, '斬れ味': 0 } },
             { skillComb: { '攻撃': 0, '斬れ味': 2 } } ]
     };
-    borderLine = new BorderLine(skillNames, combsSet);
+    borderLine = new BorderLine(skillNames, bulksSet);
     combSet = {
         head : { skillComb: { '攻撃': 1, '斬れ味': 3 } },
         body : { skillComb: { '攻撃': 5, '斬れ味': 1 } },
@@ -152,14 +152,14 @@ QUnit.test('_combineEquip', function () {
         waist: { skillComb: { '攻撃': 5, '斬れ味': 1 } },
         cache: { '攻撃': 12, '斬れ味': 8 }
     };
-    combs = [
+    bulks = [
         { skillComb: { '攻撃': 6, '斬れ味': 0 } },
         { skillComb: { '攻撃': 4, '斬れ味': 1 } },
         { skillComb: { '攻撃': 3, '斬れ味': 2 } },
         { skillComb: { '攻撃': 0, '斬れ味': 4 } },
         { skillComb: { '攻撃': 1, '斬れ味': 3 } }
     ];
-    got = c._combineEquip(combSet, combs, borderLine, 'leg');
+    got = c._combineEquip(combSet, bulks, borderLine, 'leg');
     exp = [
         { head : { skillComb: { '攻撃': 1, '斬れ味': 3 } },
           body : { skillComb: { '攻撃': 5, '斬れ味': 1 } },
@@ -170,7 +170,7 @@ QUnit.test('_combineEquip', function () {
     ];
     QUnit.deepEqual(got, exp, 'combine leg (done: body, head, arm, waist)');
 
-    // combs がソートされていないとちゃんと動かない
+    // bulks がソートされていないとちゃんと動かない
     combSet = {
         head : { skillComb: { '攻撃': 1, '斬れ味': 3 } },
         body : { skillComb: { '攻撃': 5, '斬れ味': 1 } },
@@ -178,19 +178,19 @@ QUnit.test('_combineEquip', function () {
         waist: { skillComb: { '攻撃': 5, '斬れ味': 1 } },
         cache: { '攻撃': 12, '斬れ味': 8 }
     };
-    combs = [
+    bulks = [
         { skillComb: { '攻撃': 3, '斬れ味': 2 } },
         { skillComb: { '攻撃': 6, '斬れ味': 0 } },
         { skillComb: { '攻撃': 0, '斬れ味': 4 } },
         { skillComb: { '攻撃': 1, '斬れ味': 3 } },
         { skillComb: { '攻撃': 4, '斬れ味': 1 } }
     ];
-    got = c._combineEquip(combSet, combs, borderLine, 'leg');
+    got = c._combineEquip(combSet, bulks, borderLine, 'leg');
     exp = [];
     QUnit.deepEqual(got, exp, 'combine leg (not sort)');
 
     // 胴系統倍化は先にあってもOK
-    combsSet = {
+    bulksSet = {
         head: [
             { skillComb: { '攻撃': 1, '斬れ味': 3 } } ],
         body: [
@@ -210,7 +210,7 @@ QUnit.test('_combineEquip', function () {
             { skillComb: { '攻撃': 4, '斬れ味': 0 } },
             { skillComb: { '攻撃': 0, '斬れ味': 2 } } ]
     };
-    borderLine = new BorderLine(skillNames, combsSet);
+    borderLine = new BorderLine(skillNames, bulksSet);
     combSet = {
         head : { skillComb: { '攻撃': 1, '斬れ味': 3 } },
         body : { skillComb: { '攻撃': 5, '斬れ味': 1 } },
@@ -218,7 +218,7 @@ QUnit.test('_combineEquip', function () {
         waist: { skillComb: { '胴系統倍化': 1 } },
         cache: { '攻撃': 12, '斬れ味': 8 }
     };
-    combs = [
+    bulks = [
         { skillComb: { '胴系統倍化': 1 } },
         { skillComb: { '攻撃': 6, '斬れ味': 0 } },
         { skillComb: { '攻撃': 4, '斬れ味': 1 } },
@@ -226,7 +226,7 @@ QUnit.test('_combineEquip', function () {
         { skillComb: { '攻撃': 0, '斬れ味': 4 } },
         { skillComb: { '攻撃': 1, '斬れ味': 3 } }
     ];
-    got = c._combineEquip(combSet, combs, borderLine, 'leg');
+    got = c._combineEquip(combSet, bulks, borderLine, 'leg');
     exp = [
         { head : { skillComb: { '攻撃': 1, '斬れ味': 3 } },
           body : { skillComb: { '攻撃': 5, '斬れ味': 1 } },
@@ -244,7 +244,7 @@ QUnit.test('_combineEquip', function () {
     QUnit.deepEqual(got, exp, 'combine leg (torsoUp)');
 
     // これからスタートするところ(body を調べる)
-    combsSet = {
+    bulksSet = {
         head: [
             { skillComb: { '攻撃': 1, '斬れ味': 3 } } ],
         body: [
@@ -263,16 +263,16 @@ QUnit.test('_combineEquip', function () {
             { skillComb: { '攻撃': 4, '斬れ味': 0 } },
             { skillComb: { '攻撃': 0, '斬れ味': 2 } } ]
     };
-    borderLine = new BorderLine(skillNames, combsSet);
+    borderLine = new BorderLine(skillNames, bulksSet);
     combSet = {};
-    combs = [
+    bulks = [
         { skillComb: { '攻撃': 6, '斬れ味': 0 } },
         { skillComb: { '攻撃': 4, '斬れ味': 1 } },
         { skillComb: { '攻撃': 3, '斬れ味': 2 } },
         { skillComb: { '攻撃': 0, '斬れ味': 4 } },
         { skillComb: { '攻撃': 1, '斬れ味': 3 } }
     ];
-    got = c._combineEquip(combSet, combs, borderLine, 'body');
+    got = c._combineEquip(combSet, bulks, borderLine, 'body');
     exp = [
         { body : { skillComb: { '攻撃': 6, '斬れ味': 0 } },
           cache: { '攻撃': 6, '斬れ味': 0 } }
@@ -281,14 +281,14 @@ QUnit.test('_combineEquip', function () {
 
     // combSet が null
     combSet = null;
-    combs = [
+    bulks = [
         { skillComb: { '攻撃': 6, '斬れ味': 0 } },
         { skillComb: { '攻撃': 4, '斬れ味': 1 } },
         { skillComb: { '攻撃': 3, '斬れ味': 2 } },
         { skillComb: { '攻撃': 0, '斬れ味': 4 } },
         { skillComb: { '攻撃': 1, '斬れ味': 3 } }
     ];
-    got = c._combineEquip(combSet, combs, borderLine, 'body');
+    got = c._combineEquip(combSet, bulks, borderLine, 'body');
     exp = [
         { body : { skillComb: { '攻撃': 6, '斬れ味': 0 } },
           cache: { '攻撃': 6, '斬れ味': 0 } }
@@ -297,11 +297,11 @@ QUnit.test('_combineEquip', function () {
 });
 
 QUnit.test('_combine', function () {
-    var got, exp, combsSet, skillNames,
+    var got, exp, bulksSet, skillNames,
         c = new Combinator();
 
     skillNames = [ '攻撃力UP【大】', '斬れ味レベル+1', '耳栓' ];
-    combsSet = {
+    bulksSet = {
         body: [
             { skillComb: { '攻撃': 7, '匠': 0, '聴覚保護': 1 } },
             { skillComb: { '攻撃': 4, '匠': 2, '聴覚保護': 2 } },
@@ -323,7 +323,7 @@ QUnit.test('_combine', function () {
             { skillComb: { '攻撃': 3, '匠': 2, '聴覚保護': 4 } },
             { skillComb: { '攻撃': 4, '匠': 2, '聴覚保護': 3 } } ]
     };
-    got = c._combine(skillNames, combsSet);
+    got = c._combine(skillNames, bulksSet);
     exp = [
         { body  : { skillComb: { '攻撃': 4, '匠': 2, '聴覚保護': 2 } },
           head  : { skillComb: { '攻撃': 5, '匠': 2, '聴覚保護': 1 } },
@@ -338,7 +338,7 @@ QUnit.test('_combine', function () {
 
     // body が [] で胴系統倍化
     skillNames = [ '攻撃力UP【大】', '斬れ味レベル+1', '耳栓' ];
-    combsSet = {
+    bulksSet = {
         body: [],
         head: [
             { skillComb: { '攻撃': 7, '匠': 1, '聴覚保護': 1 } },
@@ -363,7 +363,7 @@ QUnit.test('_combine', function () {
             { skillComb: { '攻撃': 3, '匠': 2, '聴覚保護': 4 } },
             { skillComb: { '攻撃': 4, '匠': 2, '聴覚保護': 3 } } ]
     };
-    got = c._combine(skillNames, combsSet);
+    got = c._combine(skillNames, bulksSet);
     exp = [
         { body  : null,
           head  : { skillComb: { '攻撃': 5, '匠': 2, '聴覚保護': 1 } },
@@ -378,11 +378,11 @@ QUnit.test('_combine', function () {
 });
 
 QUnit.test('_combineUsedSlot0', function () {
-    var got, exp, combsSet, skillNames,
+    var got, exp, bulksSet, skillNames,
         c = new Combinator();
 
     skillNames = [ '攻撃力UP【大】', '業物' ];
-    combsSet = {
+    bulksSet = {
         head: [
             { skillComb: { '攻撃': 4, '斬れ味': 2 }, equips: [ '4,2' ] },
             { skillComb: { '攻撃': 0, '斬れ味': 0 }, equips: [ 'slot0' ] } ],
@@ -399,7 +399,7 @@ QUnit.test('_combineUsedSlot0', function () {
             { skillComb: { '攻撃': 4, '斬れ味': 4 }, equips: [ '4,4' ] },
             { skillComb: { '攻撃': 5, '斬れ味': 3 }, equips: [ '5,3' ] } ]
     };
-    got = c._combineUsedSlot0(skillNames, combsSet);
+    got = c._combineUsedSlot0(skillNames, bulksSet);
     exp = [
         { body : { skillComb: { '攻撃': 6, '斬れ味': 2 }, equips: [ '6,2' ] },
           head : { skillComb: { '攻撃': 0, '斬れ味': 0 }, equips: [ 'slot0' ] },
