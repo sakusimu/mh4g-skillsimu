@@ -52,24 +52,30 @@ var printAssems = function (assems) {
     });
 };
 
-//myapp.setup({ hr: 1, vs: 6 });
-
 var list = [];
 for (var part in data.equips) list.push(part + ': ' + data.equips[part].length);
 console.log('data.equips:', '[ ' + list.join(', ') + ' ]');
 
-simulate([ '斬れ味レベル+1', '集中' ], { weaponSlot: 2 });
+myapp.setup({ weaponSlot: 2 });
+simulate([ '斬れ味レベル+1', '集中' ]);
 
+myapp.setup();
 simulate([ '回避性能+3', '回避距離UP', '斬れ味レベル+1' ]);
 simulate([ '攻撃力UP【大】', '業物' ]);
 simulate([ '斬れ味レベル+1', '高級耳栓' ]);
-simulate([ '斬れ味レベル+1', '高級耳栓', '砥石使用高速化' ], { weaponSlot: 3 });
+
+myapp.setup({ weaponSlot: 3 });
+simulate([ '斬れ味レベル+1', '高級耳栓', '砥石使用高速化' ]);
+
+myapp.setup();
 simulate([ '攻撃力UP【大】', '業物', '集中', '見切り+1', '弱点特効' ]);
 
 // お守りあり
-data.omas = [
-    myapp.oma([ '龍の護石',3,'匠',4,'氷耐性',-5 ])
-];
+myapp.setup({
+    omas: [
+        [ '龍の護石',3,'匠',4,'氷耐性',-5 ]
+    ]
+});
 simulate([ '斬れ味レベル+1', '高級耳栓' ]);
 simulate([ '斬れ味レベル+1', '高級耳栓', '砥石使用高速化' ]);
 

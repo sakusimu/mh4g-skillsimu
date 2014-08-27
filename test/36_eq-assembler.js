@@ -109,11 +109,11 @@ QUnit.test('assemble: weaponSlot', function () {
         a = new Assembler();
 
     // 装備を村のみにしぼる
-    myapp.setup({ hr: 1, vs: 6 });
-
+    myapp.setup({
+        context: { hr: 1, vs: 6 }, // 装備を村のみにしぼる
+        weaponSlot: 2
+    });
     skills = [ '斬れ味レベル+1', '集中' ];
-
-    n.weaponSlot = 2; // 武器スロ2
     bulksSet = n.normalize(skills);
     eqcombs = c.combine(skills, bulksSet);
     got = a.assemble(eqcombs).length;
@@ -127,16 +127,17 @@ QUnit.test('combine: oma', function () {
         c = new Combinator(),
         a = new Assembler();
 
-    // 装備を村のみにしぼる
-    myapp.setup({ hr: 1, vs: 6 });
-
-    n.omas = [
-        myapp.oma([ '龍の護石',3,'匠',4,'氷耐性',-5 ]),
-        myapp.oma([ '龍の護石',0,'溜め短縮',5,'攻撃',9 ]),
-        myapp.oma([ '龍の護石',3,'痛撃',4 ])
-    ];
+    // 武器スロ3
+    myapp.setup({
+        context: { hr: 1, vs: 6 }, // 装備を村のみにしぼる
+        weaponSlot: 3,
+        omas: [
+            [ '龍の護石',3,'匠',4,'氷耐性',-5 ],
+            [ '龍の護石',0,'溜め短縮',5,'攻撃',9 ],
+            [ '龍の護石',3,'痛撃',4 ]
+        ]
+    });
     skills = [ '斬れ味レベル+1', '攻撃力UP【大】', '耳栓' ];
-    n.weaponSlot = 3; // 武器スロ3
     bulksSet = n.normalize(skills);
     eqcombs = c.combine(skills, bulksSet);
     got = a.assemble(eqcombs).length;
@@ -144,13 +145,22 @@ QUnit.test('combine: oma', function () {
     QUnit.strictEqual(got, exp, 'oma');
 
     // 武器スロ0
-    n.weaponSlot = 0;
+    myapp.setup({
+        context: { hr: 1, vs: 6 }, // 装備を村のみにしぼる
+        weaponSlot: 0,
+        omas: [
+            [ '龍の護石',3,'匠',4,'氷耐性',-5 ],
+            [ '龍の護石',0,'溜め短縮',5,'攻撃',9 ],
+            [ '龍の護石',3,'痛撃',4 ]
+        ]
+    });
     bulksSet = n.normalize(skills);
     eqcombs = c.combine(skills, bulksSet);
     got = a.assemble(eqcombs).length;
     exp = 0;
     QUnit.strictEqual(got, exp, 'oma: weaponSlot=0');
 });
+
 });
 })(typeof define !== 'undefined' ?
    define :

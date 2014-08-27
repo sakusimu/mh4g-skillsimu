@@ -10,16 +10,33 @@ myapp.initialize = function () {
     this.setup();
 };
 
-myapp.setup = function (ctx) {
-    context.initialize(ctx);
+myapp.setup = function (opts) {
+    opts = opts || {};
+
+    context.initialize(opts.context);
 
     var simuData = function (obj) { return obj.simuData(); };
 
-    var equips = {};
-    [ 'head', 'body', 'arm', 'waist', 'leg' ].forEach(function (part) {
+    var armors = [ 'head', 'body', 'arm', 'waist', 'leg' ],
+        equips = {};
+    armors.forEach(function (part) {
         var list = model.equips.enabled(part, context);
         equips[part] = list.map(simuData);
     });
+
+    if (opts.weaponSlot != null) {
+        var wslot  = opts.weaponSlot,
+            weapon = { name: 'slot' + wslot, slot: wslot, skillComb: {} };
+        equips.weapon = [ weapon ];
+    }
+
+    if (opts.omas) {
+        equips.oma = [];
+        opts.omas.forEach(function (list) {
+            var oma = new model.Oma(list);
+            equips.oma.push(oma.simuData());
+        });
+    }
 
     var decos = model.decos.enabled(context).map(simuData);
 

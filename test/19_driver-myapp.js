@@ -6,7 +6,7 @@ define(deps, function (QUnit, myapp, data) {
 QUnit.module('19_driver-myapp');
 
 QUnit.test('setup', function() {
-    var got;
+    var got, exp;
 
     myapp.setup();
     got = data.equips.head.length;
@@ -15,23 +15,46 @@ QUnit.test('setup', function() {
     QUnit.ok(got > 0, 'simu.data.decos');
     got = Object.keys(data.skills).length;
     QUnit.ok(got > 0, 'simu.data.skills');
+
+    myapp.setup({
+        weaponSlot: 2,
+        omas: [
+            [ '龍の護石',3,'匠',4,'氷耐性',-5 ]
+        ]
+    });
+    got = data.equips.weapon;
+    exp = [
+        { name: 'slot2', slot: 2, skillComb: {} }
+    ];
+    QUnit.deepEqual(got, exp, 'weapon');
+    got = data.equips.oma;
+    exp = [
+        { name: '龍の護石(スロ3,匠+4,氷耐性-5)',
+          slot: 3, skillComb: { '匠': 4, '氷耐性': -5 } }
+    ];
+    QUnit.deepEqual(got, exp, 'oma');
 });
 
 QUnit.test('equip', function () {
-    var got;
+    var got, exp;
 
-    got = myapp.equip('body', 'ブレイブベスト');
-    QUnit.strictEqual(got.name, 'ブレイブベスト', 'name,0,0');
-    got = myapp.equip('body', 'ハンターメイル');
-    QUnit.strictEqual(got.name, 'ハンターメイル', 'name,0,1');
+    got = myapp.equip('body', 'ブレイブベスト').name;
+    exp = 'ブレイブベスト';
+    QUnit.strictEqual(got, exp, 'name,0,0');
+    got = myapp.equip('body', 'ハンターメイル').name;
+    exp = 'ハンターメイル';
+    QUnit.strictEqual(got, exp, 'name,0,1');
     got = myapp.equip('body', 'ユクモ');
-    QUnit.deepEqual(got, null, 'not found');
+    exp = null;
+    QUnit.deepEqual(got, exp, 'not found');
 });
 
 QUnit.test('oma', function () {
-    var got;
-    got = myapp.oma([ '龍の護石',3,'匠',4,'氷耐性',-5 ]);
-    QUnit.strictEqual(got.name, '龍の護石(スロ3,匠+4,氷耐性-5)', 'name');
+    var got, exp;
+
+    got = myapp.oma([ '龍の護石',3,'匠',4,'氷耐性',-5 ]).name;
+    exp = '龍の護石(スロ3,匠+4,氷耐性-5)';
+    QUnit.strictEqual(got, exp, 'name');
 });
 
 });

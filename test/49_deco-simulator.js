@@ -96,7 +96,7 @@ QUnit.test('simulate', function () {
     QUnit.deepEqual(got, exp, 'all slot3');
 
     // 1つだけ見つかるケース
-    myapp.setup({ hr: 1, vs: 6 }); // 装備を村のみにしぼる
+    myapp.setup({ context: { hr: 1, vs: 6 } }); // 装備を村のみにしぼる
     equipSet = {
         head  : myapp.equip('head', 'ガララキャップ')  // スロ2
       , body  : myapp.equip('body', 'レックスメイル')  // スロ2

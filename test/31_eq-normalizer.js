@@ -25,17 +25,10 @@ QUnit.test('new', function () {
     got = n.equips.body;
     exp = data.equips.body;
     QUnit.strictEqual(got, exp, 'equips.body is strict equal');
-
-    QUnit.strictEqual(n.weaponSlot, 0, 'weaponSlot');
-});
-
-QUnit.test('initialize', function () {
-    var got,
-        n = new Normalizer();
-
-    n.initialize({ weaponSlot: 1 });
-    got = n.weaponSlot;
-    QUnit.strictEqual(got, 1, 'weaponSlot');
+    got = n.equips.weapon;
+    QUnit.deepEqual(got, [], 'weapon');
+    got = n.equips.oma;
+    QUnit.deepEqual(got, [], 'oma');
 });
 
 QUnit.test('compareAny', function () {
@@ -557,55 +550,6 @@ QUnit.test('_normalize4', function () {
     QUnit.deepEqual(got, [], 'null');
     got = n._normalize4({});
     QUnit.deepEqual(got, [], '{}');
-});
-
-QUnit.test('_normalizeWeaponSkill', function () {
-    var got, exp,
-        n = new Normalizer();
-
-    got = n._normalizeWeaponSkill([ '攻撃', '斬れ味' ]);
-    exp = [ { skillComb: { '攻撃': 0, '斬れ味': 0 }, equips: [ 'slot0' ] } ];
-    QUnit.deepEqual(got, exp, 'default');
-
-    n.weaponSlot = 0;
-    got = n._normalizeWeaponSkill([ '攻撃', '斬れ味' ]);
-    exp = [ { skillComb: { '攻撃': 0, '斬れ味': 0 }, equips: [ 'slot0' ] } ];
-    QUnit.deepEqual(got, exp, 'slot0');
-
-    n.weaponSlot = 1;
-    got = n._normalizeWeaponSkill([ '攻撃', '斬れ味' ]);
-    exp = [ { skillComb: { '攻撃': 1, '斬れ味': 0 }, equips: [ 'slot1' ] },
-            { skillComb: { '攻撃': 0, '斬れ味': 1 }, equips: [ 'slot1' ] } ];
-    QUnit.deepEqual(got, exp, 'slot1');
-
-    n.weaponSlot = 3;
-    got = n._normalizeWeaponSkill([ '攻撃', '斬れ味' ]);
-    exp = [ { skillComb: { '攻撃': 1, '斬れ味': 2 }, equips: [ 'slot3' ] },
-            { skillComb: { '攻撃': 3, '斬れ味': 1 }, equips: [ 'slot3' ] },
-            { skillComb: { '攻撃': 5, '斬れ味': 0 }, equips: [ 'slot3' ] },
-            { skillComb: { '攻撃': 0, '斬れ味': 4 }, equips: [ 'slot3' ] } ];
-    QUnit.deepEqual(got, exp, 'slot3');
-
-    n.weaponSlot = null;
-    got = n._normalizeWeaponSkill([ '攻撃' ]);
-    QUnit.deepEqual(got, [], 'weaponSlot is null');
-
-    n.weaponSlot = -1;
-    got = n._normalizeWeaponSkill([ '攻撃' ]);
-    QUnit.deepEqual(got, [], 'weaponSlot is -1');
-
-    n.weaponSlot = 4;
-    got = n._normalizeWeaponSkill([ '攻撃' ]);
-    QUnit.deepEqual(got, [], 'weaponSlot is 4');
-
-    got = n._normalizeWeaponSkill();
-    QUnit.deepEqual(got, [], 'nothing in');
-    got = n._normalizeWeaponSkill(undefined);
-    QUnit.deepEqual(got, [], 'undefined');
-    got = n._normalizeWeaponSkill(null);
-    QUnit.deepEqual(got, [], 'null');
-    got = n._normalizeWeaponSkill([]);
-    QUnit.deepEqual(got, [], '[]');
 });
 
 });
