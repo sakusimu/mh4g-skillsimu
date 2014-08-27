@@ -12,75 +12,56 @@ QUnit.module('36_eq-assembler', {
 });
 
 QUnit.test('assemble', function () {
-    var got, exp, actiCombs,
+    var got, exp, eqcombs,
         a = new Assembler();
 
-    // [ '攻撃力UP【大】', '業物' ] の組み合わせの一部
-    actiCombs =
-        [ { head: { skillComb: { '攻撃': 19, '斬れ味': 0 }, equips: [ 'レウスＳキャップ' ] },
-            body: { skillComb: { '攻撃': 0, '斬れ味': 0 }, equips: [ 'slot0' ] },
-            arm: { skillComb: { '攻撃': 5, '斬れ味': 2 }, equips: [ 'ジンオウＳフォールド' ] },
-            waist: { skillComb: { '攻撃': 5, '斬れ味': 2 }, equips: [ 'ジンオウＳフォールド' ] },
-            leg: { skillComb: { '攻撃': 1, '斬れ味': 6 }, equips: [ 'バンギスグリーヴ' ] },
-            weapon: { skillComb: { '攻撃': 0, '斬れ味': 0 }, equips: [ 'slot0' ] } },
-          { head: { skillComb: { '攻撃': 5, '斬れ味': 0 },
-                    equips: [ 'slot3', 'バトルヘルム', 'バトルキャップ', 'クックキャップ',
-                              'レックスキャップ', 'ドボルキャップ' ] },
-            body: { skillComb: { '攻撃': 5, '斬れ味': 2 }, equips: [ 'シルバーソルメイル' ] },
-            arm: { skillComb: { '攻撃': 7, '斬れ味': 0 }, equips: [ 'ランポスＳアーム' ] },
-            waist: { skillComb: { '胴系統倍化': 1 }, equips: [ '胴系統倍化' ] },
-            leg: { skillComb: { '攻撃': 1, '斬れ味': 6 }, equips: [ 'バンギスグリーヴ' ] },
-            weapon: { skillComb: { '攻撃': 0, '斬れ味': 0 }, equips: [ 'slot0' ] } } ];
-    got = a.assemble(actiCombs);
-    exp = [ { head: 'レウスＳキャップ',
-              body: 'slot0',
-              arm: 'ジンオウＳフォールド',
-              waist: 'ジンオウＳフォールド',
-              leg: 'バンギスグリーヴ',
-              weapon: 'slot0',
-              oma: null },
-            { head: 'slot3',
-              body: 'シルバーソルメイル',
-              arm: 'ランポスＳアーム',
-              waist: '胴系統倍化',
-              leg: 'バンギスグリーヴ',
-              weapon: 'slot0',
-              oma: null },
-            { head: 'バトルヘルム',
-              body: 'シルバーソルメイル',
-              arm: 'ランポスＳアーム',
-              waist: '胴系統倍化',
-              leg: 'バンギスグリーヴ',
-              weapon: 'slot0',
-              oma: null },
-            { head: 'バトルキャップ',
-              body: 'シルバーソルメイル',
-              arm: 'ランポスＳアーム',
-              waist: '胴系統倍化',
-              leg: 'バンギスグリーヴ',
-              weapon: 'slot0',
-              oma: null },
-            { head: 'クックキャップ',
-              body: 'シルバーソルメイル',
-              arm: 'ランポスＳアーム',
-              waist: '胴系統倍化',
-              leg: 'バンギスグリーヴ',
-              weapon: 'slot0',
-              oma: null },
-            { head: 'レックスキャップ',
-              body: 'シルバーソルメイル',
-              arm: 'ランポスＳアーム',
-              waist: '胴系統倍化',
-              leg: 'バンギスグリーヴ',
-              weapon: 'slot0',
-              oma: null },
-            { head: 'ドボルキャップ',
-              body: 'シルバーソルメイル',
-              arm: 'ランポスＳアーム',
-              waist: '胴系統倍化',
-              leg: 'バンギスグリーヴ',
-              weapon: 'slot0',
-              oma: null } ];
+    eqcombs = [
+        { head  : [ 'head1a', 'head1b' ],
+          body  : [ 'body1' ],
+          arm   : [ 'arm1' ],
+          waist : [ 'waist1' ],
+          leg   : [ 'leg1' ],
+          weapon: [ 'weapon1' ],
+          oma   : [ 'oma1' ] },
+        { head  : [ 'head2' ],
+          body  : [ 'body2' ],
+          arm   : [ 'arm2' ],
+          waist : [ 'waist2' ],
+          leg   : [ 'leg2' ],
+          weapon: [],
+          oma   : [ 'oma2a', 'oma2b' ] }
+    ];
+    got = a.assemble(eqcombs);
+    exp = [
+        { head  : 'head1a',
+          body  : 'body1',
+          arm   : 'arm1',
+          waist : 'waist1',
+          leg   : 'leg1',
+          weapon: 'weapon1',
+          oma   : 'oma1' },
+        { head  : 'head1b',
+          body  : 'body1',
+          arm   : 'arm1',
+          waist : 'waist1',
+          leg   : 'leg1',
+          weapon: 'weapon1',
+          oma   : 'oma1' },
+        { head  : 'head2',
+          body  : 'body2',
+          arm   : 'arm2',
+          waist : 'waist2',
+          leg   : 'leg2',
+          weapon: null,
+          oma   : 'oma2a' },
+        { head  : 'head2',
+          body  : 'body2',
+          arm   : 'arm2',
+          leg   : 'leg2',
+          waist : 'waist2',
+          weapon: null,
+          oma   : 'oma2b' }
+    ];
     QUnit.deepEqual(got, exp, 'assemble');
 
     got = a.assemble();
@@ -94,37 +75,35 @@ QUnit.test('assemble', function () {
 });
 
 QUnit.test('assemble: summary', function () {
-    var got, exp, skills, norCombsSet, actiCombs,
+    var got, exp, skills, bulksSet, eqcombs,
         n = new Normalizer(),
         c = new Combinator(),
         a = new Assembler();
 
     skills = [ '攻撃力UP【大】', '業物' ];
-
-    norCombsSet = n.normalize(skills);
-    actiCombs = c.combine(skills, norCombsSet);
-    got = a.assemble(actiCombs);
+    bulksSet = n.normalize(skills);
+    eqcombs = c.combine(skills, bulksSet);
+    got = a.assemble(eqcombs).length;
     exp = 8;
-    QUnit.strictEqual(got.length, exp, "[ '攻撃力UP【大】', '業物' ]");
+    QUnit.strictEqual(got, exp, skills.join(', '));
 
     skills = [ '斬れ味レベル+1', '高級耳栓' ];
-    norCombsSet = n.normalize(skills);
-    actiCombs = c.combine(skills, norCombsSet);
-    got = a.assemble(actiCombs);
+    bulksSet = n.normalize(skills);
+    eqcombs = c.combine(skills, bulksSet);
+    got = a.assemble(eqcombs).length;
     exp = 1378;
-    QUnit.strictEqual(got.length, exp, "[ '斬れ味レベル+1', '高級耳栓' ]");
+    QUnit.strictEqual(got, exp, skills.join(', '));
 
     skills = [ '攻撃力UP【大】', '業物', '集中', '見切り+1', '弱点特効' ];
-    norCombsSet = n.normalize(skills);
-    actiCombs = c.combine(skills, norCombsSet);
-    got = a.assemble(actiCombs);
+    bulksSet = n.normalize(skills);
+    eqcombs = c.combine(skills, bulksSet);
+    got = a.assemble(eqcombs).length;
     exp = 0;
-    QUnit.strictEqual(got.length, exp,
-                      "[ '攻撃力UP【大】', '業物', '集中', '見切り+1', '弱点特効' ]");
+    QUnit.strictEqual(got, exp, skills.join(', '));
 });
 
 QUnit.test('assemble: weaponSlot', function () {
-    var got, exp, skills, norCombsSet, actiCombs,
+    var got, exp, skills, bulksSet, eqcombs,
         n = new Normalizer(),
         c = new Combinator(),
         a = new Assembler();
@@ -135,15 +114,15 @@ QUnit.test('assemble: weaponSlot', function () {
     skills = [ '斬れ味レベル+1', '集中' ];
 
     n.weaponSlot = 2; // 武器スロ2
-    norCombsSet = n.normalize(skills);
-    actiCombs   = c.combine(skills, norCombsSet);
-    got = a.assemble(actiCombs);
+    bulksSet = n.normalize(skills);
+    eqcombs = c.combine(skills, bulksSet);
+    got = a.assemble(eqcombs).length;
     exp = 11;
-    QUnit.strictEqual(got.length, exp, 'weaponSlot: 2');
+    QUnit.strictEqual(got, exp, 'weaponSlot: 2');
 });
 
 QUnit.test('combine: oma', function () {
-    var got, exp, skills, norCombsSet, actiCombs,
+    var got, exp, skills, bulksSet, eqcombs,
         n = new Normalizer(),
         c = new Combinator(),
         a = new Assembler();
@@ -158,19 +137,19 @@ QUnit.test('combine: oma', function () {
     ];
     skills = [ '斬れ味レベル+1', '攻撃力UP【大】', '耳栓' ];
     n.weaponSlot = 3; // 武器スロ3
-    norCombsSet = n.normalize(skills);
-    actiCombs   = c.combine(skills, norCombsSet);
-    got = a.assemble(actiCombs);
+    bulksSet = n.normalize(skills);
+    eqcombs = c.combine(skills, bulksSet);
+    got = a.assemble(eqcombs).length;
     exp = 3; // 頑シミュさんと同じ
-    QUnit.strictEqual(got.length, exp, 'oma');
+    QUnit.strictEqual(got, exp, 'oma');
 
     // 武器スロ0
     n.weaponSlot = 0;
-    norCombsSet = n.normalize(skills);
-    actiCombs   = c.combine(skills, norCombsSet);
-    got = a.assemble(actiCombs);
+    bulksSet = n.normalize(skills);
+    eqcombs = c.combine(skills, bulksSet);
+    got = a.assemble(eqcombs).length;
     exp = 0;
-    QUnit.strictEqual(got.length, exp, 'oma: weaponSlot=0');
+    QUnit.strictEqual(got, exp, 'oma: weaponSlot=0');
 });
 });
 })(typeof define !== 'undefined' ?
