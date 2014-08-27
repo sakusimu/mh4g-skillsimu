@@ -644,6 +644,60 @@ QUnit.test('_combineUsedSlot0', function () {
     QUnit.deepEqual(got, exp, 'combine');
 });
 
+QUnit.test('_compress', function () {
+    var got, exp, combs,
+        c = new Combinator();
+
+    combs = [
+        { eqcombs: [ 'eqcomb1' ], sumSC: { a: 2, b: 0 } },
+        { eqcombs: [ 'eqcomb1' ], sumSC: { a: 0, b: 2 } },
+        { eqcombs: [ 'eqcomb2' ], sumSC: { a: 2, b: 0 } },
+        { eqcombs: [ 'eqcomb2' ], sumSC: { a: 0, b: 1 } }
+    ];
+    got = c._compress(combs);
+    exp = [
+        { eqcombs: [ 'eqcomb1', 'eqcomb2' ], sumSC: { a: 2, b: 0 } },
+        { eqcombs: [ 'eqcomb1' ], sumSC: { a: 0, b: 2 } },
+        { eqcombs: [ 'eqcomb2' ], sumSC: { a: 0, b: 1 } }
+    ];
+    QUnit.deepEqual(got, exp, 'compress');
+
+    combs = [
+        { eqcombs: [], sumSC: null },
+        { eqcombs: [], sumSC: { a: 1 } }
+    ];
+    got = c._compress(combs);
+    exp = [
+        { eqcombs: [], sumSC: null },
+        { eqcombs: [], sumSC: { a: 1 } }
+    ];
+    QUnit.deepEqual(got, exp, 'within null');
+});
+
+QUnit.test('_sortCombs', function () {
+    var got, exp, combs,
+        c = new Combinator();
+
+    combs = [
+        { sumSC: { a: 1, b: 0 } },
+        { sumSC: { a: 0, b: 2 } },
+        { sumSC: { a: 3, b: 0 } },
+        { sumSC: { a: 1, b: 1 } },
+        { sumSC: null },
+        { sumSC: { a: 2, b: 0 } }
+    ];
+    got = c._sortCombs(combs);
+    exp = [
+        { sumSC: { a: 3, b: 0 } },
+        { sumSC: { a: 0, b: 2 } },
+        { sumSC: { a: 1, b: 1 } },
+        { sumSC: { a: 2, b: 0 } },
+        { sumSC: { a: 1, b: 0 } },
+        { sumSC: null }
+    ];
+    QUnit.deepEqual(got, exp, 'sort');
+});
+
 QUnit.test('_brushUp', function () {
     var got, exp, combs,
         c = new Combinator();
