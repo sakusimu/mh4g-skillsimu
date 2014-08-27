@@ -15,16 +15,16 @@ var simulate = function (skillNames, opts) {
     var start = Date.now();
     var bulksSet = n.normalize(skillNames);
     var ndone = Date.now();
-    var actiCombs = c.combine(skillNames, bulksSet);
+    var eqcombs = c.combine(skillNames, bulksSet);
     var cdone = Date.now();
-    var assems = a.assemble(actiCombs);
+    var assems = a.assemble(eqcombs);
     var adone = Date.now();
 
     //printAssems(assems);
 
     console.log('>', '[ ' + skillNames.join(', ') + ' ]');
     console.log('n:', resultNormalizer(bulksSet));
-    console.log('c:', actiCombs.length);
+    console.log('c:', eqcombs.length);
     console.log('a:', assems.length);
 
     var time = (adone - start) + ' ('
