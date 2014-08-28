@@ -67,6 +67,23 @@ QUnit.test('simulate: torsoUp', function () {
     QUnit.deepEqual(got, exp, 'torsoUp');
 });
 
+QUnit.test('simulate: dig', function () {
+    var got, exp,
+        simu = new Simulator();
+
+    myapp.setup({
+        omas: [
+            [ '龍の護石',3,'匠',4,'氷耐性',-5 ],
+            [ '龍の護石',0,'溜め短縮',5,'攻撃',9 ],
+            [ '龍の護石',3,'痛撃',4 ]
+        ],
+        dig: true
+    });
+    got = simu.simulate([ '真打', '集中', '弱点特効', '耳栓' ]).length;
+    exp = 27;
+    QUnit.deepEqual(got, exp, 'dig');
+});
+
 });
 })(typeof define !== 'undefined' ?
    define :

@@ -92,6 +92,26 @@ QUnit.test('combine: oma', function () {
     QUnit.strictEqual(got, exp, 'oma');
 });
 
+QUnit.test('combine: dig', function () {
+    var got, exp, bulksSet,
+        n = new Normalizer(),
+        c = new Combinator();
+
+    var skills = [ '真打', '集中', '弱点特効', '耳栓' ];
+    myapp.setup({
+        omas: [
+            [ '龍の護石',3,'匠',4,'氷耐性',-5 ],
+            [ '龍の護石',0,'溜め短縮',5,'攻撃',9 ],
+            [ '龍の護石',3,'痛撃',4 ]
+        ],
+        dig: true
+    });
+    bulksSet = n.normalize(skills);
+    got = c.combine(skills, bulksSet).length;
+    exp = 141;
+    QUnit.strictEqual(got, exp, 'dig');
+});
+
 QUnit.test('combine: null or etc', function () {
     var got,
         c = new Combinator();

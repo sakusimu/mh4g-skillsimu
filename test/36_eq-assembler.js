@@ -161,6 +161,28 @@ QUnit.test('combine: oma', function () {
     QUnit.strictEqual(got, exp, 'oma: weaponSlot=0');
 });
 
+QUnit.test('assemble: dig', function () {
+    var got, exp, bulksSet, eqcombs,
+        n = new Normalizer(),
+        c = new Combinator(),
+        a = new Assembler();
+
+    var skills = [ '真打', '集中', '弱点特効', '耳栓' ];
+    myapp.setup({
+        omas: [
+            [ '龍の護石',3,'匠',4,'氷耐性',-5 ],
+            [ '龍の護石',0,'溜め短縮',5,'攻撃',9 ],
+            [ '龍の護石',3,'痛撃',4 ]
+        ],
+        dig: true
+    });
+    bulksSet = n.normalize(skills);
+    eqcombs = c.combine(skills, bulksSet);
+    got = a.assemble(eqcombs);
+    exp = 27; // 頑シミュさんと同じ
+    QUnit.strictEqual(got.length, exp, 'dig');
+});
+
 });
 })(typeof define !== 'undefined' ?
    define :

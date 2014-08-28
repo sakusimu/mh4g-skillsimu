@@ -1,7 +1,7 @@
 (function (define) {
 'use strict';
-var deps = [ './lib/test-helper.js', './lib/driver-myapp.js', '../lib/data.js' ];
-define(deps, function (QUnit, myapp, data) {
+var deps = [ './lib/test-helper.js', 'underscore', './lib/driver-myapp.js', '../lib/data.js' ];
+define(deps, function (QUnit, _, myapp, data) {
 
 QUnit.module('19_driver-myapp');
 
@@ -33,6 +33,20 @@ QUnit.test('setup', function() {
           slot: 3, skillComb: { '匠': 4, '氷耐性': -5 } }
     ];
     QUnit.deepEqual(got, exp, 'oma');
+});
+
+QUnit.test('setup: dig', function() {
+    var got, exp;
+
+    var tousyo = function (eq) { return (/発掘\(刀匠/).test(eq.name); };
+
+    myapp.setup({ dig: true });
+    got = _.chain(data.equips.head).filter(tousyo).pluck('name').value();
+    exp = [ '発掘(刀匠+2)', '発掘(刀匠+3)' ];
+    QUnit.deepEqual(got, exp, 'head');
+    got = _.chain(data.equips.weapon).filter(tousyo).pluck('name').value();
+    exp = [ '発掘(刀匠+2)', '発掘(刀匠+3)', '発掘(刀匠+4)' ];
+    QUnit.deepEqual(got, exp, 'weapon');
 });
 
 QUnit.test('equip', function () {
@@ -67,6 +81,6 @@ QUnit.test('oma', function () {
            test.apply(this, modules);
        } :
        function (deps, test) {
-           test(this.QUnit, this.myapp, this.simu.data);
+           test(this.QUnit, this._, this.myapp, this.simu.data);
        }
 );

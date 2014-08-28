@@ -228,6 +228,33 @@ QUnit.test('normalize: oma', function () {
     QUnit.deepEqual(got, exp, 'oma');
 });
 
+QUnit.test('normalize: dig', function () {
+    var got, exp, bulksSet,
+        n = new Normalizer();
+
+    myapp.setup({
+        omas: [
+            [ '龍の護石',3,'匠',4,'氷耐性',-5 ],
+            [ '龍の護石',0,'溜め短縮',5,'攻撃',9 ],
+            [ '龍の護石',3,'痛撃',4 ]
+        ],
+        dig: true
+    });
+    bulksSet = n.normalize([ '真打', '集中', '弱点特効', '耳栓' ]);
+    got = bulksSet.weapon;
+    exp = [
+        { skillComb: { '刀匠': 0, '溜め短縮': 0, '痛撃': 0, '聴覚保護': 0 },
+          equips: [ 'slot0' ] },
+        { skillComb: { '刀匠': 2, '溜め短縮': 0, '痛撃': 0, '聴覚保護': 0 },
+          equips: [ '発掘(刀匠+2)' ] },
+        { skillComb: { '刀匠': 3, '溜め短縮': 0, '痛撃': 0, '聴覚保護': 0 },
+          equips: [ '発掘(刀匠+3)' ] },
+        { skillComb: { '刀匠': 4, '溜め短縮': 0, '痛撃': 0, '聴覚保護': 0 },
+          equips: [ '発掘(刀匠+4)' ] }
+    ];
+    QUnit.deepEqual(got, exp, 'dig: weapon');
+});
+
 QUnit.test('normalize: summary', function () {
     var got, exp, skills, bulksSet,
         n = new Normalizer();
