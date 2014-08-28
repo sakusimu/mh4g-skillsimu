@@ -17,8 +17,10 @@ myapp.setup = function (opts) {
 
     var simuData = function (obj) { return obj.simuData(); };
 
-    var armors = [ 'head', 'body', 'arm', 'waist', 'leg' ],
-        equips = {};
+    var equips = {};
+    data.parts.forEach(function (part) { equips[part] = []; });
+
+    var armors = [ 'head', 'body', 'arm', 'waist', 'leg' ];
     armors.forEach(function (part) {
         var list = model.equips.enabled(part, context);
         equips[part] = list.map(simuData);

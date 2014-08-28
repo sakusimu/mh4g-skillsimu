@@ -24,19 +24,19 @@ QUnit.test('simulate', function () {
         simu = new Simulator();
 
     skills = [ '攻撃力UP【大】', '業物' ];
-    got = simu.simulate(skills);
+    got = simu.simulate(skills).length;
     exp = 8;
-    QUnit.strictEqual(got.length, exp, skills.join(', '));
+    QUnit.strictEqual(got, exp, skills.join(', '));
 
     skills = [ '斬れ味レベル+1', '高級耳栓' ];
-    got = simu.simulate(skills);
+    got = simu.simulate(skills).length;
     exp = 1378;
-    QUnit.strictEqual(got.length, exp, skills.join(', '));
+    QUnit.strictEqual(got, exp, skills.join(', '));
 
     skills = [ '攻撃力UP【大】', '業物', '集中', '見切り+1', '弱点特効' ];
-    got = simu.simulate(skills);
+    got = simu.simulate(skills).length;
     exp = 0;
-    QUnit.strictEqual(got.length, exp, skills.join(', '));
+    QUnit.strictEqual(got, exp, skills.join(', '));
 });
 
 QUnit.test('simulate: torsoUp', function () {
@@ -66,6 +66,7 @@ QUnit.test('simulate: torsoUp', function () {
               oma   : null } ];
     QUnit.deepEqual(got, exp, 'torsoUp');
 });
+
 });
 })(typeof define !== 'undefined' ?
    define :
