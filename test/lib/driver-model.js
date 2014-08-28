@@ -20,7 +20,7 @@ var make = model.make = function (data, props, numProps) {
     return ret;
 };
 
-var makeSkillComb = function (model, num) {
+var makeSkillComb = model.makeSkillComb = function (model, num) {
     var ret = {};
     for (var i = 1; i <= num; ++i) {
         var tree = model['skillTree' + i], pt = model['skillPt' + i];
@@ -273,7 +273,7 @@ var Oma = function () {
 
 /**
  * 引数の oma は以下を要素とする配列。
- * スキル,スキル系統,ポイント,"タイプ(0=両方, 1=剣士, 2=ガンナー)"
+ * 名前,スロット数,スキル系統1,スキル値1,スキル系統2,スキル値2
  */
 Oma.prototype.initialize = function (oma) {
     oma = oma || [];
