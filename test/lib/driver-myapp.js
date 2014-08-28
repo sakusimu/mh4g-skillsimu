@@ -1,8 +1,8 @@
 (function (define) {
 'use strict';
-var deps = [ './driver-namespace.js',
-             './driver-context.js', './driver-model.js', '../../lib/data.js' ];
-define(deps, function (myapp, Context, model, data) {
+var deps = [ './driver-namespace.js', './driver-context.js',
+             './driver-model.js', './driver-dig.js', '../../lib/data.js' ];
+define(deps, function (myapp, Context, model, _model_, data) {
 
 var context = new Context();
 
@@ -10,16 +10,44 @@ myapp.initialize = function () {
     this.setup();
 };
 
-myapp.setup = function (ctx) {
-    context.initialize(ctx);
+myapp.setup = function (opts) {
+    opts = opts || {};
+
+    context.initialize(opts.context);
 
     var simuData = function (obj) { return obj.simuData(); };
 
     var equips = {};
-    [ 'head', 'body', 'arm', 'waist', 'leg' ].forEach(function (part) {
+    data.parts.forEach(function (part) { equips[part] = []; });
+
+    var armors = [ 'head', 'body', 'arm', 'waist', 'leg' ];
+    armors.forEach(function (part) {
         var list = model.equips.enabled(part, context);
         equips[part] = list.map(simuData);
     });
+
+    if (opts.weaponSlot != null) {
+        var wslot  = opts.weaponSlot,
+            weapon = { name: 'slot' + wslot, slot: wslot, skillComb: {} };
+        equips.weapon = [ weapon ];
+    }
+
+    if (opts.omas) {
+        equips.oma = [];
+        opts.omas.forEach(function (list) {
+            var oma = new model.Oma(list);
+            equips.oma.push(oma.simuData());
+        });
+    }
+
+    if (opts.dig) {
+        var weapons = model.digs.enabled('weapon', context).map(simuData);
+        equips.weapon = equips.weapon.concat(weapons);
+        armors.forEach(function (part) {
+            var list = model.digs.enabled(part, context);
+            equips[part] = equips[part].concat(list.map(simuData));
+        });
+    }
 
     var decos = model.decos.enabled(context).map(simuData);
 
@@ -76,6 +104,7 @@ return myapp;
            module.exports = factory.apply(this, modules);
        } :
        function (deps, factory) {
-           factory(this.myapp, this.myapp.Context, this.myapp.model, this.simu.data);
+           factory(this.myapp, this.myapp.Context,
+                   this.myapp.model, this.myapp.model, this.simu.data);
        }
 );

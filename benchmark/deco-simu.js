@@ -55,7 +55,7 @@ var equipSet, omas;
 
 omas = [ myapp.oma([ '龍の護石',3,'匠',4,'氷耐性',-5 ]) ];
 
-myapp.setup({ hr: 1, vs: 6 }); // 装備を村のみにしぼる
+myapp.setup({ context: { hr: 1, vs: 6 } }); // 装備を村のみにしぼる
 
 equipSet = {
     head  : myapp.equip('head', 'ガララキャップ')  // スロ2

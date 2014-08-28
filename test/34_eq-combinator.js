@@ -40,8 +40,10 @@ QUnit.test('combine: weaponSlot', function () {
         c = new Combinator();
 
     // 装備を村のみにしぼる
-    myapp.setup({ hr: 1, vs: 6 });
-
+    myapp.setup({
+        context: { hr: 1, vs: 6 },
+        weaponSlot: 2
+    });
     skills = [ '斬れ味レベル+1', '集中' ];
     n.weaponSlot = 2; // 武器スロ2
     bulksSet = n.normalize(skills);
@@ -57,15 +59,16 @@ QUnit.test('combine: oma', function () {
         c = new Combinator();
 
     // 装備を村のみにしぼる
-    myapp.setup({ hr: 1, vs: 6 });
-
-    n.omas = [
-        myapp.oma([ '龍の護石',3,'匠',4,'氷耐性',-5 ]),
-        myapp.oma([ '龍の護石',0,'溜め短縮',5,'攻撃',9 ]),
-        myapp.oma([ '龍の護石',3,'痛撃',4 ])
-    ];
+    myapp.setup({
+        context: { hr: 1, vs: 6 }, // 装備を村のみにしぼる
+        weaponSlot: 3,
+        omas: [
+            [ '龍の護石',3,'匠',4,'氷耐性',-5 ],
+            [ '龍の護石',0,'溜め短縮',5,'攻撃',9 ],
+            [ '龍の護石',3,'痛撃',4 ]
+        ]
+    });
     skills = [ '斬れ味レベル+1', '攻撃力UP【大】', '耳栓' ];
-    n.weaponSlot = 3; // 武器スロ3
     bulksSet = n.normalize(skills);
 
     got = c.combine(skills, bulksSet).length;
@@ -73,12 +76,40 @@ QUnit.test('combine: oma', function () {
     QUnit.strictEqual(got, exp, 'oma');
 
     // 武器スロ0
-    n.weaponSlot = 0;
+    myapp.setup({
+        context: { hr: 1, vs: 6 }, // 装備を村のみにしぼる
+        weaponSlot: 0,
+        omas: [
+            [ '龍の護石',3,'匠',4,'氷耐性',-5 ],
+            [ '龍の護石',0,'溜め短縮',5,'攻撃',9 ],
+            [ '龍の護石',3,'痛撃',4 ]
+        ]
+    });
     bulksSet = n.normalize(skills);
 
     got = c.combine(skills, bulksSet).length;
     exp = 0;
     QUnit.strictEqual(got, exp, 'oma');
+});
+
+QUnit.test('combine: dig', function () {
+    var got, exp, bulksSet,
+        n = new Normalizer(),
+        c = new Combinator();
+
+    var skills = [ '真打', '集中', '弱点特効', '耳栓' ];
+    myapp.setup({
+        omas: [
+            [ '龍の護石',3,'匠',4,'氷耐性',-5 ],
+            [ '龍の護石',0,'溜め短縮',5,'攻撃',9 ],
+            [ '龍の護石',3,'痛撃',4 ]
+        ],
+        dig: true
+    });
+    bulksSet = n.normalize(skills);
+    got = c.combine(skills, bulksSet).length;
+    exp = 141;
+    QUnit.strictEqual(got, exp, 'dig');
 });
 
 QUnit.test('combine: null or etc', function () {

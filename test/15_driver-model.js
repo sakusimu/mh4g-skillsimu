@@ -136,9 +136,9 @@ QUnit.test('equip: isEnabled', function () {
         [ '両/両/r/s/HR99/★6','0','0','4','0','99','6' ],
         [ '両/両/r/s/HR99/★99','0','0','4','0','99','99' ]
     ];
-    equips = _.map(data, function (d) { return new model.Equip(d); });
+    equips = data.map(function (d) { return new model.Equip(d); });
 
-       ctx.initialize({ hr: 1, vs: 1 });
+    ctx.initialize({ hr: 1, vs: 1 });
     got = equips.map(function (e) { return e.isEnabled(ctx); });
     exp = [ true,true,true, true,false,false, true,false,false ];
     QUnit.deepEqual(got, exp, 'hr=1, vs=1');

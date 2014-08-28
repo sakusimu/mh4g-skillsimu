@@ -25,17 +25,10 @@ QUnit.test('new', function () {
     got = n.equips.body;
     exp = data.equips.body;
     QUnit.strictEqual(got, exp, 'equips.body is strict equal');
-
-    QUnit.strictEqual(n.weaponSlot, 0, 'weaponSlot');
-});
-
-QUnit.test('initialize', function () {
-    var got,
-        n = new Normalizer();
-
-    n.initialize({ weaponSlot: 1 });
-    got = n.weaponSlot;
-    QUnit.strictEqual(got, 1, 'weaponSlot');
+    got = n.equips.weapon;
+    QUnit.deepEqual(got, [], 'weapon');
+    got = n.equips.oma;
+    QUnit.deepEqual(got, [], 'oma');
 });
 
 QUnit.test('compareAny', function () {
@@ -138,34 +131,86 @@ QUnit.test('_collectMaxSkill', function () {
     QUnit.deepEqual(got, exp, 'not uniq');
 });
 
+QUnit.test('_normalize0', function () {
+    var got, exp, equips,
+        n = new Normalizer();
+
+    // slotN
+    equips = [
+        { name: '攻撃+2,スロ1', slot: 1, skillComb: { '攻撃': 2, '研ぎ師': 1 } },
+        { name: '攻撃+3,スロ2', slot: 2, skillComb: { '攻撃': 3, '火耐性': 4 } },
+        { name: '斬れ味+2,スロ0', slot: 0, skillComb: { '斬れ味': 2, '研ぎ師': 1 } },
+        { name: 'スロ0', slot: 0, skillComb: { '採取': 3, '気まぐれ': 2 } },
+        { name: 'スロ3', slot: 3, skillComb: { '防御': 1, 'ガード強化': 1 } },
+        { name: '三眼の首飾り', slot: 3, skillComb: {} },
+        { name: '斬れ味+2,スロ3', slot: 3, skillComb: { '痛撃': 1, '斬れ味': 2 } }
+    ];
+    got = n._normalize0(equips, [ '攻撃', '斬れ味' ]);
+    exp = [
+        { name: '攻撃+2,スロ1', slot: 1, skillComb: { '攻撃': 2, '研ぎ師': 1 } },
+        { name: '攻撃+3,スロ2', slot: 2, skillComb: { '攻撃': 3, '火耐性': 4 } },
+        { name: '斬れ味+2,スロ0', slot: 0, skillComb: { '斬れ味': 2, '研ぎ師': 1 } },
+        { name: 'slot0', slot: 0, skillComb: {} },
+        { name: 'slot3', slot: 3, skillComb: {} },
+        { name: '斬れ味+2,スロ3', slot: 3, skillComb: { '痛撃': 1, '斬れ味': 2 } }
+    ];
+    QUnit.deepEqual(got, exp, 'slotN');
+
+    // 胴系統倍化
+    equips = [
+        { name: '攻撃+4,スロ1', slot: 1, skillComb: { '攻撃': 4, '聴覚保護': -2 } },
+        { name: 'アシラグリーヴ', slot: 0, skillComb: { '胴系統倍化': 1 } },
+        { name: 'スロ0', slot: 0, skillComb: { '体力': -2, '回復速度': 2, '乗り': 4 } },
+        { name: 'カブラＳグリーヴ', slot: 0, skillComb: { '胴系統倍化': 1 } },
+        { name: '攻撃＆斬れ味＆スロあり', slot: 3, skillComb: { '攻撃': 1, '斬れ味': 3 } }
+    ];
+    got = n._normalize0(equips, [ '攻撃', '斬れ味' ]);
+    exp = [
+        { name: '攻撃+4,スロ1', slot: 1, skillComb: { '攻撃': 4, '聴覚保護': -2 } },
+        { name: '胴系統倍化', slot: 0, skillComb: { '胴系統倍化': 1 } },
+        { name: 'slot0', slot: 0, skillComb: {} },
+        { name: '攻撃＆斬れ味＆スロあり', slot: 3, skillComb: { '攻撃': 1, '斬れ味': 3 } }
+    ];
+    QUnit.deepEqual(got, exp, 'torsoUp');
+});
+
 QUnit.test('_normalize1', function () {
     var got, exp, equips,
         n = new Normalizer();
 
-    // case 1
     equips = [
-        myapp.equip('body', 'ジャギィＳメイル')   // 攻撃+2, スロ1
-      , myapp.equip('body', 'クックＳメイル')     // 攻撃+3, スロ2
-      , myapp.equip('body', 'ギザミメイル')       // 斬れ味+2, スロ0
-      , myapp.equip('body', 'レザーベスト')       // スロ0
-      , myapp.equip('body', 'グラビドＵメイル')   // スロ3
-      , myapp.equip('body', '三眼の首飾り')       // スロ3
-      , myapp.equip('body', 'シルバーソルメイル') // 斬れ味+2, スロ3
+        { name: '攻撃+2,スロ1', slot: 1, skillComb: { '攻撃': 2, '研ぎ師': 1 } },
+        { name: '攻撃+3,スロ2', slot: 2, skillComb: { '攻撃': 3, '火耐性': 4 } },
+        { name: '斬れ味+2,スロ0', slot: 0, skillComb: { '斬れ味': 2, '研ぎ師': 1 } },
+        { name: 'スロ0', slot: 0, skillComb: { '採取': 3, '気まぐれ': 2 } },
+        { name: 'スロ3', slot: 3, skillComb: { '防御': 1, 'ガード強化': 1 } },
+        { name: '三眼の首飾り', slot: 3, skillComb: {} },
+        { name: '斬れ味+2,スロ3', slot: 3, skillComb: { '痛撃': 1, '斬れ味': 2 } }
     ];
     got = n._normalize1(equips, [ '攻撃', '斬れ味' ]);
     exp = {
-        'ジャギィＳメイル': [
-            { '攻撃': 3, '研ぎ師': 1, '効果持続': -2, '気絶': 2, '防御': -1 },
-            { '攻撃': 2, '研ぎ師': 1, '効果持続': -2, '気絶': 2, '斬れ味': 1, '匠': -1 } ],
-        'クックＳメイル': [
+        '攻撃+2,スロ1': [
+            { '攻撃': 3, '研ぎ師': 1, '防御': -1 },
+            { '攻撃': 2, '研ぎ師': 1, '斬れ味': 1, '匠': -1 } ],
+        '攻撃+3,スロ2': [
             { '攻撃': 5, '火耐性': 4, '防御': -2 },
             { '攻撃': 4, '火耐性': 4, '防御': -1, '斬れ味': 1, '匠': -1 },
             { '攻撃': 3, '火耐性': 4, '斬れ味': 2, '匠': -2 },
             { '攻撃': 6, '火耐性': 4, '防御': -1 } ],
-        'ギザミメイル': [
+        '斬れ味+2,スロ0': [
             { '斬れ味': 2, '研ぎ師': 1 } ],
-        slot0: [],
-        slot3: [
+        'スロ0': [
+            { '採取': 3, '気まぐれ': 2 } ],
+        'スロ3': [
+            { '防御': -2, 'ガード強化': 1, '攻撃': 3 },
+            { '防御': -1, 'ガード強化': 1, '攻撃': 2, '斬れ味': 1, '匠': -1 },
+            { '防御': 0, 'ガード強化': 1, '攻撃': 1, '斬れ味': 2, '匠': -2 },
+            { '防御': 1, 'ガード強化': 1, '斬れ味': 3, '匠': -3 },
+            { '防御': -1, 'ガード強化': 1, '攻撃': 4 },
+            { '防御': 0, 'ガード強化': 1, '攻撃': 3, '斬れ味': 1, '匠': -1 },
+            { '防御': 0, 'ガード強化': 1, '攻撃': 5 },
+            { '防御': 1, 'ガード強化': 1, '斬れ味': 4, '匠': -2 } ],
+        '三眼の首飾り': [
             { '攻撃': 3, '防御': -3 },
             { '攻撃': 2, '防御': -2, '斬れ味': 1, '匠': -1 },
             { '攻撃': 1, '防御': -1, '斬れ味': 2, '匠': -2 },
@@ -174,87 +219,17 @@ QUnit.test('_normalize1', function () {
             { '攻撃': 3, '防御': -1, '斬れ味': 1, '匠': -1 },
             { '攻撃': 5, '防御': -1 },
             { '斬れ味': 4, '匠': -2 } ],
-        'シルバーソルメイル': [
-            { '痛撃': 1, '斬れ味': 2, '回復量': -2, '攻撃': 3, '防御': -3 },
-            { '痛撃': 1, '斬れ味': 3, '回復量': -2, '攻撃': 2, '防御': -2, '匠': -1 },
-            { '痛撃': 1, '斬れ味': 4, '回復量': -2, '攻撃': 1, '防御': -1, '匠': -2 },
-            { '痛撃': 1, '斬れ味': 5, '回復量': -2, '匠': -3 },
-            { '痛撃': 1, '斬れ味': 2, '回復量': -2, '攻撃': 4, '防御': -2 },
-            { '痛撃': 1, '斬れ味': 3, '回復量': -2, '攻撃': 3, '防御': -1, '匠': -1 },
-            { '痛撃': 1, '斬れ味': 2, '回復量': -2, '攻撃': 5, '防御': -1 },
-            { '痛撃': 1, '斬れ味': 6, '回復量': -2, '匠': -2 } ]
+        '斬れ味+2,スロ3': [
+            { '痛撃': 1, '斬れ味': 2, '攻撃': 3, '防御': -3 },
+            { '痛撃': 1, '斬れ味': 3, '攻撃': 2, '防御': -2, '匠': -1 },
+            { '痛撃': 1, '斬れ味': 4, '攻撃': 1, '防御': -1, '匠': -2 },
+            { '痛撃': 1, '斬れ味': 5, '匠': -3 },
+            { '痛撃': 1, '斬れ味': 2, '攻撃': 4, '防御': -2 },
+            { '痛撃': 1, '斬れ味': 3, '攻撃': 3, '防御': -1, '匠': -1 },
+            { '痛撃': 1, '斬れ味': 2, '攻撃': 5, '防御': -1 },
+            { '痛撃': 1, '斬れ味': 6, '匠': -2 } ]
     };
-    QUnit.deepEqual(got, exp, 'case 1');
-
-    // case 2: 斬れ味と匠みたくプラスマイナスが反発するポイントの場合
-    equips = [
-        myapp.equip('body', 'ゴアメイル')         // 匠+2, スロ0
-      , myapp.equip('body', 'アカムトウルンテ')   // 匠+2, 斬れ味-2, スロ1
-      , myapp.equip('body', 'シルバーソルメイル') // 斬れ味+2, スロ3
-      , myapp.equip('body', 'ユクモノドウギ・天') // 匠+1, スロ2
-    ];
-    got = n._normalize1(equips, [ '匠', '斬れ味' ]);
-    exp = {
-        'ゴアメイル': [
-            { '細菌学': 2, '匠': 2, '闘魂': 2, '火耐性': -3 } ],
-        'アカムトウルンテ': [
-            { '匠': 1, '達人': 3, '聴覚保護': 1, '斬れ味': -1 } ],
-        'シルバーソルメイル': [
-            { '痛撃': 1, '斬れ味': 5, '回復量': -2, '匠': -3 },
-            { '痛撃': 1, '斬れ味': 2, '回復量': -2, '匠': 0 },
-            { '痛撃': 1, '斬れ味': 0, '回復量': -2, '匠': 2 },
-            { '痛撃': 1, '斬れ味': 6, '回復量': -2, '匠': -2 } ],
-        'ユクモノドウギ・天': [
-            { '匠': -1, '研ぎ師': 1, '回復量': 2, '加護': 2, '斬れ味': 2 },
-            { '匠': 2, '研ぎ師': 1, '回復量': 2, '加護': 2, '斬れ味': -1 } ]
-    };
-    QUnit.deepEqual(got, exp, 'case 2');
-
-    // case 3: 胴系統倍化
-    equips = [
-        myapp.equip('leg', 'クックＳグリーヴ') // 攻撃+4, スロ1
-      , myapp.equip('leg', 'アシラグリーヴ')   // 胴系統倍化
-      , myapp.equip('leg', 'ブレイブパンツ')   // スロ0
-      , myapp.equip('leg', 'カブラＳグリーヴ') // 胴系統倍化
-      , myapp.equip('leg', 'バンギスグリーヴ') // 攻撃+1, 斬れ味+3, スロ3
-    ];
-    got = n._normalize1(equips, [ '攻撃', '斬れ味' ]);
-    exp = {
-        'クックＳグリーヴ': [
-            { '攻撃': 5, '聴覚保護': -2, 'スタミナ': 2, '火耐性': 2, '防御': -1 },
-            { '攻撃': 4, '聴覚保護': -2, 'スタミナ': 2, '火耐性': 2, '斬れ味': 1, '匠': -1 } ],
-        '胴系統倍化': [
-            { '胴系統倍化': 1 } ],
-        slot0: [],
-        'バンギスグリーヴ': [
-            { '攻撃': 4, '斬れ味': 3, '腹減り': -2, '防御': -3 },
-            { '攻撃': 3, '斬れ味': 4, '腹減り': -2, '防御': -2, '匠': -1 },
-            { '攻撃': 2, '斬れ味': 5, '腹減り': -2, '防御': -1, '匠': -2 },
-            { '攻撃': 1, '斬れ味': 6, '腹減り': -2, '匠': -3 },
-            { '攻撃': 5, '斬れ味': 3, '腹減り': -2, '防御': -2 },
-            { '攻撃': 4, '斬れ味': 4, '腹減り': -2, '防御': -1, '匠': -1 },
-            { '攻撃': 6, '斬れ味': 3, '腹減り': -2, '防御': -1 },
-            { '攻撃': 1, '斬れ味': 7, '腹減り': -2, '匠': -2 } ]
-    };
-    QUnit.deepEqual(got, exp, 'case 3: torsoUp');
-
-    got = n._normalize1();
-    QUnit.deepEqual(got, null, 'nothing in');
-    got = n._normalize1(undefined);
-    QUnit.deepEqual(got, null, 'undefined');
-    got = n._normalize1(null);
-    QUnit.deepEqual(got, null, 'null');
-    got = n._normalize1('');
-    QUnit.deepEqual(got, null, 'empy string');
-
-    got = n._normalize1([ 'equip' ]);
-    QUnit.deepEqual(got, null, 'equips only');
-    got = n._normalize1([ 'equip' ], undefined);
-    QUnit.deepEqual(got, null, 'equips, undefined');
-    got = n._normalize1([ 'equip' ], null);
-    QUnit.deepEqual(got, null, 'equips, null');
-    got = n._normalize1([ 'equip' ], []);
-    QUnit.deepEqual(got, null, 'equips, []');
+    QUnit.deepEqual(got, exp, '_normalzie1');
 });
 
 QUnit.test('_normalize1 (none deco)', function () {
@@ -264,27 +239,28 @@ QUnit.test('_normalize1 (none deco)', function () {
     data.decos = []; // 装飾品なし
 
     equips = [
-        myapp.equip('body', 'ハンターメイル')     // スロ1
-      , myapp.equip('body', 'レザーベスト')       // スロ0
-      , myapp.equip('body', 'ジャギィＳメイル')   // 攻撃+2, スロ1
-      , myapp.equip('body', 'クックＳメイル')     // 攻撃+3, スロ2
-      , myapp.equip('body', 'バンギスメイル')     // 攻撃+4, 斬れ味+1, スロ0
-      , myapp.equip('body', '三眼の首飾り')       // スロ3
-      , myapp.equip('body', 'シルバーソルメイル') // 斬れ味+2, スロ3
+        { name: 'slot1', slot: 1, skillComb: {} },
+        { name: 'slot0', slot: 0, skillComb: {} },
+        { name: '攻撃+2,スロ1', slot: 1, skillComb: { '攻撃': 2,'研ぎ師': 1 } },
+        { name: '攻撃+3,スロ2', slot: 2, skillComb: { '攻撃': 3,'火耐性': 4 } },
+        { name: '攻撃+4,斬れ味+1,スロ0', slot: 0,
+          skillComb: { '攻撃': 4,'斬れ味': 1,'食事': 4,'腹減り': -2} },
+        { name: 'slot3', slot: 3, skillComb: {} },
+        { name: '斬れ味+2,スロ3', slot: 3, skillComb: { '痛撃': 1, '斬れ味': 2 } }
     ];
     got = n._normalize1(equips, [ '攻撃', '斬れ味' ]);
     exp = {
         slot1: [],
         slot0: [],
-        'ジャギィＳメイル': [
-            { '攻撃': 2, '研ぎ師': 1, '効果持続': -2, '気絶': 2 } ],
-        'クックＳメイル': [
-            { '攻撃': 3, '火耐性': 4 } ],
-        'バンギスメイル': [
-            { '攻撃': 4, '斬れ味': 1, '食事': 4, '腹減り': -2 } ],
+        '攻撃+2,スロ1': [
+            { '攻撃': 2,'研ぎ師': 1 } ],
+        '攻撃+3,スロ2': [
+            { '攻撃': 3,'火耐性': 4 } ],
+        '攻撃+4,斬れ味+1,スロ0': [
+            { '攻撃': 4,'斬れ味': 1,'食事': 4,'腹減り': -2} ],
         slot3: [],
-        'シルバーソルメイル': [
-            { '痛撃': 1, '斬れ味': 2, '回復量': -2 } ]
+        '斬れ味+2,スロ3': [
+            { '痛撃': 1, '斬れ味': 2 } ]
     };
     QUnit.deepEqual(got, exp, 'none deco');
 
@@ -295,7 +271,9 @@ QUnit.test('_normalize1 (fix)', function () {
     var got, exp, equips,
         n = new Normalizer();
 
-    equips = [ myapp.equip('body', '三眼の首飾り') ];
+    equips = [
+        { name: '三眼の首飾り', slot: 3, skillComb: {} }
+    ];
     got = n._normalize1(equips, [ '攻撃', '斬れ味' ]);
     exp = {
         '三眼の首飾り': [
@@ -311,7 +289,9 @@ QUnit.test('_normalize1 (fix)', function () {
     QUnit.deepEqual(got, exp, 'fix');
 
     // 胴系統倍化
-    equips = [ myapp.equip('waist', 'バンギスコイル') ];
+    equips = [
+        { name: 'バンギスコイル', slot: 0, skillComb: { '胴系統倍化': 1 } }
+    ];
     got = n._normalize1(equips, [ '攻撃', '斬れ味' ]);
     exp = { 'バンギスコイル': [ { '胴系統倍化': 1 } ] };
     QUnit.deepEqual(got, exp, 'fix: torsoUp');
@@ -347,7 +327,7 @@ QUnit.test('_normalize2', function () {
         'レザーベスト': [
             { '攻撃': 0, '斬れ味': 0 } ]
     };
-    QUnit.deepEqual(got, exp, "_normalize2");
+    QUnit.deepEqual(got, exp, '_normalize2');
 
     // 胴系統倍化
     combs = {
@@ -386,25 +366,7 @@ QUnit.test('_normalize2', function () {
             { '攻撃': 7, '斬れ味': 2 },
             { '攻撃': 2, '斬れ味': 6 } ]
     };
-    QUnit.deepEqual(got, exp, "torsoUp");
-
-    got = n._normalize2();
-    QUnit.deepEqual(got, null, 'nothing in');
-    got = n._normalize2(undefined);
-    QUnit.deepEqual(got, null, 'undefined');
-    got = n._normalize2(null);
-    QUnit.deepEqual(got, null, 'null');
-    got = n._normalize2([]);
-    QUnit.deepEqual(got, null, '[]');
-
-    got = n._normalize2([ {} ]);
-    QUnit.deepEqual(got, null, 'combs onliy');
-    got = n._normalize2([ {} ], undefined);
-    QUnit.deepEqual(got, null, 'combs, undefined');
-    got = n._normalize2([ {} ], null);
-    QUnit.deepEqual(got, null, 'combs, null');
-    got = n._normalize2([ {} ], []);
-    QUnit.deepEqual(got, null, 'combs, []');
+    QUnit.deepEqual(got, exp, 'torsoUp');
 });
 
 QUnit.test('_normalize3', function () {
@@ -449,7 +411,7 @@ QUnit.test('_normalize3', function () {
             { '攻撃': 2, '斬れ味': 2 }, { '攻撃': 1, '斬れ味': 3 },
             { '攻撃': 4, '斬れ味': 1 } ]
     };
-    QUnit.deepEqual(got, exp, "case 1");
+    QUnit.deepEqual(got, exp, 'case 1');
 
     // case 2: スキルポイントが 0 やマイナスでも正規化できるか
     combs = {
@@ -469,7 +431,7 @@ QUnit.test('_normalize3', function () {
         'slot0': [
             { '匠': 0, '斬れ味': 0 } ]
     };
-    QUnit.deepEqual(got, exp, "case 2");
+    QUnit.deepEqual(got, exp, 'case 2');
 
     // case 3: 胴系統倍化
     combs = {
@@ -503,16 +465,7 @@ QUnit.test('_normalize3', function () {
             { '攻撃': 7, '斬れ味': 2 },
             { '攻撃': 2, '斬れ味': 6 } ]
     };
-    QUnit.deepEqual(got, exp, "case 3");
-
-    got = n._normalize3();
-    QUnit.deepEqual(got, null, 'nothing in');
-    got = n._normalize3(undefined);
-    QUnit.deepEqual(got, null, 'undefined');
-    got = n._normalize3(null);
-    QUnit.deepEqual(got, null, 'null');
-    got = n._normalize3({});
-    QUnit.deepEqual(got, {}, '{}');
+    QUnit.deepEqual(got, exp, 'case 3');
 });
 
 QUnit.test('_normalize4', function () {
@@ -545,21 +498,23 @@ QUnit.test('_normalize4', function () {
             { '攻撃': 4, '斬れ味': 1 } ]
     };
     got = n._normalize4(combs);
-    exp = [ { skillComb: { '攻撃': 0, '斬れ味': 0 }, equips: [ 'slot0' ] },
-            { skillComb: { '攻撃': 0, '斬れ味': 2 }, equips: [ 'ジンオウメイル' ] },
-            { skillComb: { '攻撃': 3, '斬れ味': 0 }, equips: [ 'ジャギィＳメイル' ] },
-            { skillComb: { '攻撃': 2, '斬れ味': 1 }, equips: [ 'ジャギィＳメイル' ] },
-            { skillComb: { '攻撃': 1, '斬れ味': 2 }, equips: [ 'slot3' ] },
-            { skillComb: { '攻撃': 3, '斬れ味': 1 }, equips: [ 'slot3' ] },
-            { skillComb: { '攻撃': 0, '斬れ味': 4 }, equips: [ 'slot3' ] },
-            { skillComb: { '攻撃': 2, '斬れ味': 2 }, equips: [ 'シルバーソルメイル' ] },
-            { skillComb: { '攻撃': 1, '斬れ味': 3 }, equips: [ 'シルバーソルメイル' ] },
-            { skillComb: { '攻撃': 4, '斬れ味': 1 },
-              equips: [ 'バギィＳメイル', 'シルバーソルメイル' ] },
-            { skillComb: { '攻撃': 3, '斬れ味': 2 }, equips: [ 'バギィＳメイル' ] },
-            { skillComb: { '攻撃': 5, '斬れ味': 0 }, equips: [ 'slot3' ] },
-            { skillComb: { '攻撃': 6, '斬れ味': 0 }, equips: [ 'バギィＳメイル' ] } ];
-    QUnit.deepEqual(sorter(got), sorter(exp), "normalizer4");
+    exp = [
+        { skillComb: { '攻撃': 0, '斬れ味': 0 }, equips: [ 'slot0' ] },
+        { skillComb: { '攻撃': 0, '斬れ味': 2 }, equips: [ 'ジンオウメイル' ] },
+        { skillComb: { '攻撃': 3, '斬れ味': 0 }, equips: [ 'ジャギィＳメイル' ] },
+        { skillComb: { '攻撃': 2, '斬れ味': 1 }, equips: [ 'ジャギィＳメイル' ] },
+        { skillComb: { '攻撃': 1, '斬れ味': 2 }, equips: [ 'slot3' ] },
+        { skillComb: { '攻撃': 3, '斬れ味': 1 }, equips: [ 'slot3' ] },
+        { skillComb: { '攻撃': 0, '斬れ味': 4 }, equips: [ 'slot3' ] },
+        { skillComb: { '攻撃': 2, '斬れ味': 2 }, equips: [ 'シルバーソルメイル' ] },
+        { skillComb: { '攻撃': 1, '斬れ味': 3 }, equips: [ 'シルバーソルメイル' ] },
+        { skillComb: { '攻撃': 4, '斬れ味': 1 },
+          equips: [ 'バギィＳメイル', 'シルバーソルメイル' ] },
+        { skillComb: { '攻撃': 3, '斬れ味': 2 }, equips: [ 'バギィＳメイル' ] },
+        { skillComb: { '攻撃': 5, '斬れ味': 0 }, equips: [ 'slot3' ] },
+        { skillComb: { '攻撃': 6, '斬れ味': 0 }, equips: [ 'バギィＳメイル' ] }
+    ];
+    QUnit.deepEqual(sorter(got), sorter(exp), 'normalizer4');
 
     // 胴系統倍化
     combs = {
@@ -575,15 +530,17 @@ QUnit.test('_normalize4', function () {
             { '攻撃': 7, '斬れ味': 2 }, { '攻撃': 2, '斬れ味': 6 } ]
     };
     got = n._normalize4(combs);
-    exp = [ { skillComb: { '攻撃': 0, '斬れ味': 0 }, equips: [ 'slot0' ] },
-            { skillComb: { '胴系統倍化': 1 }, equips: [ '胴系統倍化' ] },
-            { skillComb: { '攻撃': 5, '斬れ味': 0 }, equips: [ 'ジャギィＳグリーヴ' ] },
-            { skillComb: { '攻撃': 4, '斬れ味': 1 }, equips: [ 'ジャギィＳグリーヴ' ] },
-            { skillComb: { '攻撃': 3, '斬れ味': 4 }, equips: [ 'シルバーソルグリーヴ' ] },
-            { skillComb: { '攻撃': 5, '斬れ味': 3 }, equips: [ 'シルバーソルグリーヴ' ] },
-            { skillComb: { '攻撃': 2, '斬れ味': 6 }, equips: [ 'シルバーソルグリーヴ' ] },
-            { skillComb: { '攻撃': 7, '斬れ味': 2 }, equips: [ 'シルバーソルグリーヴ' ] } ];
-    QUnit.deepEqual(sorter(got), sorter(exp), "torsoUp");
+    exp = [
+        { skillComb: { '攻撃': 0, '斬れ味': 0 }, equips: [ 'slot0' ] },
+        { skillComb: { '胴系統倍化': 1 }, equips: [ '胴系統倍化' ] },
+        { skillComb: { '攻撃': 5, '斬れ味': 0 }, equips: [ 'ジャギィＳグリーヴ' ] },
+        { skillComb: { '攻撃': 4, '斬れ味': 1 }, equips: [ 'ジャギィＳグリーヴ' ] },
+        { skillComb: { '攻撃': 3, '斬れ味': 4 }, equips: [ 'シルバーソルグリーヴ' ] },
+        { skillComb: { '攻撃': 5, '斬れ味': 3 }, equips: [ 'シルバーソルグリーヴ' ] },
+        { skillComb: { '攻撃': 2, '斬れ味': 6 }, equips: [ 'シルバーソルグリーヴ' ] },
+        { skillComb: { '攻撃': 7, '斬れ味': 2 }, equips: [ 'シルバーソルグリーヴ' ] }
+    ];
+    QUnit.deepEqual(sorter(got), sorter(exp), 'torsoUp');
 
     got = n._normalize4();
     QUnit.deepEqual(got, [], 'nothing in');
@@ -595,54 +552,6 @@ QUnit.test('_normalize4', function () {
     QUnit.deepEqual(got, [], '{}');
 });
 
-QUnit.test('_normalizeWeaponSkill', function () {
-    var got, exp,
-        n = new Normalizer();
-
-    got = n._normalizeWeaponSkill([ '攻撃', '斬れ味' ]);
-    exp = [ { skillComb: { '攻撃': 0, '斬れ味': 0 }, equips: [ 'slot0' ] } ];
-    QUnit.deepEqual(got, exp, "default");
-
-    n.weaponSlot = 0;
-    got = n._normalizeWeaponSkill([ '攻撃', '斬れ味' ]);
-    exp = [ { skillComb: { '攻撃': 0, '斬れ味': 0 }, equips: [ 'slot0' ] } ];
-    QUnit.deepEqual(got, exp, 'slot0');
-
-    n.weaponSlot = 1;
-    got = n._normalizeWeaponSkill([ '攻撃', '斬れ味' ]);
-    exp = [ { skillComb: { '攻撃': 1, '斬れ味': 0 }, equips: [ 'slot1' ] },
-            { skillComb: { '攻撃': 0, '斬れ味': 1 }, equips: [ 'slot1' ] } ];
-    QUnit.deepEqual(got, exp, 'slot1');
-
-    n.weaponSlot = 3;
-    got = n._normalizeWeaponSkill([ '攻撃', '斬れ味' ]);
-    exp = [ { skillComb: { '攻撃': 1, '斬れ味': 2 }, equips: [ 'slot3' ] },
-            { skillComb: { '攻撃': 3, '斬れ味': 1 }, equips: [ 'slot3' ] },
-            { skillComb: { '攻撃': 5, '斬れ味': 0 }, equips: [ 'slot3' ] },
-            { skillComb: { '攻撃': 0, '斬れ味': 4 }, equips: [ 'slot3' ] } ];
-    QUnit.deepEqual(got, exp, 'slot3');
-
-    n.weaponSlot = null;
-    got = n._normalizeWeaponSkill([ '攻撃' ]);
-    QUnit.deepEqual(got, [], 'weaponSlot is null');
-
-    n.weaponSlot = -1;
-    got = n._normalizeWeaponSkill([ '攻撃' ]);
-    QUnit.deepEqual(got, [], 'weaponSlot is -1');
-
-    n.weaponSlot = 4;
-    got = n._normalizeWeaponSkill([ '攻撃' ]);
-    QUnit.deepEqual(got, [], 'weaponSlot is 4');
-
-    got = n._normalizeWeaponSkill();
-    QUnit.deepEqual(got, [], 'nothing in');
-    got = n._normalizeWeaponSkill(undefined);
-    QUnit.deepEqual(got, [], 'undefined');
-    got = n._normalizeWeaponSkill(null);
-    QUnit.deepEqual(got, [], 'null');
-    got = n._normalizeWeaponSkill([]);
-    QUnit.deepEqual(got, [], '[]');
-});
 });
 })(typeof define !== 'undefined' ?
    define :
