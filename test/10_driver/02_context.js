@@ -1,9 +1,9 @@
 (function (define) {
 'use strict';
-var deps = [ './lib/test-helper.js', './lib/driver-context' ];
+var deps = [ '../lib/test-helper.js', '../lib/driver-context' ];
 define(deps, function (QUnit, Context) {
 
-QUnit.module('12_driver-context');
+QUnit.module('10_driver/02_context');
 
 QUnit.test('context', function () {
     var got;

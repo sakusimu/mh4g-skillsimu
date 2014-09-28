@@ -1,9 +1,9 @@
 (function (define) {
 'use strict';
-var deps = [ './lib/test-helper.js', '../lib/util/border-line.js', './lib/driver-myapp.js' ];
+var deps = [ '../lib/test-helper.js', '../../lib/util/border-line.js', '../lib/driver-myapp.js' ];
 define(deps, function (QUnit, BorderLine, myapp) {
 
-QUnit.module('26_util-border-line', {
+QUnit.module('20_util/06_border-line', {
     setup: function () {
         myapp.initialize();
     }

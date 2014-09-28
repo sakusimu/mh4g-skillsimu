@@ -1,9 +1,9 @@
 (function (define) {
 'use strict';
-var deps = [ './lib/test-helper.js', 'underscore', './lib/driver-myapp.js', '../lib/data.js' ];
+var deps = [ '../lib/test-helper.js', 'underscore', '../lib/driver-myapp.js', '../../lib/data.js' ];
 define(deps, function (QUnit, _, myapp, data) {
 
-QUnit.module('19_driver-myapp');
+QUnit.module('10_driver/09_myapp');
 
 QUnit.test('setup', function() {
     var got, exp;

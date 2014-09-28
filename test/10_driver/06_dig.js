@@ -1,9 +1,9 @@
 (function (define) {
 'use strict';
-var deps = [ './lib/test-helper.js', './lib/driver-dig.js', './lib/driver-context.js' ];
+var deps = [ '../lib/test-helper.js', '../lib/driver-dig.js', '../lib/driver-context.js' ];
 define(deps, function (QUnit, model, Context) {
 
-QUnit.module('16_driver-dig');
+QUnit.module('10_driver/06_dig');
 
 QUnit.test('dig: new', function () {
     var got;

@@ -1,10 +1,10 @@
 (function (define) {
 'use strict';
-var deps = [ './lib/test-helper.js', 'underscore',
-             '../lib/deco/normalizer.js', '../lib/util/deco.js', './lib/driver-myapp.js' ];
+var deps = [ '../lib/test-helper.js', 'underscore',
+             '../../lib/deco/normalizer.js', '../../lib/util/deco.js', '../lib/driver-myapp.js' ];
 define(deps, function (QUnit, _, Normalizer, Deco, myapp) {
 
-QUnit.module('41_deco-normalizer', {
+QUnit.module('40_deco/10_normalizer', {
     setup: function () {
         myapp.initialize();
     }

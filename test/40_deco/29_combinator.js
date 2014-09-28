@@ -1,11 +1,11 @@
 (function (define) {
 'use strict';
-var deps = [ './lib/test-helper.js', 'underscore',
-             '../lib/deco/combinator.js', '../lib/deco/normalizer.js',
-             './lib/driver-myapp.js' ];
+var deps = [ '../lib/test-helper.js', 'underscore',
+             '../../lib/deco/combinator.js', '../../lib/deco/normalizer.js',
+             '../lib/driver-myapp.js' ];
 define(deps, function (QUnit, _, Combinator, Normalizer, myapp) {
 
-QUnit.module('44_deco-combinator', {
+QUnit.module('40_deco/29_combinator', {
     setup: function () {
         myapp.initialize();
     }

@@ -1,10 +1,10 @@
 (function (define) {
 'use strict';
-var deps = [ './lib/test-helper.js', 'underscore',
-             '../lib/equip/normalizer.js', '../lib/data.js', './lib/driver-myapp.js' ];
+var deps = [ '../lib/test-helper.js', 'underscore',
+             '../../lib/equip/normalizer.js', '../../lib/data.js', '../lib/driver-myapp.js' ];
 define(deps, function (QUnit, _, Normalizer, data, myapp) {
 
-QUnit.module('31_eq-normalizer');
+QUnit.module('30_equip/10_normalizer');
 
 QUnit.test('Normalizer', function () {
     QUnit.strictEqual(typeof Normalizer, 'function', 'is function');

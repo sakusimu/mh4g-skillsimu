@@ -1,9 +1,9 @@
 (function (define) {
 'use strict';
-var deps = [ './lib/test-helper.js', 'underscore', './lib/driver-data.js' ];
+var deps = [ '../lib/test-helper.js', 'underscore', '../lib/driver-data.js' ];
 define(deps, function (QUnit, _, data) {
 
-QUnit.module('11_driver-data');
+QUnit.module('10_driver/01_data');
 
 QUnit.test('data', function () {
     QUnit.strictEqual(typeof data, 'object', 'is object');

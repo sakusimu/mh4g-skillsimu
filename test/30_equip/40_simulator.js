@@ -1,10 +1,10 @@
 (function (define) {
 'use strict';
-var deps = [ './lib/test-helper.js', '../lib/equip/simulator.js',
-             '../lib/data.js', './lib/driver-myapp.js' ];
+var deps = [ '../lib/test-helper.js', '../../lib/equip/simulator.js',
+             '../../lib/data.js', '../lib/driver-myapp.js' ];
 define(deps, function (QUnit, Simulator, data, myapp) {
 
-QUnit.module('39_eq-simulator', {
+QUnit.module('30_equip/40_simulator', {
     setup: function () {
         myapp.initialize();
     }

@@ -1,10 +1,10 @@
 (function (define) {
 'use strict';
-var deps = [ './lib/test-helper.js', 'underscore',
-             './lib/driver-model.js', './lib/driver-data.js', './lib/driver-context.js' ];
+var deps = [ '../lib/test-helper.js', 'underscore',
+             '../lib/driver-model.js', '../lib/driver-data.js', '../lib/driver-context.js' ];
 define(deps, function (QUnit, _, model, data, Context) {
 
-QUnit.module('15_driver-model');
+QUnit.module('10_driver/05_model');
 
 QUnit.test('model.make', function () {
     var got, props, numProps, data;

@@ -1,10 +1,10 @@
 (function (define) {
 'use strict';
-var deps = [ './lib/test-helper.js', '../lib/deco/combinator.js',
-             '../lib/util/comb.js', './lib/driver-myapp.js' ];
+var deps = [ '../lib/test-helper.js', '../../lib/deco/combinator.js',
+             '../../lib/util/comb.js', '../lib/driver-myapp.js' ];
 define(deps, function (QUnit, Combinator, Comb, myapp) {
 
-QUnit.module('43_deco-combinator', {
+QUnit.module('40_deco/20_combinator', {
     setup: function () {
         myapp.initialize();
     }

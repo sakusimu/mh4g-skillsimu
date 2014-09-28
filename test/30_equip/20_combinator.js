@@ -1,10 +1,10 @@
 (function (define) {
 'use strict';
-var deps = [ './lib/test-helper.js', '../lib/equip/combinator.js',
-             '../lib/util/comb.js', '../lib/util/border-line.js', './lib/driver-myapp.js' ];
+var deps = [ '../lib/test-helper.js', '../../lib/equip/combinator.js',
+             '../../lib/util/comb.js', '../../lib/util/border-line.js', '../lib/driver-myapp.js' ];
 define(deps, function (QUnit, Combinator, Comb, BorderLine, myapp) {
 
-QUnit.module('33_eq-combinator', {
+QUnit.module('30_equip/20_combinator', {
     setup: function () {
         myapp.initialize();
     }

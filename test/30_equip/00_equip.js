@@ -1,8 +1,8 @@
 (function (define) {
 'use strict';
-define([ './lib/test-helper.js', '../lib/equip.js' ], function (QUnit, Equip) {
+define([ '../lib/test-helper.js', '../../lib/equip.js' ], function (QUnit, Equip) {
 
-QUnit.module('30_equip');
+QUnit.module('30_equip/00_equip');
 
 QUnit.test('Equip', function () {
     QUnit.strictEqual(typeof Equip, 'object', 'is object');

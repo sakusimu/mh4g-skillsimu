@@ -1,10 +1,10 @@
 (function (define) {
 'use strict';
-var deps = [ './lib/test-helper.js', '../lib/equip/combinator.js',
-             '../lib/equip/normalizer.js', './lib/driver-myapp.js' ];
+var deps = [ '../lib/test-helper.js', '../../lib/equip/combinator.js',
+             '../../lib/equip/normalizer.js', '../lib/driver-myapp.js' ];
 define(deps, function (QUnit, Combinator, Normalizer, myapp) {
 
-QUnit.module('34_eq-combinator', {
+QUnit.module('30_equip/29_combinator', {
     setup: function () {
         myapp.initialize();
     }

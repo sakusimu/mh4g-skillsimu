@@ -1,9 +1,9 @@
 (function (define) {
 'use strict';
-var deps = [ './lib/test-helper.js', '../lib/util/skill.js', './lib/driver-myapp.js' ];
+var deps = [ '../lib/test-helper.js', '../../lib/util/skill.js', '../lib/driver-myapp.js' ];
 define(deps, function (QUnit, Skill, myapp) {
 
-QUnit.module('21_util-skill', {
+QUnit.module('20_util/01_skill', {
     setup: function () {
         myapp.initialize();
     }

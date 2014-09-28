@@ -1,13 +1,13 @@
 (function (define) {
 'use strict';
-define([ './lib/test-helper.js', '../lib/deco.js' ], function (QUnit, Deco) {
+var deps = [ '../lib/test-helper.js', '../lib/driver-namespace.js' ];
+define(deps, function (QUnit, myapp) {
 
-QUnit.module('40_deco');
+QUnit.module('10_driver/00_namespace');
 
-QUnit.test('Deco', function () {
-    QUnit.strictEqual(typeof Deco, 'object', 'is object');
+QUnit.test('myapp', function () {
+    QUnit.strictEqual(typeof myapp, 'object', 'myapp');
 });
-
 });
 })(typeof define !== 'undefined' ?
    define :
@@ -18,6 +18,6 @@ QUnit.test('Deco', function () {
            test.apply(this, modules);
        } :
        function (deps, test) {
-           test(this.QUnit, this.simu.Deco);
+           test(this.QUnit, this.myapp);
        }
 );

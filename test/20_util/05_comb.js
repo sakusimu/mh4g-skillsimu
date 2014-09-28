@@ -1,9 +1,9 @@
 (function (define) {
 'use strict';
-var deps = [ './lib/test-helper.js', '../lib/util/comb.js', './lib/driver-myapp.js' ];
+var deps = [ '../lib/test-helper.js', '../../lib/util/comb.js', '../lib/driver-myapp.js' ];
 define(deps, function (QUnit, Comb, myapp) {
 
-QUnit.module('25_util-comb', {
+QUnit.module('20_util/05_comb', {
     setup: function () {
         myapp.initialize();
     }

@@ -1,10 +1,10 @@
 (function (define) {
 'use strict';
-var deps = [ './lib/test-helper.js', 'underscore',
-             '../lib/util/deco.js', '../lib/data.js', './lib/driver-myapp.js' ];
+var deps = [ '../lib/test-helper.js', 'underscore',
+             '../../lib/util/deco.js', '../../lib/data.js', '../lib/driver-myapp.js' ];
 define(deps, function (QUnit, _, Deco, data, myapp) {
 
-QUnit.module('22_util-deco', {
+QUnit.module('20_util/02_deco', {
     setup: function () {
         myapp.initialize();
     }
