@@ -1,23 +1,10 @@
-(function (define) {
 'use strict';
-define([ './lib/test-helper.js', '../lib/namespace.js' ], function (QUnit, simu) {
+var assert = require('power-assert'),
+    simu = require('../../lib/namespace.js');
 
-QUnit.module('00_namespace');
-
-QUnit.test('namespace', function () {
-    QUnit.strictEqual(typeof simu, 'object', 'simu');
-    QUnit.ok(/\d+\.\d+\.\d+/.test(simu.VERSION), 'version');
+describe('00_namespace', function () {
+    it('namespace', function () {
+        assert(typeof simu === 'object', 'simu');
+        assert(/\d+\.\d+\.\d+/.test(simu.VERSION), 'version');
+    });
 });
-});
-})(typeof define !== 'undefined' ?
-   define :
-   typeof module !== 'undefined' && module.exports ?
-       function (deps, test) {
-           var modules = [], len = deps.length;
-           for (var i = 0; i < len; ++i) modules.push(require(deps[i]));
-           test.apply(this, modules);
-       } :
-       function (deps, test) {
-           test(this.QUnit, this.simu);
-       }
-);

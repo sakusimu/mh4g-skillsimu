@@ -1,94 +1,74 @@
-(function (define) {
 'use strict';
-define([ '../lib/test-helper.js', '../../lib/util.js' ], function (QUnit, Util) {
+var assert = require('power-assert'),
+    Util = require('../../../lib/util.js');
 
-QUnit.module('20_util/00_util');
-
-QUnit.test('Util', function () {
-    QUnit.strictEqual(typeof Util, 'object', 'is object');
-});
-
-QUnit.test('parts', function () {
+describe('20_util/00_util', function () {
     var got, exp;
 
-    got = Util.parts;
-    exp = [ 'head', 'body', 'arm', 'waist', 'leg', 'weapon', 'oma' ];
-    QUnit.deepEqual(got, exp, 'parts');
+    it('Util', function () {
+        assert(typeof Util === 'object', 'is object');
+    });
+
+    it('parts', function () {
+        got = Util.parts;
+        exp = [ 'head', 'body', 'arm', 'waist', 'leg', 'weapon', 'oma' ];
+        assert.deepEqual(got, exp, 'parts');
+    });
+
+    it('clone', function () {
+        got = Util.clone({ a: 1, b: 2 });
+        exp = { a: 1, b: 2 };
+        assert.deepEqual(got, exp, 'skillComb');
+
+        got = Util.clone({});
+        exp = {};
+        assert.deepEqual(got, exp, 'empty');
+
+        got = Util.clone(null);
+        exp = null;
+        assert.deepEqual(got, exp, 'null');
+
+        got = Util.clone();
+        exp = null;
+        assert.deepEqual(got, exp, 'nothing in');
+    });
+
+    it('has', function () {
+        var obj;
+
+        obj = { a: 'A' };
+        got = Util.has(obj, 'a');
+        assert(got === true, 'has');
+
+        try { Util.has(null, 'a'); } catch (e) { got = e; }
+        assert(got instanceof Error, 'null');
+    });
+
+    it('isArray', function () {
+        got = Util.isArray('string');
+        assert(got === false, 'string');
+        got = Util.isArray([]);
+        assert(got === true, '[]');
+        got = Util.isArray({});
+        assert(got === false, '{}');
+
+        got = Util.isArray(null);
+        assert(got === false, 'null');
+        got = Util.isArray();
+        assert(got === false, 'nothing in');
+    });
+
+    it('isObject', function () {
+        got = Util.isObject('string');
+        assert(got === false, 'string');
+        got = Util.isObject([]);
+        assert(got === true, '[]');
+        got = Util.isObject({});
+        assert(got === true, '{}');
+
+        got = Util.isObject(null);
+        assert(got === false, 'null');
+        got = Util.isObject();
+        assert(got === false, 'nothing in');
+    });
 });
-
-QUnit.test('clone', function () {
-    var got, exp;
-
-    got = Util.clone({ a: 1, b: 2 });
-    exp = { a: 1, b: 2 };
-    QUnit.deepEqual(got, exp, 'skillComb');
-
-    got = Util.clone({});
-    exp = {};
-    QUnit.deepEqual(got, exp, 'empty');
-
-    got = Util.clone(null);
-    exp = null;
-    QUnit.deepEqual(got, exp, 'null');
-
-    got = Util.clone();
-    exp = null;
-    QUnit.deepEqual(got, exp, 'nothing in');
-});
-
-QUnit.test('has', function () {
-    var got, obj;
-
-    obj = { a: 'A' };
-    got = Util.has(obj, 'a');
-    QUnit.strictEqual(got, true, 'has');
-
-    var fn = function () { Util.has(null, 'a'); };
-    QUnit.throws(fn, Error, 'null');
-});
-
-QUnit.test('isArray', function () {
-    var got;
-
-    got = Util.isArray('string');
-    QUnit.strictEqual(got, false, 'string');
-    got = Util.isArray([]);
-    QUnit.strictEqual(got, true, '[]');
-    got = Util.isArray({});
-    QUnit.strictEqual(got, false, '{}');
-
-    got = Util.isArray(null);
-    QUnit.strictEqual(got, false, 'null');
-    got = Util.isArray();
-    QUnit.strictEqual(got, false, 'nothing in');
-});
-
-QUnit.test('isObject', function () {
-    var got;
-
-    got = Util.isObject('string');
-    QUnit.strictEqual(got, false, 'string');
-    got = Util.isObject([]);
-    QUnit.strictEqual(got, true, '[]');
-    got = Util.isObject({});
-    QUnit.strictEqual(got, true, '{}');
-
-    got = Util.isObject(null);
-    QUnit.strictEqual(got, false, 'null');
-    got = Util.isObject();
-    QUnit.strictEqual(got, false, 'nothing in');
-});
-
-});
-})(typeof define !== 'undefined' ?
-   define :
-   typeof module !== 'undefined' && module.exports ?
-       function (deps, test) {
-           var modules = [], len = deps.length;
-           for (var i = 0; i < len; ++i) modules.push(require(deps[i]));
-           test.apply(this, modules);
-       } :
-       function (deps, test) {
-           test(this.QUnit, this.simu.Util);
-       }
-);

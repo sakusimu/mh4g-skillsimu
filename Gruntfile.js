@@ -13,15 +13,14 @@ module.exports = function(grunt) {
         ].join('\n'),
 
         clean: {
-            dist: [ 'dist' ]
+            all: [ 'dist', 'tmp' ]
         },
 
         jshint: {
-            all: [ 'Gruntfile.js', 'lib/**/*.js', 'test/**/*.js', 'tasks/**/*.js' ],
+            all: [ '*.js', 'lib/**/*.js', 'test/**/*.js', 'tasks/**/*.js' ],
             options: {
                 force: true,
-                ignores: [ 'vendor/*.js' ],
-                jshintrc: '.jshintrc'
+                jshintrc: true
             }
         },
 
@@ -78,9 +77,25 @@ module.exports = function(grunt) {
             }
         },
 
-        'test-prove': {
-            all: { src: 'test/*.js' },
-            one: {}
+        espower: {
+            test: {
+                files: [
+                    { expand: true,
+                      cwd: 'test/unit',
+                      src: [ '**/*.js' ],
+                      dest: 'tmp/espowered/',
+                      ext: '.js' }
+                ]
+            }
+        },
+
+        mochaTest: {
+            test: {
+                options: {
+                    reporter: 'spec'
+                },
+                src: [ 'tmp/espowered/**/*.js' ]
+            }
         }
     });
 
@@ -88,14 +103,26 @@ module.exports = function(grunt) {
     grunt.loadNpmTasks('grunt-contrib-concat');
     grunt.loadNpmTasks('grunt-contrib-jshint');
     grunt.loadNpmTasks('grunt-contrib-uglify');
+    grunt.loadNpmTasks('grunt-espower');
+    grunt.loadNpmTasks('grunt-mocha-test');
     grunt.loadTasks('tasks');
 
     grunt.registerTask('default', [ 'clean', 'test', 'dist' ]);
     grunt.registerTask('dist', [ 'concat', 'uglify' ]);
-    grunt.registerTask('test', function (file) {
-        grunt.task.run([ 'jshint' ]);
-        var task = [ 'test-prove' ];
-        [].push.apply(task, file != null ? [ 'one', file ] : [ 'all' ]);
-        grunt.task.run(task.join(':'));
+    grunt.registerTask('test', function (type, file) {
+        switch (type) {
+        case 'node':
+            var files = grunt.config.data.mochaTest.test.src;
+            if (file) {
+                file = file.replace('test/unit/', 'tmp/espowered/');
+                files.splice(-1, 1, file);
+            }
+            //grunt.task.run([ 'jshint', 'espower:test', 'mochaTest:test' ]);
+            grunt.task.run([ 'espower:test', 'mochaTest:test' ]);
+            break;
+        case 'karma':
+            /* falls through */
+        default:
+        }
     });
 };

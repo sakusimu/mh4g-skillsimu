@@ -1,59 +1,41 @@
-(function (define) {
 'use strict';
-var deps = [ '../lib/test-helper.js', 'underscore', '../lib/driver-data.js' ];
-define(deps, function (QUnit, _, data) {
+var assert = require('power-assert'),
+    data = require('../../../test/lib/driver-data.js');
 
-QUnit.module('10_driver/01_data');
-
-QUnit.test('data', function () {
-    QUnit.strictEqual(typeof data, 'object', 'is object');
-    QUnit.strictEqual(typeof data.initialize, 'function', 'has initialize()');
-});
-
-QUnit.test('equips', function () {
-    var got,
-        equips = data.equips;
-
-    got = equips.head.length;
-    QUnit.ok(got > 0, 'equips.head.length');
-
-    got = equips.body.length;
-    QUnit.ok(got > 0, 'equips.body.length');
-
-    got = equips.arm.length;
-    QUnit.ok(got > 0, 'equips.arm.length');
-
-    got = equips.waist.length;
-    QUnit.ok(got > 0, 'equips.waist.length');
-
-    got = equips.leg.length;
-    QUnit.ok(got > 0, 'equips.leg.length');
-});
-
-QUnit.test('decos', function () {
+describe('10_driver/01_data', function () {
     var got;
 
-    got = data.decos.length;
-    QUnit.ok(got > 0, 'decos.length');
-});
+    it('data', function () {
+        assert(typeof data, 'object', 'is object');
+        assert(typeof data.initialize, 'function', 'has initialize()');
+    });
 
-QUnit.test('skills', function () {
-    var got;
+    it('equips', function () {
+        var equips = data.equips;
 
-    got = data.skills.length;
-    QUnit.ok(got > 0, 'skills.length');
-});
+        got = equips.head.length;
+        assert(got > 0, 'equips.head.length');
 
+        got = equips.body.length;
+        assert(got > 0, 'equips.body.length');
+
+        got = equips.arm.length;
+        assert(got > 0, 'equips.arm.length');
+
+        got = equips.waist.length;
+        assert(got > 0, 'equips.waist.length');
+
+        got = equips.leg.length;
+        assert(got > 0, 'equips.leg.length');
+    });
+
+    it('decos', function () {
+        got = data.decos.length;
+        assert(got > 0, 'decos.length');
+    });
+
+    it('skills', function () {
+        got = data.skills.length;
+        assert(got > 0, 'skills.length');
+    });
 });
-})(typeof define !== 'undefined' ?
-   define :
-   typeof module !== 'undefined' && module.exports ?
-       function (deps, test) {
-           var modules = [], len = deps.length;
-           for (var i = 0; i < len; ++i) modules.push(require(deps[i]));
-           test.apply(this, modules);
-       } :
-       function (deps, test) {
-           test(this.QUnit, this._, this.myapp.data);
-       }
-);
