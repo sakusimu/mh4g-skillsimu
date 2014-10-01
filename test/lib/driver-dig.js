@@ -1,6 +1,5 @@
-(function (define) {
 'use strict';
-define([ './driver-model.js' ], function (model) {
+var model = require('./driver-model.js');
 
 /**
  * シミュレータのユーザ側にあたるクラス。
@@ -136,17 +135,5 @@ Digs.prototype.get = function (part, name) {
 
 model.Dig = Dig;
 model.digs = new Digs();
-return model;
-});
-})(typeof define !== 'undefined' ?
-   define :
-   typeof module !== 'undefined' && module.exports ?
-       function (deps, factory) {
-           var modules = [], len = deps.length;
-           for (var i = 0; i < len; ++i) modules.push(require(deps[i]));
-           module.exports = factory.apply(this, modules);
-       } :
-       function (deps, factory) {
-           factory(this.myapp.model);
-       }
-);
+
+module.exports = model;

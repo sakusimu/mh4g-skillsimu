@@ -74,5 +74,6 @@ module.exports = function (grunt) {
       , 'testdata.skills ='
       , '<%= skill %>'
       , ';'
+      , 'testdata;'
     ].join('\n');
 };

@@ -1,14 +1,12 @@
-(function (define) {
 'use strict';
-var deps = [ './driver-namespace', './driver-data.js' ];
-define(deps, function (myapp, data) {
+var data = require('./driver-data.js');
 
 var model = {};
 
-var make = model.make = function (data, props, numProps) {
+var make = model.make = function (list, props, numProps) {
     var ret = {};
     for (var i = 0, len = props.length; i < len; ++i) {
-        var prop = props[i], value = data[i];
+        var prop = props[i], value = list[i];
         if (prop === undefined) continue;
         if (numProps[prop]) {
             ret[prop] = (value == null || value === '') ? 0 : +value;
@@ -318,17 +316,4 @@ model.equips = new Equips();
 model.decos  = new Decos();
 model.skills = new Skills();
 
-return myapp.model = model;
-});
-})(typeof define !== 'undefined' ?
-   define :
-   typeof module !== 'undefined' && module.exports ?
-       function (deps, factory) {
-           var modules = [], len = deps.length;
-           for (var i = 0; i < len; ++i) modules.push(require(deps[i]));
-           module.exports = factory.apply(this, modules);
-       } :
-       function (deps, factory) {
-           factory(this.myapp, this.myapp.data);
-       }
-);
+module.exports = model;

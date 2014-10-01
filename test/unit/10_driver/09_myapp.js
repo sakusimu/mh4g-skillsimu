@@ -7,6 +7,14 @@ var assert = require('power-assert'),
 describe('10_driver/09_myapp', function () {
     var got, exp;
 
+    it('myapp', function () {
+        assert(typeof myapp === 'object', 'is object');
+        assert(typeof myapp.initialize === 'function', 'has initialize()');
+
+        got = myapp.context;
+        assert(typeof got === 'object', 'context');
+    });
+
     it('setup', function() {
         myapp.setup();
         got = data.equips.head.length;
