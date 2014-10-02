@@ -1,6 +1,7 @@
 'use strict';
 
 module.exports = function(grunt) {
+    // jshint laxcomma:true
     grunt.initConfig({
         pkg: grunt.file.readJSON('package.json'),
         banner: [
@@ -117,8 +118,7 @@ module.exports = function(grunt) {
                 file = file.replace('test/unit/', 'tmp/espowered/');
                 files.splice(-1, 1, file);
             }
-            //grunt.task.run([ 'jshint', 'espower:test', 'mochaTest:test' ]);
-            grunt.task.run([ 'espower:test', 'mochaTest:test' ]);
+            grunt.task.run([ 'jshint', 'espower:test', 'mochaTest:test' ]);
             break;
         case 'karma':
             /* falls through */
