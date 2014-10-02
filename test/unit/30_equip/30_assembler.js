@@ -5,7 +5,7 @@ var assert = require('power-assert'),
 describe('30_equip/30_assembler', function () {
     var got, exp;
 
-    it('Assembler', function () {
+    it('require', function () {
         assert(typeof Assembler === 'function', 'is function');
     });
 

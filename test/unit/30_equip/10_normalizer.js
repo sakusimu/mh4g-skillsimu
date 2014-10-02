@@ -12,7 +12,7 @@ describe('30_equip/10_normalizer', function () {
         myapp.initialize();
     });
 
-    it('Normalizer', function () {
+    it('require', function () {
         assert(typeof Normalizer === 'function', 'is function');
     });
 

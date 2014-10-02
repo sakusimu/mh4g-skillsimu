@@ -1,8 +1,9 @@
-(function (define) {
 'use strict';
-var deps = [ './lib/namespace.js',
-             './lib/equip/simulator.js', './lib/deco/simulator.js' ];
-define(deps, function (simu, EquipSimulator, DecoSimulator) {
+var data = require('./lib/data.js'),
+    EquipSimulator = require('./lib/equip.js'),
+    DecoSimulator = require('./lib/deco.js');
+
+var VERSION = '0.4.0';
 
 var Simulator = function () {
     this.initialize.apply(this, arguments);
@@ -11,7 +12,9 @@ var Simulator = function () {
 Simulator.prototype.initialize = function () {
     this.equip = new EquipSimulator();
     this.deco  = new DecoSimulator();
-    this.data  = simu.data;
+    this.data  = data;
+
+    this.VERSION = VERSION;
 };
 
 Simulator.prototype.simulateEquip = function (skillNames, opts) {
@@ -22,17 +25,4 @@ Simulator.prototype.simulateDeco = function (skillNames, equips) {
     return this.deco.simulate(skillNames, equips);
 };
 
-return simu.Simulator = Simulator;
-});
-})(typeof define !== 'undefined' ?
-   define :
-   typeof module !== 'undefined' && module.exports ?
-       function (deps, factory) {
-           var modules = [], len = deps.length;
-           for (var i = 0; i < len; ++i) modules.push(require(deps[i]));
-           module.exports = factory.apply(this, modules);
-       } :
-       function (deps, factory) {
-           factory(this.simu, this.simu.Equip.Simulator, this.simu.Deco.Simulator);
-       }
-);
+module.exports = Simulator;

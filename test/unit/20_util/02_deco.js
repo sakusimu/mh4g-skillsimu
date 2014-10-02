@@ -1,7 +1,7 @@
 'use strict';
 var assert = require('power-assert'),
     _ = require('underscore'),
-    Deco = require('../../../lib/util/deco.js'),
+    dutil = require('../../../lib/util/deco.js'),
     data = require('../../../lib/data.js'),
     myapp = require('../../../test/lib/driver-myapp.js');
 
@@ -12,8 +12,8 @@ describe('20_util/02_deco', function () {
         myapp.initialize();
     });
 
-    it('Deco', function () {
-        assert(typeof Deco === 'object', 'is object');
+    it('require', function () {
+        assert(typeof dutil === 'object', 'is object');
     });
 
     it('filter', function () {
@@ -21,52 +21,52 @@ describe('20_util/02_deco', function () {
             kougeki = [ '攻撃珠【１】', '攻撃珠【２】', '攻撃珠【３】' ],
             takumi  = [ '匠珠【２】', '匠珠【３】' ];
 
-        got = Deco.filter([ '斬れ味' ]);
+        got = dutil.filter([ '斬れ味' ]);
         got = _.pluck(got, 'name').sort();
         exp = kireaji.sort();
         assert.deepEqual(got, exp, "[ '斬れ味' ]");
 
         // 斬れ味と攻撃で両方とれてるか
-        got = Deco.filter([ '斬れ味', '攻撃' ]);
+        got = dutil.filter([ '斬れ味', '攻撃' ]);
         got = _.pluck(got, 'name').sort();
         exp = kireaji.concat(kougeki).sort();
         assert.deepEqual(got, exp, "[ '斬れ味', '攻撃' ]");
 
         // 斬れ味と匠みたくプラスマイナスが反発する場合でも両方とれてるか
-        got = Deco.filter([ '斬れ味', '匠' ]);
+        got = dutil.filter([ '斬れ味', '匠' ]);
         got = _.pluck(got, 'name').sort();
         exp = kireaji.concat(takumi).sort();
         assert.deepEqual(got, exp, "[ '斬れ味', '匠' ]");
 
         // 存在しないスキル系統
-        got = Deco.filter([ 'hoge' ]);
+        got = dutil.filter([ 'hoge' ]);
         exp = [];
         assert.deepEqual(got, exp, 'none skillTrees');
 
-        got = Deco.filter();
+        got = dutil.filter();
         assert.deepEqual(got, [], 'nothing in');
-        got = Deco.filter(undefined);
+        got = dutil.filter(undefined);
         assert.deepEqual(got, [], 'undefined');
-        got = Deco.filter(null);
+        got = dutil.filter(null);
         assert.deepEqual(got, [], 'null');
-        got = Deco.filter('');
+        got = dutil.filter('');
         assert.deepEqual(got, [], 'empty string');
     });
 
     it('_rcomb1', function () {
-        got = Deco._rcomb1([ 'a', 'b', 'c' ]);
+        got = dutil._rcomb1([ 'a', 'b', 'c' ]);
         exp = [
             [ 'a' ], [ 'b' ], [ 'c' ]
         ];
         assert.deepEqual(got, exp, "[ 'a', 'b', 'c' ]");
 
-        got = Deco._rcomb1([]);
+        got = dutil._rcomb1([]);
         exp = [];
         assert.deepEqual(got, exp, '[]');
     });
 
     it('_rcomb2', function () {
-        got = Deco._rcomb2([ 'a', 'b', 'c' ]);
+        got = dutil._rcomb2([ 'a', 'b', 'c' ]);
         exp = [
             [ 'a', 'a' ], [ 'a', 'b' ], [ 'a', 'c' ],
             [ 'b', 'b' ], [ 'b', 'c' ],
@@ -74,13 +74,13 @@ describe('20_util/02_deco', function () {
         ];
         assert.deepEqual(got, exp, "[ 'a', 'b', 'c' ]");
 
-        got = Deco._rcomb2([]);
+        got = dutil._rcomb2([]);
         exp = [];
         assert.deepEqual(got, exp, '[]');
     });
 
     it('_rcomb3', function () {
-        got = Deco._rcomb3([ 'a', 'b', 'c' ]);
+        got = dutil._rcomb3([ 'a', 'b', 'c' ]);
         exp = [
             [ 'a', 'a', 'a' ], [ 'a', 'a', 'b' ], [ 'a', 'a', 'c' ],
             [ 'a', 'b', 'b' ], [ 'a', 'b', 'c' ], [ 'a', 'c', 'c' ],
@@ -89,7 +89,7 @@ describe('20_util/02_deco', function () {
         ];
         assert.deepEqual(got, exp, "[ 'a', 'b', 'c' ]");
 
-        got = Deco._rcomb3([]);
+        got = dutil._rcomb3([]);
         exp = [];
         assert.deepEqual(got, exp, '[]');
     });
@@ -105,8 +105,8 @@ describe('20_util/02_deco', function () {
             return ret;
         };
 
-        decos = Deco.filter([ '攻撃' ]);
-        got = Deco._groupBySlot(decos);
+        decos = dutil.filter([ '攻撃' ]);
+        got = dutil._groupBySlot(decos);
         got = name(got);
         exp = {
             '1': [ '攻撃珠【１】' ],
@@ -115,8 +115,8 @@ describe('20_util/02_deco', function () {
         };
         assert.deepEqual(got, exp, '攻撃');
 
-        decos = Deco.filter([ '攻撃', '達人' ]);
-        got = Deco._groupBySlot(decos);
+        decos = dutil.filter([ '攻撃', '達人' ]);
+        got = dutil._groupBySlot(decos);
         got = name(got);
         exp = {
             '1': [ '攻撃珠【１】', '達人珠【１】' ],
@@ -125,8 +125,8 @@ describe('20_util/02_deco', function () {
         };
         assert.deepEqual(got, exp, '攻撃, 達人');
 
-        decos = Deco.filter([ '攻撃', '匠' ]);
-        got = Deco._groupBySlot(decos);
+        decos = dutil.filter([ '攻撃', '匠' ]);
+        got = dutil._groupBySlot(decos);
         got = name(got);
         exp = {
             '1': [ '攻撃珠【１】' ],
@@ -135,14 +135,14 @@ describe('20_util/02_deco', function () {
         };
         assert.deepEqual(got, exp, '攻撃, 匠');
 
-        got = Deco._groupBySlot();
+        got = dutil._groupBySlot();
         exp = { '1': [], '2': [], '3': [] };
         assert.deepEqual(got, exp, 'nothing in');
-        got = Deco._groupBySlot(undefined);
+        got = dutil._groupBySlot(undefined);
         assert.deepEqual(got, exp, 'undefined');
-        got = Deco._groupBySlot(null);
+        got = dutil._groupBySlot(null);
         assert.deepEqual(got, exp, 'null');
-        got = Deco._groupBySlot([]);
+        got = dutil._groupBySlot([]);
         assert.deepEqual(got, exp, '[]');
     });
 
@@ -156,7 +156,7 @@ describe('20_util/02_deco', function () {
         };
 
         it('combs', function () {
-            got = Deco.combs([ '攻撃', '匠' ]);
+            got = dutil.combs([ '攻撃', '匠' ]);
             got = name(got);
             exp = [
                 [],
@@ -173,7 +173,7 @@ describe('20_util/02_deco', function () {
 
         it('decos are 1, 2, 3 slots', function () {
             // どちらも1, 2, 3スロある場合
-            got = Deco.combs([ '攻撃', '達人' ]);
+            got = dutil.combs([ '攻撃', '達人' ]);
             got = name(got);
             exp = [
                 [],
@@ -197,7 +197,7 @@ describe('20_util/02_deco', function () {
 
         it('1 slot only', function () {
             // 採取や高速収集みたく1スロしかない場合
-            got = Deco.combs([ '採取', '高速収集' ]);
+            got = dutil.combs([ '採取', '高速収集' ]);
             got = name(got);
             exp = [
                 [],
@@ -215,7 +215,7 @@ describe('20_util/02_deco', function () {
 
         it('torsoUp', function () {
             // 胴系統倍化が含まれている場合
-            got = Deco.combs([ '攻撃', '胴系統倍化' ]);
+            got = dutil.combs([ '攻撃', '胴系統倍化' ]);
             got = name(got);
             exp = [
                 [],
@@ -234,7 +234,7 @@ describe('20_util/02_deco', function () {
                 return !deco.name.match(/【３】$/);
             });
             data.decos = no3slot;
-            got = Deco.combs([ '攻撃', '斬れ味' ]);
+            got = dutil.combs([ '攻撃', '斬れ味' ]);
             got = name(got);
             exp = [
                 [],
@@ -259,7 +259,7 @@ describe('20_util/02_deco', function () {
                 return !deco.name.match(/【１】$/);
             });
             data.decos = no1slot;
-            got = Deco.combs([ '攻撃', '匠' ]);
+            got = dutil.combs([ '攻撃', '匠' ]);
             got = name(got);
             exp = [
                 [],
@@ -273,19 +273,19 @@ describe('20_util/02_deco', function () {
 
         it('none deco', function () {
             data.decos = []; // 装飾品なし
-            got = Deco.combs([ '攻撃', '斬れ味' ]);
+            got = dutil.combs([ '攻撃', '斬れ味' ]);
             exp = [ [], [], [], [] ];
             assert.deepEqual(got, exp, 'none deco');
         });
 
         it('null or etc', function () {
-            got = Deco.combs();
+            got = dutil.combs();
             assert.deepEqual(got, [], 'nothing in');
-            got = Deco.combs(undefined);
+            got = dutil.combs(undefined);
             assert.deepEqual(got, [], 'undefined');
-            got = Deco.combs(null);
+            got = dutil.combs(null);
             assert.deepEqual(got, [], 'null');
-            got = Deco.combs([]);
+            got = dutil.combs([]);
             assert.deepEqual(got, [], '[]');
         });
 
@@ -293,7 +293,7 @@ describe('20_util/02_deco', function () {
 
     describe('skillCombs', function () {
         it('skillCombs', function () {
-            got = Deco.skillCombs([ '攻撃', '匠' ]);
+            got = dutil.skillCombs([ '攻撃', '匠' ]);
             exp = [
                 [],
                 [ { '攻撃': 1, '防御': -1 } ],
@@ -311,7 +311,7 @@ describe('20_util/02_deco', function () {
 
         it('decos are 1, 2, 3 slots', function () {
             // どちらも1, 2, 3スロある場合
-            got = Deco.skillCombs([ '攻撃', '達人' ]);
+            got = dutil.skillCombs([ '攻撃', '達人' ]);
             exp = [
                 [],
                 [ { '攻撃': 1, '防御': -1 }, { '達人': 1, '龍耐性': -1 } ],
@@ -336,7 +336,7 @@ describe('20_util/02_deco', function () {
 
         it('conflict skills', function () {
             // 斬れ味と匠みたくプラスマイナスが反発するポイントの場合
-            got = Deco.skillCombs([ '斬れ味', '匠' ]);
+            got = dutil.skillCombs([ '斬れ味', '匠' ]);
             exp = [
                 [],
                 [ { '斬れ味': 1, '匠': -1 } ],
@@ -351,7 +351,7 @@ describe('20_util/02_deco', function () {
 
         it('1 slot only', function () {
             // 採取や高速収集みたく1スロしかない場合
-            got = Deco.skillCombs([ '採取', '高速収集' ]);
+            got = dutil.skillCombs([ '採取', '高速収集' ]);
             exp = [
                 [],
                 [ { '採取': 2 }, { '高速収集': 2 } ],
@@ -366,19 +366,19 @@ describe('20_util/02_deco', function () {
 
         it('none deco', function () {
             data.decos = []; // 装飾品なし
-            got = Deco.skillCombs([ '攻撃', '斬れ味' ]);
+            got = dutil.skillCombs([ '攻撃', '斬れ味' ]);
             exp = [ [], [], [], [] ];
             assert.deepEqual(got, exp, 'none deco');
         });
 
         it('null or etc', function () {
-            got = Deco.skillCombs();
+            got = dutil.skillCombs();
             assert.deepEqual(got, [], 'nothing in');
-            got = Deco.skillCombs(undefined);
+            got = dutil.skillCombs(undefined);
             assert.deepEqual(got, [], 'undefined');
-            got = Deco.skillCombs(null);
+            got = dutil.skillCombs(null);
             assert.deepEqual(got, [], 'null');
-            got = Deco.skillCombs([]);
+            got = dutil.skillCombs([]);
             assert.deepEqual(got, [], '[]');
         });
     });

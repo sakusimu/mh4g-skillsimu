@@ -10,7 +10,7 @@ describe('20_util/06_border-line', function () {
         myapp.initialize();
     });
 
-    it('BorderLine', function () {
+    it('require', function () {
         assert(typeof BorderLine === 'function', 'is function');
     });
 

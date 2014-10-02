@@ -3,14 +3,14 @@ var assert = require('power-assert'),
     Simulator = require('../../index.js'),
     myapp = require('../../test/lib/driver-myapp.js');
 
-describe('90_index', function () {
+describe('index', function () {
     var got, exp;
 
     beforeEach(function () {
         myapp.initialize();
     });
 
-    it('Simulator', function () {
+    it('require', function () {
         assert(typeof Simulator === 'function', 'is function');
     });
 
@@ -22,6 +22,8 @@ describe('90_index', function () {
         assert(typeof simu.equip === 'object', 'equip');
         assert(typeof simu.deco === 'object', 'deco');
         assert(typeof simu.data === 'object', 'data');
+
+        assert(/\d+\.\d+\.\d+/.test(simu.VERSION), 'version');
     });
 
     it('initialize', function () {

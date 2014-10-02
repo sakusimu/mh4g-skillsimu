@@ -1,6 +1,6 @@
 'use strict';
 var assert = require('power-assert'),
-    Comb = require('../../../lib/util/comb.js'),
+    cutil = require('../../../lib/util/comb.js'),
     myapp = require('../../../test/lib/driver-myapp.js');
 
 describe('20_util/05_comb', function () {
@@ -10,12 +10,12 @@ describe('20_util/05_comb', function () {
         myapp.initialize();
     });
 
-    it('Comb', function () {
-        assert(typeof Comb === 'object', 'is object');
+    it('require', function () {
+        assert(typeof cutil === 'object', 'is object');
     });
 
     it('parts', function () {
-        got = Comb.parts;
+        got = cutil.parts;
         exp = [ 'body', 'head', 'arm', 'waist', 'leg', 'weapon', 'oma' ];
         assert.deepEqual(got, exp, 'parts');
     });
@@ -25,37 +25,37 @@ describe('20_util/05_comb', function () {
 
         sc   = { a: 20, b: 10 };
         goal = { a: 20, b: 10 };
-        got = Comb.activates(sc, goal);
+        got = cutil.activates(sc, goal);
         assert(got === true, 'case 1');
 
         sc   = { a: 19, b: 10 };
         goal = { a: 20, b: 10 };
-        got = Comb.activates(sc, goal);
+        got = cutil.activates(sc, goal);
         assert(got === false, 'case 2');
 
         sc   = { a: 21, b: 10 };
         goal = { a: 20, b: 10 };
-        got = Comb.activates(sc, goal);
+        got = cutil.activates(sc, goal);
         assert(got === true, 'case 3');
 
         sc   = { a: 20 };
         goal = { a: 20, b: 10 };
-        got = Comb.activates(sc, goal);
+        got = cutil.activates(sc, goal);
         assert(got === false, 'case 4');
 
         sc   = { a: 20, b: 10, '胴系統倍化': 1 };
         goal = { a: 20, b: 10 };
-        got = Comb.activates(sc, goal);
+        got = cutil.activates(sc, goal);
         assert(got === true, 'torsoUp');
 
         sc   = {};
         goal = { a: 0, b: 0 };
-        got = Comb.activates(sc, goal);
+        got = cutil.activates(sc, goal);
         assert(got === true, 'already activate');
 
         sc   = { a: 20, b: 10 };
         goal = null;
-        try { Comb.activates(sc, goal); } catch (e) { got = e.message; }
+        try { cutil.activates(sc, goal); } catch (e) { got = e.message; }
         assert(got === 'goal is required');
     });
 
@@ -64,37 +64,37 @@ describe('20_util/05_comb', function () {
 
         sc   = { a: 20, b: 10 };
         goal = { a: 20, b: 10 };
-        got = Comb.justActivates(sc, goal);
+        got = cutil.justActivates(sc, goal);
         assert(got === true, 'case 1');
 
         sc   = { a: 19, b: 10 };
         goal = { a: 20, b: 10 };
-        got = Comb.justActivates(sc, goal);
+        got = cutil.justActivates(sc, goal);
         assert(got === false, 'case 2');
 
         sc   = { a: 21, b: 10 };
         goal = { a: 20, b: 10 };
-        got = Comb.justActivates(sc, goal);
+        got = cutil.justActivates(sc, goal);
         assert(got === false, 'case 3');
 
         sc   = { a: 20 };
         goal = { a: 20, b: 10 };
-        got = Comb.justActivates(sc, goal);
+        got = cutil.justActivates(sc, goal);
         assert(got === false, 'case 4');
 
         sc   = { a: 20, b: 10, '胴系統倍化': 1 };
         goal = { a: 20, b: 10 };
-        got = Comb.justActivates(sc, goal);
+        got = cutil.justActivates(sc, goal);
         assert(got === true, 'torsoUp');
 
         sc   = {};
         goal = { a: 0, b: 0 };
-        got = Comb.justActivates(sc, goal);
+        got = cutil.justActivates(sc, goal);
         assert(got === true, 'already activate');
 
         sc   = { a: 20, b: 10 };
         goal = null;
-        try { Comb.justActivates(sc, goal); } catch (e) { got = e.message; }
+        try { cutil.justActivates(sc, goal); } catch (e) { got = e.message; }
         assert(got === 'goal is required');
     });
 
@@ -123,7 +123,7 @@ describe('20_util/05_comb', function () {
                 oma: [
                     { skillComb: {         'b': 1 } } ]
             };
-            got = Comb._calcMaxEachSkillPoint(combsSet);
+            got = cutil._calcMaxEachSkillPoint(combsSet);
             exp = {
                 'a': { head: 1, body: 1, arm: 1, waist: 2, leg: 5, weapon: 1, oma: 0 },
                 'b': { head: 1, body: 1, arm: 1, waist: 0, leg: 6, weapon: 0, oma: 1 }
@@ -143,7 +143,7 @@ describe('20_util/05_comb', function () {
                 weapon: [
                     { skillComb: { 'c': 1 } } ]
             };
-            got = Comb._calcMaxEachSkillPoint(combsSet);
+            got = cutil._calcMaxEachSkillPoint(combsSet);
             exp = {
                 'a': { head: 1, body: 1, arm: 0, waist: 0, leg: 0, weapon: 0, oma: 0 },
                 'b': { head: 1, body: 1, arm: 0, waist: 0, leg: 0, weapon: 0, oma: 0 },
@@ -173,7 +173,7 @@ describe('20_util/05_comb', function () {
                 leg: [
                     { skillComb: { '胴系統倍化': 1 } } ]
             };
-            got = Comb._calcMaxEachSkillPoint(combsSet);
+            got = cutil._calcMaxEachSkillPoint(combsSet);
             exp = {
                 'a': { head: 2, body: 2, arm: 5, waist: 2, leg: 2, weapon: 0, oma: 0 },
                 'b': { head: 2, body: 2, arm: 2, waist: 3, leg: 2, weapon: 0, oma: 0 }
@@ -201,7 +201,7 @@ describe('20_util/05_comb', function () {
                 leg: [
                     { skillComb: { '胴系統倍化': 1 } } ]
             };
-            got = Comb._calcMaxEachSkillPoint(combsSet);
+            got = cutil._calcMaxEachSkillPoint(combsSet);
             exp = {
                 'a': { head: 1, body: 0, arm: 5, waist: 1, leg: 0, weapon: 0, oma: 0 },
                 'b': { head: 1, body: 0, arm: 2, waist: 3, leg: 0, weapon: 0, oma: 0 }
@@ -210,11 +210,11 @@ describe('20_util/05_comb', function () {
         });
 
         it('null or etc', function () {
-            got = Comb._calcMaxEachSkillPoint();
+            got = cutil._calcMaxEachSkillPoint();
             assert.deepEqual(got, null, 'nothing in');
-            got = Comb._calcMaxEachSkillPoint(undefined);
+            got = cutil._calcMaxEachSkillPoint(undefined);
             assert.deepEqual(got, null, 'undefined');
-            got = Comb._calcMaxEachSkillPoint(null);
+            got = cutil._calcMaxEachSkillPoint(null);
             assert.deepEqual(got, null, 'null');
         });
     });
@@ -244,7 +244,7 @@ describe('20_util/05_comb', function () {
                 oma: [
                     { skillComb: {         'b': 1 } } ]
             };
-            got = Comb._calcMaxSumSkillPoint(combsSet);
+            got = cutil._calcMaxSumSkillPoint(combsSet);
             exp = { head: 1, body: 2, arm: 1, waist: 2, leg: 6, weapon: 1, oma: 1 };
             assert.deepEqual(got, exp);
         });
@@ -261,7 +261,7 @@ describe('20_util/05_comb', function () {
                 weapon: [
                     { skillComb: { 'c': 1 } } ]
             };
-            got = Comb._calcMaxSumSkillPoint(combsSet);
+            got = cutil._calcMaxSumSkillPoint(combsSet);
             exp = { head: 1, body: 2, arm: 0, waist: 0, leg: 0, weapon: 1, oma: 0 };
             assert.deepEqual(got, exp);
         });
@@ -287,7 +287,7 @@ describe('20_util/05_comb', function () {
                 leg: [
                     { skillComb: { '胴系統倍化': 1 } } ]
             };
-            got = Comb._calcMaxSumSkillPoint(combsSet);
+            got = cutil._calcMaxSumSkillPoint(combsSet);
             exp = { head: 4, body: 4, arm: 5, waist: 4, leg: 4, weapon: 0, oma: 0 };
             assert.deepEqual(got, exp);
         });
@@ -312,17 +312,17 @@ describe('20_util/05_comb', function () {
                 leg: [
                     { skillComb: { '胴系統倍化': 1 } } ]
             };
-            got = Comb._calcMaxSumSkillPoint(combsSet);
+            got = cutil._calcMaxSumSkillPoint(combsSet);
             exp = { head: 1, body: 0, arm: 5, waist: 3, leg: 0, weapon: 0, oma: 0 };
             assert.deepEqual(got, exp);
         });
 
         it('null or etc', function () {
-            got = Comb._calcMaxSumSkillPoint();
+            got = cutil._calcMaxSumSkillPoint();
             assert.deepEqual(got, null, 'nothing in');
-            got = Comb._calcMaxSumSkillPoint(undefined);
+            got = cutil._calcMaxSumSkillPoint(undefined);
             assert.deepEqual(got, null, 'undefined');
-            got = Comb._calcMaxSumSkillPoint(null);
+            got = cutil._calcMaxSumSkillPoint(null);
             assert.deepEqual(got, null, 'null');
         });
     });
@@ -351,7 +351,7 @@ describe('20_util/05_comb', function () {
             // {   '攻撃': { body: 2, head: 6, arm: 3, waist: 2, leg: 1, weapon: 0, oma: 4 },
             //   '斬れ味': { body: 1, head: 4, arm: 2, waist: 3, leg: 2, weapon: 0, oma: 2 } }
             // { body: 3, head: 6, arm: 5, waist: 5, leg: 3, weapon: 0, oma: 4 }
-            got = Comb.calcBorderLine(combsSet, [ '攻撃力UP【大】', '業物' ]);
+            got = cutil.calcBorderLine(combsSet, [ '攻撃力UP【大】', '業物' ]);
             exp = {
                 body  : { '攻撃': 4, '斬れ味': -3 },
                 head  : { '攻撃': 10, '斬れ味': 1 },
@@ -379,7 +379,7 @@ describe('20_util/05_comb', function () {
                 leg: [
                     { skillComb: { '攻撃': 5, '斬れ味': 4 } } ]
             };
-            got = Comb.calcBorderLine(combsSet, [ '攻撃力UP【大】', '業物' ]);
+            got = cutil.calcBorderLine(combsSet, [ '攻撃力UP【大】', '業物' ]);
             exp = {
                 body  : { '攻撃': 9, '斬れ味': 2 },
                 head  : { '攻撃': 15, '斬れ味': 6 },
@@ -416,7 +416,7 @@ describe('20_util/05_comb', function () {
                     { skillComb: { '攻撃': 0, '斬れ味': 4 } },
                     { skillComb: { '胴系統倍化': 1 } } ]
             };
-            got = Comb.calcBorderLine(combsSet, [ '攻撃力UP【大】', '業物' ]);
+            got = cutil.calcBorderLine(combsSet, [ '攻撃力UP【大】', '業物' ]);
             exp = {
                 body  : { '攻撃': 1, '斬れ味': -2 },
                 head  : { '攻撃': 5, '斬れ味': 0 },
@@ -457,7 +457,7 @@ describe('20_util/05_comb', function () {
             // {   '攻撃': { body: 0, head: 2, arm: 5, waist: 5, leg: 5, weapon: 0, oma: 4 },
             //   '斬れ味': { body: 0, head: 1, arm: 4, waist: 2, leg: 4, weapon: 0, oma: 2 } }
             // { body: 0, head: 2, arm: 6, waist: 6, leg: 6, weapon: 6, oma: 6 }
-            got = Comb.calcBorderLine(combsSet, [ '攻撃力UP【大】', '業物' ]);
+            got = cutil.calcBorderLine(combsSet, [ '攻撃力UP【大】', '業物' ]);
             exp = {
                 body  : { '攻撃': -1, '斬れ味': -3 },
                 head  : { '攻撃': 1, '斬れ味': -2 },
@@ -495,7 +495,7 @@ describe('20_util/05_comb', function () {
                 leg: sangan,
                 oma: sangan
             };
-            got = Comb.calcBorderLine(combsSet,
+            got = cutil.calcBorderLine(combsSet,
                                       [ '斬れ味レベル+1', '砥石使用高速化' ],
                                       subtractedSet);
             exp = {
@@ -513,24 +513,24 @@ describe('20_util/05_comb', function () {
     });
 
     it('goal', function () {
-        got = Comb.goal([ '攻撃力UP【大】', '業物' ]);
+        got = cutil.goal([ '攻撃力UP【大】', '業物' ]);
         exp = { '攻撃': 20, '斬れ味': 10 };
         assert.deepEqual(got, exp, "[ '攻撃力UP【大】', '業物' ]");
 
-        got = Comb.goal([ 'なまくら' ]);
+        got = cutil.goal([ 'なまくら' ]);
         exp = { '斬れ味': -10 };
         assert.deepEqual(got, exp, "[ 'なまくら' ]");
 
-        got = Comb.goal();
+        got = cutil.goal();
         assert(got === null, 'nothing in');
-        got = Comb.goal(undefined);
+        got = cutil.goal(undefined);
         assert(got === null, 'undefined');
-        got = Comb.goal(null);
+        got = cutil.goal(null);
         assert(got === null, 'null');
-        got = Comb.goal(null);
+        got = cutil.goal(null);
         assert(got === null, 'null');
 
-        try { Comb.goal([ '攻撃大' ]); } catch (e) { got = e.message; }
+        try { cutil.goal([ '攻撃大' ]); } catch (e) { got = e.message; }
         assert(got === 'skill not found: 攻撃大');
     });
 
@@ -540,25 +540,25 @@ describe('20_util/05_comb', function () {
         skillComb  = { a: 7, b: 4, c: 2 };
         borderLine = { arm: { a: 6, b: 4, c: 2 },
                        sum: { arm: 12 } };
-        got = Comb.isOverMaxEachSkill(skillComb, borderLine, 'arm');
+        got = cutil.isOverMaxEachSkill(skillComb, borderLine, 'arm');
         assert(got === true, 'over');
 
         skillComb  = { a: 6, b: 4, c: 2 };
         borderLine = { arm: { a: 6, b: 4, c: 2 },
                        sum: { arm: 12 } };
-        got = Comb.isOverMaxEachSkill(skillComb, borderLine, 'arm');
+        got = cutil.isOverMaxEachSkill(skillComb, borderLine, 'arm');
         assert(got === true, 'over: same');
 
         skillComb  = { a: 7, b: 4, c: 1 };
         borderLine = { arm: { a: 6, b: 4, c: 2 },
                        sum: { arm: 12 } };
-        got = Comb.isOverMaxEachSkill(skillComb, borderLine, 'arm');
+        got = cutil.isOverMaxEachSkill(skillComb, borderLine, 'arm');
         assert(got === false, 'not over');
 
         skillComb  = { a: 7, b: 4 };
         borderLine = { arm: { a: 6, b: 4, c: 2 },
                        sum: { arm: 12 } };
-        got = Comb.isOverMaxEachSkill(skillComb, borderLine, 'arm');
+        got = cutil.isOverMaxEachSkill(skillComb, borderLine, 'arm');
         assert(got === false, 'not over: no c');
     });
 
@@ -568,25 +568,25 @@ describe('20_util/05_comb', function () {
         skillComb  = { a: 7, b: 4, c: 2 };
         borderLine = { arm: { a: 6, b: 4, c: 2 },
                        sum: { arm: 12 } };
-        got = Comb.isOverMaxSumSkill(skillComb, borderLine, 'arm');
+        got = cutil.isOverMaxSumSkill(skillComb, borderLine, 'arm');
         assert(got === true, 'over');
 
         skillComb  = { a: 6, b: 4, c: 2 };
         borderLine = { arm: { a: 6, b: 4, c: 2 },
                        sum: { arm: 12 } };
-        got = Comb.isOverMaxSumSkill(skillComb, borderLine, 'arm');
+        got = cutil.isOverMaxSumSkill(skillComb, borderLine, 'arm');
         assert(got === true, 'over: same');
 
         skillComb  = { a: 7, b: 4, c: 0 };
         borderLine = { arm: { a: 6, b: 4, c: 2 },
                        sum: { arm: 12 } };
-        got = Comb.isOverMaxSumSkill(skillComb, borderLine, 'arm');
+        got = cutil.isOverMaxSumSkill(skillComb, borderLine, 'arm');
         assert(got === false, 'not over');
 
         skillComb  = { a: 7, b: 4 };
         borderLine = { arm: { a: 6, b: 4, c: 2 },
                        sum: { arm: 12 } };
-        got = Comb.isOverMaxSumSkill(skillComb, borderLine, 'arm');
+        got = cutil.isOverMaxSumSkill(skillComb, borderLine, 'arm');
         assert(got === false, 'not over: no c');
     });
 
@@ -595,22 +595,22 @@ describe('20_util/05_comb', function () {
 
         a = { a: 6, b: 4, c: 2 };
         b = { a: 7, b: 4, c: 2 };
-        got = Comb.isOver(a, b);
+        got = cutil.isOver(a, b);
         assert(got === true, 'over');
 
         a = { a: 6, b: 4, c: 2 };
         b = { a: 6, b: 4, c: 2 };
-        got = Comb.isOver(a, b);
+        got = cutil.isOver(a, b);
         assert(got === true, 'over: same');
 
         a = { a: 6, b: 4, c: 2 };
         b = { a: 7, b: 4, c: 1 };
-        got = Comb.isOver(a, b);
+        got = cutil.isOver(a, b);
         assert(got === false, 'not over');
 
         a = { a: 6, b: 4, c: 2 };
         b = { a: 7, b: 4 };
-        got = Comb.isOver(a, b);
+        got = cutil.isOver(a, b);
         assert(got === false, 'not over: no c');
     });
 
@@ -618,7 +618,7 @@ describe('20_util/05_comb', function () {
         var sets;
 
         sets = [ { body: 'comb1', cache: 'delete me' }, { body: 'comb2' } ];
-        got = Comb.brushUp(sets);
+        got = cutil.brushUp(sets);
         exp = [
             { body: 'comb1', head: null, arm: null, waist: null, leg: null,
               weapon: null, oma: null },
@@ -628,7 +628,7 @@ describe('20_util/05_comb', function () {
         assert.deepEqual(got, exp, 'brush up');
 
         sets = [ {} ];
-        got = Comb.brushUp(sets);
+        got = cutil.brushUp(sets);
         exp = [
             { body: null, head: null, arm: null, waist: null, leg: null,
               weapon: null, oma: null }
@@ -636,7 +636,7 @@ describe('20_util/05_comb', function () {
         assert.deepEqual(got, exp, '[ {} ]');
 
         sets = [];
-        got = Comb.brushUp(sets);
+        got = cutil.brushUp(sets);
         exp = [];
         assert.deepEqual(got, exp, '[]');
     });
