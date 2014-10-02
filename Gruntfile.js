@@ -25,6 +25,20 @@ module.exports = function(grunt) {
             }
         },
 
+        browserify: {
+            dist: {
+                src: 'index.js',
+                dest: 'dist/<%= pkg.name %>-<%= pkg.version %>.js'
+            },
+            test: {
+                src: 'test/unit/**/*.js',
+                dest: 'tmp/test-browser.js',
+                options: {
+                    transform: [ 'espowerify' ]
+                }
+            }
+        },
+
         concat: {
             options: {
                 banner: '<%= banner %>'
@@ -97,21 +111,40 @@ module.exports = function(grunt) {
                 },
                 src: [ 'tmp/espowered/**/*.js' ]
             }
+        },
+
+        karma: {
+            test: {
+                configFile: 'test/karma-conf.js',
+                singleRun: true,
+                options: {
+                    files: [
+                        'tmp/testdata.js',
+                        'tmp/test-browser.js'
+                    ]
+                }
+            }
         }
     });
 
+    grunt.loadNpmTasks('grunt-browserify');
     grunt.loadNpmTasks('grunt-contrib-clean');
     grunt.loadNpmTasks('grunt-contrib-concat');
     grunt.loadNpmTasks('grunt-contrib-jshint');
     grunt.loadNpmTasks('grunt-contrib-uglify');
     grunt.loadNpmTasks('grunt-espower');
+    grunt.loadNpmTasks('grunt-karma');
     grunt.loadNpmTasks('grunt-mocha-test');
+
     grunt.loadTasks('tasks');
 
     grunt.registerTask('default', [ 'clean', 'test', 'dist' ]);
     grunt.registerTask('dist', [ 'concat', 'uglify' ]);
     grunt.registerTask('test', function (type, file) {
         switch (type) {
+        case 'browser':
+            grunt.task.run([ 'browserify:test', 'karma:test' ]);
+            break;
         case 'node':
             var files = grunt.config.data.mochaTest.test.src;
             if (file) {
@@ -119,8 +152,6 @@ module.exports = function(grunt) {
                 files.splice(-1, 1, file);
             }
             grunt.task.run([ 'jshint', 'espower:test', 'mochaTest:test' ]);
-            break;
-        case 'karma':
             /* falls through */
         default:
         }
