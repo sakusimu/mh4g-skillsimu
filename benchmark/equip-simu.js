@@ -1,11 +1,11 @@
-(function (define) {
 'use strict';
-var deps = [ '../test/lib/driver-myapp.js', '../lib/data.js',
-             '../lib/equip/normalizer.js', '../lib/equip/combinator.js',
-             '../lib/equip/assembler.js' ];
-define(deps, function (myapp, data, Normalizer, Combinator, Assembler) {
+var myapp = require('../test/lib/driver-myapp.js'),
+    data = require('../lib/data.js'),
+    Normalizer = require('../lib/equip/normalizer.js'),
+    Combinator = require('../lib/equip/combinator.js'),
+    Assembler = require('../lib/equip/assembler.js');
 
-myapp.setup();
+var DEBUG = false;
 
 var simulate = function (skillNames, opts) {
     var n = new Normalizer(opts),
@@ -20,18 +20,19 @@ var simulate = function (skillNames, opts) {
     var assems = a.assemble(eqcombs);
     var adone = Date.now();
 
-    //printAssems(assems);
+    if (DEBUG) printAssems(assems);
 
     console.log('>', '[ ' + skillNames.join(', ') + ' ]');
     console.log('n:', resultNormalizer(bulksSet));
     console.log('c:', eqcombs.length);
     console.log('a:', assems.length);
 
-    var time = (adone - start) + ' ('
-            + 'n=' + (ndone - start)
-            + ', c=' + (cdone - ndone)
-            + ', a=' + (adone - cdone) + ')';
-    console.log('time:', time);
+    var time = [
+        'n=' + (ndone - start),
+        'c=' + (cdone - ndone),
+        'a=' + (adone - cdone)
+    ].join(', ');
+    console.log('time:', (adone - start), '(' + time + ')');
 };
 
 var resultNormalizer = function (bulksSet) {
@@ -89,18 +90,3 @@ myapp.setup({
     dig: true
 });
 simulate([ '真打', '集中', '弱点特効', '耳栓' ]);
-
-});
-})(typeof define !== 'undefined' ?
-   define :
-   typeof module !== 'undefined' && module.exports ?
-       function (deps, test) {
-           var modules = [], len = deps.length;
-           for (var i = 0; i < len; ++i) modules.push(require(deps[i]));
-           test.apply(this, modules);
-       } :
-       function (deps, test) {
-           test(this.myapp, this.simu.data, this.simu.Equip.Normalizer,
-                this.simu.Equip.Combinator, this.simu.Equip.Assembler);
-       }
-);

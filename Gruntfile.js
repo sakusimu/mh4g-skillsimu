@@ -17,7 +17,7 @@ module.exports = function(grunt) {
         },
 
         jshint: {
-            all: [ '*.js', 'lib/**/*.js', 'test/**/*.js', 'tasks/**/*.js' ],
+            all: [ '*.js', 'lib/**/*.js', 'test/**/*.js', 'benchmark/**/*.js', 'tasks/**/*.js' ],
             options: {
                 force: true,
                 jshintrc: true
@@ -35,6 +35,18 @@ module.exports = function(grunt) {
                 options: {
                     transform: [ 'espowerify' ]
                 }
+            },
+            'benchmark-equip': {
+                src: 'benchmark/equip-simu.js',
+                dest: 'tmp/benchmark/equip-simu.js'
+            },
+            'benchmark-deco': {
+                src: 'benchmark/deco-simu.js',
+                dest: 'tmp/benchmark/deco-simu.js'
+            },
+            'benchmark-util': {
+                src: 'benchmark/util.js',
+                dest: 'tmp/benchmark/util.js'
             }
         },
 
@@ -133,4 +145,9 @@ module.exports = function(grunt) {
         default:
         }
     });
+    grunt.registerTask('benchmark', [
+        'browserify:benchmark-equip',
+        'browserify:benchmark-deco',
+        'browserify:benchmark-util'
+    ]);
 };
