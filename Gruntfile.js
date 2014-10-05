@@ -1,16 +1,15 @@
 'use strict';
 
 module.exports = function(grunt) {
-    // jshint laxcomma:true
     grunt.initConfig({
         pkg: grunt.file.readJSON('package.json'),
         banner: [
-            '/*!'
-          , ' * <%= pkg.name %> <%= pkg.version %>'
-          , ' * Copyright (C) <%= grunt.template.today("yyyy") %> <%= pkg.author %>'
-          , ' * Licensed under the MIT license.'
-          , ' * <%= _.pluck(pkg.licenses, "url").join(", ") %>'
-          , ' */\n'
+            '/**',
+            ' * <%= pkg.name %> <%= pkg.version %>',
+            ' * Copyright (C) <%= grunt.template.today("yyyy") %> <%= pkg.author %>',
+            ' * Licensed under the MIT license.',
+            ' * <%= _.pluck(pkg.licenses, "url").join(", ") %>',
+            ' */\n'
         ].join('\n'),
 
         clean: {
@@ -39,30 +38,16 @@ module.exports = function(grunt) {
             }
         },
 
-        concat: {
-            options: {
-                banner: '<%= banner %>'
-            },
-            js: {
-                src: [
-                    'lib/namespace.js'
-                  , 'lib/data.js'
-                  , 'lib/util.js'
-                  , 'lib/util/skill.js', 'lib/util/deco.js', 'lib/util/comb.js'
-                  , 'lib/util/border-line.js'
-                  , 'lib/equip.js'
-                  , 'lib/equip/normalizer.js'
-                  , 'lib/equip/combinator.js'
-                  , 'lib/equip/assembler.js'
-                  , 'lib/equip/simulator.js'
-                  , 'lib/deco.js'
-                  , 'lib/deco/normalizer.js'
-                  , 'lib/deco/combinator.js'
-                  , 'lib/deco/assembler.js'
-                  , 'lib/deco/simulator.js'
-                  , 'index.js'
-                ],
-                dest: 'dist/<%= pkg.name %>-<%= pkg.version %>.js'
+        usebanner: {
+            dist: {
+                options: {
+                    position: 'top',
+                    banner: '<%= banner %>',
+                    linebreak: false
+                },
+                files: {
+                    src: [ '<%= browserify.dist.dest %>' ]
+                }
             }
         },
 
@@ -72,7 +57,7 @@ module.exports = function(grunt) {
                 report: 'min'
             },
             js: {
-                src : '<%= concat.js.dest %>',
+                src: '<%= browserify.dist.dest %>',
                 dest: 'dist/<%= pkg.name %>-<%= pkg.version %>.min.js'
             }
         },
@@ -119,27 +104,19 @@ module.exports = function(grunt) {
                 singleRun: true,
                 options: {
                     files: [
-                        'tmp/testdata.js',
-                        'tmp/test-browser.js'
+                        '<%= testdata.mh4.dest %>',
+                        '<%= browserify.test.dest %>'
                     ]
                 }
             }
         }
     });
 
-    grunt.loadNpmTasks('grunt-browserify');
-    grunt.loadNpmTasks('grunt-contrib-clean');
-    grunt.loadNpmTasks('grunt-contrib-concat');
-    grunt.loadNpmTasks('grunt-contrib-jshint');
-    grunt.loadNpmTasks('grunt-contrib-uglify');
-    grunt.loadNpmTasks('grunt-espower');
-    grunt.loadNpmTasks('grunt-karma');
-    grunt.loadNpmTasks('grunt-mocha-test');
-
+    require('load-grunt-tasks')(grunt);
     grunt.loadTasks('tasks');
 
-    grunt.registerTask('default', [ 'clean', 'test', 'dist' ]);
-    grunt.registerTask('dist', [ 'concat', 'uglify' ]);
+    grunt.registerTask('default', [ 'clean:all', 'test', 'dist' ]);
+    grunt.registerTask('dist', [ 'browserify:dist', 'usebanner:dist', 'uglify' ]);
     grunt.registerTask('test', function (type, file) {
         switch (type) {
         case 'browser':
