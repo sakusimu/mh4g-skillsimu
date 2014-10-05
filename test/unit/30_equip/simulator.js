@@ -1,23 +1,24 @@
 'use strict';
 var assert = require('power-assert'),
-    Simulator = require('../../../lib/equip/simulator.js'),
+    Simulator = require('../../../lib/equip.js'),
     data = require('../../../lib/data.js'),
     myapp = require('../../../test/lib/driver-myapp.js');
 
-describe('30_equip/40_simulator', function () {
+describe('30_equip/simulator', function () {
     var got, exp;
 
     beforeEach(function () {
         myapp.initialize();
     });
 
-    it('Simulator', function () {
+    it('require', function () {
         assert(typeof Simulator === 'function', 'is function');
     });
 
     it('new', function () {
         var simu = new Simulator();
         assert(typeof simu === 'object', 'is object');
+        assert(typeof simu.initialize === 'function', 'has initialize()');
     });
 
     describe('simulate: torsoUp', function () {

@@ -1,16 +1,16 @@
 'use strict';
 var assert = require('power-assert'),
-    Simulator = require('../../index.js'),
+    Simulator = require('../../lib/simulator.js'),
     myapp = require('../../test/lib/driver-myapp.js');
 
-describe('90_index', function () {
+describe('90_simulator', function () {
     var got, exp;
 
     beforeEach(function () {
         myapp.initialize();
     });
 
-    it('Simulator', function () {
+    it('require', function () {
         assert(typeof Simulator === 'function', 'is function');
     });
 
@@ -21,7 +21,6 @@ describe('90_index', function () {
 
         assert(typeof simu.equip === 'object', 'equip');
         assert(typeof simu.deco === 'object', 'deco');
-        assert(typeof simu.data === 'object', 'data');
     });
 
     it('initialize', function () {

@@ -4,12 +4,12 @@ module.exports = function(grunt) {
     grunt.initConfig({
         pkg: grunt.file.readJSON('package.json'),
         banner: [
-            '/*!'
-          , ' * <%= pkg.name %> <%= pkg.version %>'
-          , ' * Copyright (C) <%= grunt.template.today("yyyy") %> <%= pkg.author %>'
-          , ' * Licensed under the MIT license.'
-          , ' * <%= _.pluck(pkg.licenses, "url").join(", ") %>'
-          , ' */\n'
+            '/**',
+            ' * <%= pkg.name %> <%= pkg.version %>',
+            ' * Copyright (C) <%= grunt.template.today("yyyy") %> <%= pkg.author %>',
+            ' * Licensed under the MIT license.',
+            ' * <%= _.pluck(pkg.licenses, "url").join(", ") %>',
+            ' */\n'
         ].join('\n'),
 
         clean: {
@@ -17,37 +17,49 @@ module.exports = function(grunt) {
         },
 
         jshint: {
-            all: [ '*.js', 'lib/**/*.js', 'test/**/*.js', 'tasks/**/*.js' ],
+            all: [ '*.js', 'lib/**/*.js', 'test/**/*.js', 'benchmark/**/*.js', 'tasks/**/*.js' ],
             options: {
                 force: true,
                 jshintrc: true
             }
         },
 
-        concat: {
-            options: {
-                banner: '<%= banner %>'
-            },
-            js: {
-                src: [
-                    'lib/namespace.js'
-                  , 'lib/data.js'
-                  , 'lib/util.js'
-                  , 'lib/util/skill.js', 'lib/util/deco.js', 'lib/util/comb.js'
-                  , 'lib/util/border-line.js'
-                  , 'lib/equip.js'
-                  , 'lib/equip/normalizer.js'
-                  , 'lib/equip/combinator.js'
-                  , 'lib/equip/assembler.js'
-                  , 'lib/equip/simulator.js'
-                  , 'lib/deco.js'
-                  , 'lib/deco/normalizer.js'
-                  , 'lib/deco/combinator.js'
-                  , 'lib/deco/assembler.js'
-                  , 'lib/deco/simulator.js'
-                  , 'index.js'
-                ],
+        browserify: {
+            dist: {
+                src: 'index.js',
                 dest: 'dist/<%= pkg.name %>-<%= pkg.version %>.js'
+            },
+            test: {
+                src: 'test/unit/**/*.js',
+                dest: 'tmp/test-browser.js',
+                options: {
+                    transform: [ 'espowerify' ]
+                }
+            },
+            'benchmark-equip': {
+                src: 'benchmark/equip-simu.js',
+                dest: 'tmp/benchmark/equip-simu.js'
+            },
+            'benchmark-deco': {
+                src: 'benchmark/deco-simu.js',
+                dest: 'tmp/benchmark/deco-simu.js'
+            },
+            'benchmark-util': {
+                src: 'benchmark/util.js',
+                dest: 'tmp/benchmark/util.js'
+            }
+        },
+
+        usebanner: {
+            dist: {
+                options: {
+                    position: 'top',
+                    banner: '<%= banner %>',
+                    linebreak: false
+                },
+                files: {
+                    src: [ '<%= browserify.dist.dest %>' ]
+                }
             }
         },
 
@@ -57,7 +69,7 @@ module.exports = function(grunt) {
                 report: 'min'
             },
             js: {
-                src : '<%= concat.js.dest %>',
+                src: '<%= browserify.dist.dest %>',
                 dest: 'dist/<%= pkg.name %>-<%= pkg.version %>.min.js'
             }
         },
@@ -96,33 +108,46 @@ module.exports = function(grunt) {
                 },
                 src: [ 'tmp/espowered/**/*.js' ]
             }
+        },
+
+        karma: {
+            test: {
+                configFile: 'test/karma-conf.js',
+                singleRun: true,
+                options: {
+                    files: [
+                        '<%= testdata.mh4.dest %>',
+                        '<%= browserify.test.dest %>'
+                    ]
+                }
+            }
         }
     });
 
-    grunt.loadNpmTasks('grunt-contrib-clean');
-    grunt.loadNpmTasks('grunt-contrib-concat');
-    grunt.loadNpmTasks('grunt-contrib-jshint');
-    grunt.loadNpmTasks('grunt-contrib-uglify');
-    grunt.loadNpmTasks('grunt-espower');
-    grunt.loadNpmTasks('grunt-mocha-test');
+    require('load-grunt-tasks')(grunt);
     grunt.loadTasks('tasks');
 
-    grunt.registerTask('default', [ 'clean', 'test', 'dist' ]);
-    grunt.registerTask('dist', [ 'concat', 'uglify' ]);
+    grunt.registerTask('default', [ 'clean:all', 'test', 'dist' ]);
+    grunt.registerTask('dist', [ 'browserify:dist', 'usebanner:dist', 'uglify' ]);
     grunt.registerTask('test', function (type, file) {
         switch (type) {
+        case 'browser':
+            grunt.task.run([ 'browserify:test', 'karma:test' ]);
+            break;
         case 'node':
             var files = grunt.config.data.mochaTest.test.src;
             if (file) {
                 file = file.replace('test/unit/', 'tmp/espowered/');
                 files.splice(-1, 1, file);
             }
-            //grunt.task.run([ 'jshint', 'espower:test', 'mochaTest:test' ]);
-            grunt.task.run([ 'espower:test', 'mochaTest:test' ]);
-            break;
-        case 'karma':
+            grunt.task.run([ 'jshint', 'espower:test', 'mochaTest:test' ]);
             /* falls through */
         default:
         }
     });
+    grunt.registerTask('benchmark', [
+        'browserify:benchmark-equip',
+        'browserify:benchmark-deco',
+        'browserify:benchmark-util'
+    ]);
 };

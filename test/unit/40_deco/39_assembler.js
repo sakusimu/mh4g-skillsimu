@@ -1,28 +1,22 @@
 'use strict';
 var assert = require('power-assert'),
     _ = require('underscore'),
-    Simulator = require('../../../lib/deco/simulator.js'),
+    Assembler = require('../../../lib/deco/assembler.js'),
+    Normalizer = require('../../../lib/deco/normalizer.js'),
+    Combinator = require('../../../lib/deco/combinator.js'),
     myapp = require('../../../test/lib/driver-myapp.js');
 
-describe('40_deco/40_simulator', function () {
+describe('40_deco/39_assembler', function () {
     var got, exp;
 
     beforeEach(function () {
         myapp.initialize();
     });
 
-    it('Simulator', function () {
-        assert(typeof Simulator === 'function', 'is function');
-    });
-
-    it('new', function () {
-        got = new Simulator();
-        assert(typeof got === 'object', 'is object');
-        assert(typeof got.initialize === 'function', 'has initialize()');
-    });
-
-    describe('simulate', function () {
-        var simu = new Simulator();
+    describe('assemble', function () {
+        var n = new Normalizer(),
+            c = new Combinator(),
+            a = new Assembler();
 
         var sorter = function (assems) {
             return _.map(assems, function (assem) {
@@ -38,6 +32,7 @@ describe('40_deco/40_simulator', function () {
 
         it('torsoUp, weaponSlot, oma', function () {
             // 装備に胴系統倍化、武器スロ、お守りがある場合
+            var skills = [ '斬れ味レベル+1', '高級耳栓' ];
             var equipSet = {
                 head  : myapp.equip('head', 'ユクモノカサ・天'),  // スロ2
                 body  : myapp.equip('body', '三眼の首飾り'),      // スロ3
@@ -47,9 +42,11 @@ describe('40_deco/40_simulator', function () {
                 weapon: { name: 'slot2' },
                 oma   : omas[0]
             };
-            var assems = simu.simulate([ '斬れ味レベル+1', '高級耳栓' ], equipSet);
-            var got = sorter(assems);
-            var exp = [
+            var normalized = n.normalize(skills, equipSet);
+            var decombSets = c.combine(skills, normalized);
+            var assems     = a.assemble(decombSets);
+            got = sorter(assems);
+            exp = [
                 {
                     all: [
                         '防音珠【３】','防音珠【１】','防音珠【１】','防音珠【１】',
@@ -65,7 +62,7 @@ describe('40_deco/40_simulator', function () {
                         '防音珠【３】','防音珠【３】','防音珠【１】','防音珠【１】',
                         '防音珠【１】','匠珠【２】','匠珠【２】'],
                     torsoUp: ['防音珠【３】'],
-                    rest   : [
+                    rest: [
                         '防音珠【３】','防音珠【１】','防音珠【１】','防音珠【１】',
                         '匠珠【２】','匠珠【２】']
                 },
@@ -86,6 +83,7 @@ describe('40_deco/40_simulator', function () {
 
         it('all slot3', function () {
             // ALL三眼, 武器スロ3, お守り(匠4,スロ3)
+            var skills = [ '斬れ味レベル+1', '砥石使用高速化' ];
             var equipSet = {
                 head  : myapp.equip('head', '三眼のピアス'),
                 body  : myapp.equip('body', '三眼の首飾り'),
@@ -95,7 +93,9 @@ describe('40_deco/40_simulator', function () {
                 weapon: { name: 'slot3' },
                 oma   : omas[0]
             };
-            var assems = simu.simulate([ '斬れ味レベル+1', '砥石使用高速化' ], equipSet);
+            var normalized = n.normalize(skills, equipSet);
+            var decombSets = c.combine(skills, normalized);
+            var assems     = a.assemble(decombSets);
             got = sorter(assems);
             exp = [
                 {
@@ -115,37 +115,6 @@ describe('40_deco/40_simulator', function () {
                     rest: [
                         '研磨珠【１】','研磨珠【１】','研磨珠【１】','研磨珠【１】',
                         '研磨珠【１】','匠珠【３】','匠珠【３】','匠珠【２】','匠珠【２】']
-                }
-            ];
-            assert.deepEqual(got, exp);
-        });
-
-        it('1 hit', function () {
-            // 1つだけ見つかるケース
-            myapp.setup({ context: { hr: 1, vs: 6 } }); // 装備を村のみにしぼる
-            var skills = [ '斬れ味レベル+1', '攻撃力UP【大】', '耳栓' ];
-            var equipSet = {
-                head  : myapp.equip('head', 'ガララキャップ'),  // スロ2
-                body  : myapp.equip('body', 'レックスメイル'),  // スロ2
-                arm   : myapp.equip('arm', 'ガルルガアーム'),   // スロ3
-                waist : myapp.equip('waist', 'ゴアフォールド'), // スロ1
-                leg   : myapp.equip('leg', 'アークグリーヴ'),   // スロ2
-                weapon: { name: 'slot3' },
-                oma   : omas[0]
-            };
-            var assems = simu.simulate(skills, equipSet);
-            got = sorter(assems);
-            exp = [
-                {
-                    all: [
-                        '防音珠【１】','防音珠【１】','防音珠【１】','防音珠【１】',
-                        '攻撃珠【２】','攻撃珠【２】','攻撃珠【２】','攻撃珠【２】',
-                        '攻撃珠【２】','攻撃珠【２】'],
-                    torsoUp: [],
-                    rest: [
-                        '防音珠【１】','防音珠【１】','防音珠【１】','防音珠【１】',
-                        '攻撃珠【２】','攻撃珠【２】','攻撃珠【２】','攻撃珠【２】',
-                        '攻撃珠【２】','攻撃珠【２】']
                 }
             ];
             assert.deepEqual(got, exp);

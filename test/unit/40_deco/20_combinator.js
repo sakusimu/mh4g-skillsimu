@@ -1,7 +1,7 @@
 'use strict';
 var assert = require('power-assert'),
     Combinator = require('../../../lib/deco/combinator.js'),
-    Comb = require('../../../lib/util/comb.js'),
+    util = require('../../../lib/util.js'),
     myapp = require('../../../test/lib/driver-myapp.js');
 
 describe('40_deco/20_combinator', function () {
@@ -11,7 +11,7 @@ describe('40_deco/20_combinator', function () {
         myapp.initialize();
     });
 
-    it('Combinator', function () {
+    it('require', function () {
         assert(typeof Combinator === 'function', 'is function');
     });
 
@@ -605,7 +605,7 @@ describe('40_deco/20_combinator', function () {
                     { skillComb: { '攻撃': 3, '匠': 2, '聴覚保護': 4 }, slot: 2 },
                     { skillComb: { '攻撃': 4, '匠': 2, '聴覚保護': 3 }, slot: 2 } ]
             };
-            var borderLine = Comb.calcBorderLine(decombsSet, skillNames);
+            var borderLine = util.comb.calcBorderLine(decombsSet, skillNames);
             got = c._combine(decombsSet, borderLine);
             exp = [
                 { body : { skillComb: { '攻撃': 4, '匠': 2, '聴覚保護': 2 }, slot:2 },
@@ -647,7 +647,7 @@ describe('40_deco/20_combinator', function () {
                     { skillComb: { '攻撃': 3, '匠': 2, '聴覚保護': 4 }, slot: 2 },
                     { skillComb: { '攻撃': 4, '匠': 2, '聴覚保護': 3 }, slot: 2 } ]
             };
-            var borderLine = Comb.calcBorderLine(decombsSet, skillNames);
+            var borderLine = util.comb.calcBorderLine(decombsSet, skillNames);
             got = c._combine(decombsSet, borderLine);
             exp = [
                 { body  : null,

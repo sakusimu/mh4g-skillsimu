@@ -1,6 +1,5 @@
-(function (define) {
 'use strict';
-define([ './driver-namespace', './data-loader.js' ], function (myapp, testdata) {
+var testdata = require('./data-loader.js');
 
 /**
  * シミュレータのユーザ側クラス。
@@ -21,17 +20,4 @@ Data.prototype.initialize = function () {
     this.skills       = testdata.skills;
 };
 
-return myapp.data = new Data();
-});
-})(typeof define !== 'undefined' ?
-   define :
-   typeof module !== 'undefined' && module.exports ?
-       function (deps, factory) {
-           var modules = [], len = deps.length;
-           for (var i = 0; i < len; ++i) modules.push(require(deps[i]));
-           module.exports = factory.apply(this, modules);
-       } :
-       function (deps, factory) {
-           factory(this.myapp, this.testdata);
-       }
-);
+module.exports = new Data();

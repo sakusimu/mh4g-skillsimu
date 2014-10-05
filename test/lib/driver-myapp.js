@@ -1,19 +1,28 @@
-(function (define) {
 'use strict';
-var deps = [ './driver-namespace.js', './driver-context.js',
-             './driver-model.js', './driver-dig.js', '../../lib/data.js' ];
-define(deps, function (myapp, Context, model, _model_, data) {
+var Context = require('./driver-context.js'),
+    model = require('./driver-model.js'),
+    data = require('../../lib/data.js');
+require('./driver-dig.js');
 
-var context = new Context();
+/**
+ * シミュレータのユーザ側クラス。
+ * アプリを表すクラス。
+ */
+var MyApp = function () {
+    this.initialize.apply(this, arguments);
+};
 
-myapp.initialize = function () {
+MyApp.prototype.initialize = function () {
+    this.context = new Context();
+
     this.setup();
 };
 
-myapp.setup = function (opts) {
+MyApp.prototype.setup = function (opts) {
     opts = opts || {};
+    var self = this;
 
-    context.initialize(opts.context);
+    this.context.initialize(opts.context);
 
     var simuData = function (obj) { return obj.simuData(); };
 
@@ -22,7 +31,7 @@ myapp.setup = function (opts) {
 
     var armors = [ 'head', 'body', 'arm', 'waist', 'leg' ];
     armors.forEach(function (part) {
-        var list = model.equips.enabled(part, context);
+        var list = model.equips.enabled(part, self.context);
         equips[part] = list.map(simuData);
     });
 
@@ -41,15 +50,15 @@ myapp.setup = function (opts) {
     }
 
     if (opts.dig) {
-        var weapons = model.digs.enabled('weapon', context).map(simuData);
+        var weapons = model.digs.enabled('weapon', this.context).map(simuData);
         equips.weapon = equips.weapon.concat(weapons);
         armors.forEach(function (part) {
-            var list = model.digs.enabled(part, context);
+            var list = model.digs.enabled(part, self.context);
             equips[part] = equips[part].concat(list.map(simuData));
         });
     }
 
-    var decos = model.decos.enabled(context).map(simuData);
+    var decos = model.decos.enabled(this.context).map(simuData);
 
     var skills = {};
     model.skills.enabled().forEach(function (s) {
@@ -63,11 +72,11 @@ myapp.setup = function (opts) {
     });
 };
 
-myapp.equip = function (part, name) {
+MyApp.prototype.equip = function (part, name) {
     var id, eq,
         equips = model.equips,
-        sex  = context.sex === 'm' ? 1 : 2,
-        type = context.type === 'k' ? 1 : 2;
+        sex  = this.context.sex === 'm' ? 1 : 2,
+        type = this.context.type === 'k' ? 1 : 2;
 
     id = [ name, 0, 0 ].join(',');
     eq = equips.get(part, id);
@@ -86,25 +95,11 @@ myapp.equip = function (part, name) {
     return null;
 };
 
-myapp.oma = function (list) {
+MyApp.prototype.oma = function (list) {
     var oma = new model.Oma(list);
     return oma ? oma.simuData() : null;
 };
 
-myapp.initialize();
+var myapp = new MyApp();
 
-return myapp;
-});
-})(typeof define !== 'undefined' ?
-   define :
-   typeof module !== 'undefined' && module.exports ?
-       function (deps, factory) {
-           var modules = [], len = deps.length;
-           for (var i = 0; i < len; ++i) modules.push(require(deps[i]));
-           module.exports = factory.apply(this, modules);
-       } :
-       function (deps, factory) {
-           factory(this.myapp, this.myapp.Context,
-                   this.myapp.model, this.myapp.model, this.simu.data);
-       }
-);
+module.exports = myapp;

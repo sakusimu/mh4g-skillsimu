@@ -1,11 +1,13 @@
-(function (define) {
 'use strict';
-var deps = [ 'underscore', '../test/lib/driver-myapp.js',
-             '../lib/deco/normalizer.js', '../lib/deco/combinator.js',
-             '../lib/deco/assembler.js' ];
-define(deps, function (_, myapp, Normalizer, Combinator, Assembler) {
+var _ = require('underscore'),
+    myapp = require('../test/lib/driver-myapp.js'),
+    Normalizer = require('../lib/deco/normalizer.js'),
+    Combinator = require('../lib/deco/combinator.js'),
+    Assembler = require('../lib/deco/assembler.js');
 
-var simulate = function (skillNames, quipSet) {
+var DEBUG = false;
+
+var simulate = function (skillNames, equipSet) {
     var n = new Normalizer(),
         c = new Combinator(),
         a = new Assembler();
@@ -18,16 +20,19 @@ var simulate = function (skillNames, quipSet) {
     var assems = a.assemble(decombSets);
     var adone = Date.now();
 
+    if (DEBUG) console.log(simplify(decombSets));
+
     console.log('>', '[ ' + skillNames.join(', ') + ' ]');
     console.log('n:', resultNormalizer(normalized));
     console.log('c:', decombSets.length);
     console.log('a:', assems.length);
 
-    var time = (adone - start) + ' ('
-            + 'n=' + (ndone - start)
-            + ', c=' + (cdone - ndone)
-            + ', a=' + (adone - cdone) + ')';
-    console.log('time:', time);
+    var time = [
+        'n=' + (ndone - start),
+        'c=' + (cdone - ndone),
+        'a=' + (adone - cdone)
+    ].join(', ');
+    console.log('time:', (adone - start), '(' + time + ')');
 };
 
 var resultNormalizer = function (normalized) {
@@ -58,42 +63,27 @@ omas = [ myapp.oma([ '龍の護石',3,'匠',4,'氷耐性',-5 ]) ];
 myapp.setup({ context: { hr: 1, vs: 6 } }); // 装備を村のみにしぼる
 
 equipSet = {
-    head  : myapp.equip('head', 'ガララキャップ')  // スロ2
-  , body  : myapp.equip('body', 'レックスメイル')  // スロ2
-  , arm   : myapp.equip('arm', 'ガルルガアーム')   // スロ3
-  , waist : myapp.equip('waist', 'ゴアフォールド') // スロ1
-  , leg   : myapp.equip('leg', 'アークグリーヴ')   // スロ2
-  , weapon: { name: 'slot3' }
-  , oma   : omas[0]
+    head  : myapp.equip('head', 'ガララキャップ'),  // スロ2
+    body  : myapp.equip('body', 'レックスメイル'),  // スロ2
+    arm   : myapp.equip('arm', 'ガルルガアーム'),   // スロ3
+    waist : myapp.equip('waist', 'ゴアフォールド'), // スロ1
+    leg   : myapp.equip('leg', 'アークグリーヴ'),   // スロ2
+    weapon: { name: 'slot3' },
+    oma   : omas[0]
 };
 simulate([ '斬れ味レベル+1', '攻撃力UP【大】', '耳栓' ], equipSet);
 
 myapp.initialize();
 
 equipSet = {
-    head  : myapp.equip('head', '三眼のピアス')
-  , body  : myapp.equip('body', '三眼の首飾り')
-  , arm   : myapp.equip('arm', '三眼の腕輪')
-  , waist : myapp.equip('waist', '三眼の腰飾り')
-  , leg   : myapp.equip('leg', '三眼の足輪')
-  , weapon: { name: 'slot3' }
-  , oma   : omas[0]
+    head  : myapp.equip('head', '三眼のピアス'),
+    body  : myapp.equip('body', '三眼の首飾り'),
+    arm   : myapp.equip('arm', '三眼の腕輪'),
+    waist : myapp.equip('waist', '三眼の腰飾り'),
+    leg   : myapp.equip('leg', '三眼の足輪'),
+    weapon: { name: 'slot3' },
+    oma   : omas[0]
 };
 
 simulate([ '斬れ味レベル+1', '砥石使用高速化' ], equipSet);
 simulate([ '斬れ味レベル+1', '高級耳栓' ], equipSet);
-
-});
-})(typeof define !== 'undefined' ?
-   define :
-   typeof module !== 'undefined' && module.exports ?
-       function (deps, test) {
-           var modules = [], len = deps.length;
-           for (var i = 0; i < len; ++i) modules.push(require(deps[i]));
-           test.apply(this, modules);
-       } :
-       function (deps, test) {
-           test(this._, this.myapp, this.simu.Deco.Normalizer,
-                this.simu.Deco.Combinator, this.simu.Deco.Assembler);
-       }
-);

@@ -1,7 +1,7 @@
 'use strict';
 var assert = require('power-assert'),
     Combinator = require('../../../lib/equip/combinator.js'),
-    BorderLine = require('../../../lib/util/border-line.js'),
+    util = require('../../../lib/util.js'),
     myapp = require('../../../test/lib/driver-myapp.js');
 
 describe('30_equip/20_combinator', function () {
@@ -11,7 +11,7 @@ describe('30_equip/20_combinator', function () {
         myapp.initialize();
     });
 
-    it('Combinator', function () {
+    it('require', function () {
         assert(typeof Combinator === 'function', 'is function');
     });
 
@@ -145,7 +145,7 @@ describe('30_equip/20_combinator', function () {
                 { skillComb: { '攻撃': 3, '斬れ味': 1 } },
                 { skillComb: { '攻撃': 2, '斬れ味': 2 } } ]
         };
-        var borderLine = new BorderLine(skillNames, bulksSet);
+        var borderLine = new util.BorderLine(skillNames, bulksSet);
 
         comb = {
             eqcombs: [
@@ -296,7 +296,7 @@ describe('30_equip/20_combinator', function () {
                     { skillComb: { '攻撃': 4, '斬れ味': 0 }, equips: [ '4,0' ] },
                     { skillComb: { '攻撃': 0, '斬れ味': 2 }, equips: [ '0,2' ] } ]
             };
-            var borderLine = new BorderLine(skillNames, bulksSet);
+            var borderLine = new util.BorderLine(skillNames, bulksSet);
             var comb = {
                 eqcombs: [
                     { head : [ '1,3' ],
@@ -365,7 +365,7 @@ describe('30_equip/20_combinator', function () {
                     { skillComb: { '攻撃': 4, '斬れ味': 0 }, equips: [ '4,0' ] },
                     { skillComb: { '攻撃': 0, '斬れ味': 2 }, equips: [ '0,2' ] } ]
             };
-            var borderLine = new BorderLine(skillNames, bulksSet);
+            var borderLine = new util.BorderLine(skillNames, bulksSet);
             var comb = {
                 eqcombs: [
                     { head : [ '1,3' ],
@@ -433,7 +433,7 @@ describe('30_equip/20_combinator', function () {
                     { skillComb: { '攻撃': 4, '斬れ味': 0 }, equips: [ '4,0' ] },
                     { skillComb: { '攻撃': 0, '斬れ味': 2 }, equips: [ '0,2' ] } ]
             };
-            var borderLine = new BorderLine(skillNames, bulksSet);
+            var borderLine = new util.BorderLine(skillNames, bulksSet);
             var comb = { eqcombs: [], sumSC: 0 };
             var bulks = [
                 { skillComb: { '攻撃': 6, '斬れ味': 0 }, equips: [ '6,0' ] },
@@ -471,7 +471,7 @@ describe('30_equip/20_combinator', function () {
                     { skillComb: { '攻撃': 4, '斬れ味': 0 }, equips: [ '4,0' ] },
                     { skillComb: { '攻撃': 0, '斬れ味': 2 }, equips: [ '0,2' ] } ]
             };
-            var borderLine = new BorderLine(skillNames, bulksSet);
+            var borderLine = new util.BorderLine(skillNames, bulksSet);
             var comb = {
                 eqcombs: [
                     { head : [ '1,3' ],

@@ -1,6 +1,5 @@
-(function (define) {
 'use strict';
-define([ '../lib/util/skill.js' ], function (Skill) {
+var util = require('../lib/util.js');
 
 var COUNT = 100 * 1000;
 
@@ -17,22 +16,8 @@ var benchmark = function (label, fn) {
 };
 
 benchmark('join', function () {
-    Skill.join([ { 'a': 1 }, { 'b': 1 } ]);
+    util.skill.join([ { 'a': 1 }, { 'b': 1 } ]);
 });
 benchmark('merge', function () {
-    Skill.merge({ 'a': 1 }, { 'b': 1 });
+    util.skill.merge({ 'a': 1 }, { 'b': 1 });
 });
-
-});
-})(typeof define !== 'undefined' ?
-   define :
-   typeof module !== 'undefined' && module.exports ?
-       function (deps, test) {
-           var modules = [], len = deps.length;
-           for (var i = 0; i < len; ++i) modules.push(require(deps[i]));
-           test.apply(this, modules);
-       } :
-       function (deps, test) {
-           test(this.simu.Util.Skill);
-       }
-);

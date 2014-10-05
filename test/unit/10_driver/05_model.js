@@ -85,7 +85,7 @@ describe('10_driver/05_model', function () {
             assert(got.name === null, 'empty Array: name');
         });
 
-        it('toString', function () {
+        it('toString()', function () {
             var list = ["ブレイブヘッド",0,0,1,1,1,1,1,55,2,0,0,0,1,"体力",-1,"回復速度",3,"乗り",2,null,null,null,null,"竜骨【小】",1,null,null,null,null,null,null];
 
             var eq = new model.Equip(list);
@@ -333,7 +333,7 @@ describe('10_driver/05_model', function () {
             assert(got.name === null, 'empty Array: name');
         });
 
-        it('toString', function () {
+        it('toString()', function () {
             var list = ["攻撃珠【１】",4,1,2,2,"攻撃",1,"防御",-1,"水光原珠",1,"ジャギィの鱗",2,"怪力の種",1,null,null,null,null,null,null,null,null,null,null];
 
             var deco = new model.Deco(list);
