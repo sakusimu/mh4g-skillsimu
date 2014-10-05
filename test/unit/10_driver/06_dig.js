@@ -20,7 +20,7 @@ describe('10_driver/06_dig', function () {
             assert(got.skillPt1 === 4, 'skillPt1');
         });
 
-        it('toStirng', function () {
+        it('toStirng()', function () {
             var dig;
 
             dig = new model.Dig([ 0, 1, '刀匠', 4 ]);
