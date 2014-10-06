@@ -135,49 +135,6 @@ describe('30_equip/10_normalizer', function () {
         assert.deepEqual(got, exp, 'not uniq');
     });
 
-    it('_normalize0', function () {
-        var equips,
-            n = new Normalizer();
-
-        // slotN
-        equips = [
-            { name: '攻撃+2,スロ1', slot: 1, skillComb: { '攻撃': 2, '研ぎ師': 1 } },
-            { name: '攻撃+3,スロ2', slot: 2, skillComb: { '攻撃': 3, '火耐性': 4 } },
-            { name: '斬れ味+2,スロ0', slot: 0, skillComb: { '斬れ味': 2, '研ぎ師': 1 } },
-            { name: 'スロ0', slot: 0, skillComb: { '採取': 3, '気まぐれ': 2 } },
-            { name: 'スロ3', slot: 3, skillComb: { '防御': 1, 'ガード強化': 1 } },
-            { name: '三眼の首飾り', slot: 3, skillComb: {} },
-            { name: '斬れ味+2,スロ3', slot: 3, skillComb: { '痛撃': 1, '斬れ味': 2 } }
-        ];
-        got = n._normalize0(equips, [ '攻撃', '斬れ味' ]);
-        exp = [
-            { name: '攻撃+2,スロ1', slot: 1, skillComb: { '攻撃': 2, '研ぎ師': 1 } },
-            { name: '攻撃+3,スロ2', slot: 2, skillComb: { '攻撃': 3, '火耐性': 4 } },
-            { name: '斬れ味+2,スロ0', slot: 0, skillComb: { '斬れ味': 2, '研ぎ師': 1 } },
-            { name: 'slot0', slot: 0, skillComb: {} },
-            { name: 'slot3', slot: 3, skillComb: {} },
-            { name: '斬れ味+2,スロ3', slot: 3, skillComb: { '痛撃': 1, '斬れ味': 2 } }
-        ];
-        assert.deepEqual(got, exp, 'slotN');
-
-        // 胴系統倍化
-        equips = [
-            { name: '攻撃+4,スロ1', slot: 1, skillComb: { '攻撃': 4, '聴覚保護': -2 } },
-            { name: 'アシラグリーヴ', slot: 0, skillComb: { '胴系統倍化': 1 } },
-            { name: 'スロ0', slot: 0, skillComb: { '体力': -2, '回復速度': 2, '乗り': 4 } },
-            { name: 'カブラＳグリーヴ', slot: 0, skillComb: { '胴系統倍化': 1 } },
-            { name: '攻撃＆斬れ味＆スロあり', slot: 3, skillComb: { '攻撃': 1, '斬れ味': 3 } }
-        ];
-        got = n._normalize0(equips, [ '攻撃', '斬れ味' ]);
-        exp = [
-            { name: '攻撃+4,スロ1', slot: 1, skillComb: { '攻撃': 4, '聴覚保護': -2 } },
-            { name: '胴系統倍化', slot: 0, skillComb: { '胴系統倍化': 1 } },
-            { name: 'slot0', slot: 0, skillComb: {} },
-            { name: '攻撃＆斬れ味＆スロあり', slot: 3, skillComb: { '攻撃': 1, '斬れ味': 3 } }
-        ];
-        assert.deepEqual(got, exp, 'torsoUp');
-    });
-
     describe('_normalize1', function () {
         var n = new Normalizer();
 
