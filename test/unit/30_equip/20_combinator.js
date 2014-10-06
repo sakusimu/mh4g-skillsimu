@@ -79,7 +79,7 @@ describe('30_equip/20_combinator', function () {
         var c = new Combinator();
 
         it('make', function () {
-            var bulks = [
+            var bulks = c._sortBulks([
                 { skillComb: { '攻撃': 3, '斬れ味': 2 }, equips: [ '3,2' ] },
                 { skillComb: { '攻撃': 5, '斬れ味': 0 }, equips: [ '5,0' ] },
                 { skillComb: { '攻撃': 0, '斬れ味': 1 }, equips: [ '0,1' ] },
@@ -87,36 +87,40 @@ describe('30_equip/20_combinator', function () {
                 { skillComb: { '攻撃': 1, '斬れ味': 3 }, equips: [ '1,3' ] },
                 { skillComb: { '攻撃': 1, '斬れ味': 0 }, equips: [ '1,0' ] },
                 { skillComb: { '攻撃': 4, '斬れ味': 1 }, equips: [ '4,1' ] }
+            ]);
+            var sp0 = [
+                { skillComb: { '攻撃': 0, '斬れ味': 0 }, equips: [ '0,0' ] }
             ];
-            var slot0 = [
-                { skillComb: { '攻撃': 0, '斬れ味': 0 }, equips: [ 'slot0' ] }
+            var torsoUp = [
+                { skillComb: { '胴系統倍化': 1 }, equips: [ 'torsoUp' ] }
             ];
 
             var bulksSet = {
                 head : bulks,
-                body : bulks.concat(slot0),
+                body : bulks.concat(sp0),
                 arm  : bulks,
-                waist: bulks.concat(slot0),
-                leg  : bulks,
+                waist: bulks.concat(sp0),
+                leg  : torsoUp.concat(bulks),
                 // weapon: undefined
                 oma  : null
             };
-            got = c._makeBulksSetWithSlot0(bulksSet);
+
+            got = c._makeBulksSetWithSp0(bulksSet);
             exp = [
                 { head : bulks,
-                  body : slot0,
+                  body : sp0,
                   arm  : bulks,
-                  waist: bulks.concat(slot0),
-                  leg  : bulks,
+                  waist: bulks.concat(sp0),
+                  leg  : torsoUp.concat(bulks),
                   weapon: null, oma: null },
                 { head : bulks,
-                  body : bulks.concat(slot0),
+                  body : bulks.concat(sp0),
                   arm  : bulks,
-                  waist: slot0,
-                  leg  : bulks,
+                  waist: sp0,
+                  leg  : torsoUp.concat(bulks),
                   weapon: null, oma: null }
             ];
-            assert.deepEqual(got, exp, 'make');
+            assert.deepEqual(got, exp);
         });
     });
 
@@ -615,7 +619,7 @@ describe('30_equip/20_combinator', function () {
         });
     });
 
-    describe('_combineUsedSlot0', function () {
+    describe('_combineUsedSp0', function () {
         var c = new Combinator();
 
         it('combine', function () {
@@ -623,13 +627,13 @@ describe('30_equip/20_combinator', function () {
             var bulksSet = {
                 head: [
                     { skillComb: { '攻撃': 4, '斬れ味': 2 }, equips: [ '4,2' ] },
-                    { skillComb: { '攻撃': 0, '斬れ味': 0 }, equips: [ 'slot0' ] } ],
+                    { skillComb: { '攻撃': 0, '斬れ味': 0 }, equips: [ '0,0' ] } ],
                 body: [
                     { skillComb: { '攻撃': 8, '斬れ味': 0 }, equips: [ '8,0' ] },
                     { skillComb: { '攻撃': 6, '斬れ味': 2 }, equips: [ '6,2' ] } ],
                 arm: [
                     { skillComb: { '攻撃': 4, '斬れ味': 2 }, equips: [ '4,2' ] },
-                    { skillComb: { '攻撃': 0, '斬れ味': 0 }, equips: [ 'slot0' ] } ],
+                    { skillComb: { '攻撃': 0, '斬れ味': 0 }, equips: [ '0,0' ] } ],
                 waist: [
                     { skillComb: { '攻撃': 8, '斬れ味': 0 }, equips: [ '8,0' ] },
                     { skillComb: { '攻撃': 6, '斬れ味': 2 }, equips: [ '6,2' ] } ],
@@ -637,12 +641,12 @@ describe('30_equip/20_combinator', function () {
                     { skillComb: { '攻撃': 4, '斬れ味': 4 }, equips: [ '4,4' ] },
                     { skillComb: { '攻撃': 5, '斬れ味': 3 }, equips: [ '5,3' ] } ]
             };
-            got = c._combineUsedSlot0(skillNames, bulksSet);
+            got = c._combineUsedSp0(skillNames, bulksSet);
             exp = [
                 {
                     eqcombs: [
                         { body  : [ '6,2' ],
-                          head  : [ 'slot0' ],
+                          head  : [ '0,0' ],
                           arm   : [ '4,2' ],
                           waist : [ '6,2' ],
                           leg   : [ '4,4' ],
@@ -652,12 +656,12 @@ describe('30_equip/20_combinator', function () {
                     ],
                     sumSC: { '攻撃': 20, '斬れ味': 10 }
                 }
-                // 先に頭に slot0 を使った組み合わせが見つかるので↓は出てこない
+                // 先に頭にポイント 0 を使った組み合わせが見つかるので↓は出てこない
                 //{
                 //    eqcombs: [
                 //        { body  : [ '6,2' ],
                 //          head  : [ '4,2' ],
-                //          arm   : [ 'slot0' ],
+                //          arm   : [ '0,0' ],
                 //          waist : [ '6,2' ],
                 //          leg   : [ '4,4' ],
                 //          weapon: [],

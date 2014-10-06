@@ -96,7 +96,7 @@ describe('30_equip/39_assembler', function () {
 
             var assems = a.assemble(eqcombs);
             got = assems.length;
-            exp = 11;
+            exp = 36; // 頑シミュさんと同じ
             assert(got === exp);
         });
     });
@@ -173,7 +173,7 @@ describe('30_equip/39_assembler', function () {
 
             var assems = a.assemble(eqcombs);
             got = assems.length;
-            exp = 27; // 頑シミュさんと同じ
+            exp = 157; // 頑シミュさんと同じ
             assert(got === exp);
         });
     });
@@ -190,7 +190,7 @@ describe('30_equip/39_assembler', function () {
 
             var assems = a.assemble(eqcombs);
             got = assems.length;
-            exp = 8;
+            exp = 280;
             assert(got === exp);
         });
 
@@ -201,7 +201,7 @@ describe('30_equip/39_assembler', function () {
 
             var assems = a.assemble(eqcombs);
             got = assems.length;
-            exp = 1427;
+            exp = 1737; // 頑シミュさんと同じ
             assert(got === exp);
         });
 

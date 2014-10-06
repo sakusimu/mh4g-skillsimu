@@ -27,7 +27,7 @@ describe('30_equip/simulator', function () {
         it('torsoUp', function () {
             myapp.setup({ sex: 'w' });
 
-        var equips = data.equips;
+            var equips = data.equips;
             equips.head  = [ myapp.equip('head', 'ユクモノカサ・天') ];
             equips.body  = [ myapp.equip('body', '三眼の首飾り') ];
             equips.arm   = [ myapp.equip('arm', 'ユクモノコテ・天') ];
@@ -42,7 +42,7 @@ describe('30_equip/simulator', function () {
             exp = [ { head  : 'ユクモノカサ・天',
                       body  : '三眼の首飾り',
                       arm   : 'ユクモノコテ・天',
-                      waist : '胴系統倍化',
+                      waist : 'バンギスコイル',
                       leg   : 'ユクモノハカマ・天',
                       weapon: null,
                       oma   : null } ];
@@ -63,7 +63,7 @@ describe('30_equip/simulator', function () {
                 dig: true
             });
             got = simu.simulate([ '真打', '集中', '弱点特効', '耳栓' ]).length;
-            exp = 27;
+            exp = 157; // 頑シミュさんと同じ
             assert.deepEqual(got, exp, 'dig');
         });
     });
@@ -74,14 +74,14 @@ describe('30_equip/simulator', function () {
         it("[ '攻撃力UP【大】', '業物' ]", function () {
             var skills = [ '攻撃力UP【大】', '業物' ];
             got = simu.simulate(skills).length;
-            exp = 8;
+            exp = 280;
             assert(got === exp);
         });
 
         it("[ '斬れ味レベル+1', '高級耳栓' ]", function () {
             var skills = [ '斬れ味レベル+1', '高級耳栓' ];
             got = simu.simulate(skills).length;
-            exp = 1427;
+            exp = 1737; // 頑シミュさんと同じ
             assert(got === exp);
         });
 
