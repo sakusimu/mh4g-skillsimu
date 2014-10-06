@@ -94,8 +94,9 @@ describe('30_equip/39_assembler', function () {
             var bulksSet = n.normalize(skills);
             var eqcombs = c.combine(skills, bulksSet);
 
-            got = a.assemble(eqcombs).length;
-            exp = 11;
+            var assems = a.assemble(eqcombs);
+            got = assems.length;
+            exp = 36; // 頑シミュさんと同じ
             assert(got === exp);
         });
     });
@@ -121,7 +122,8 @@ describe('30_equip/39_assembler', function () {
             var bulksSet = n.normalize(skills);
             var eqcombs = c.combine(skills, bulksSet);
 
-            got = a.assemble(eqcombs).length;
+            var assems = a.assemble(eqcombs);
+            got = assems.length;
             exp = 3; // 頑シミュさんと同じ
             assert(got === exp);
         });
@@ -142,7 +144,8 @@ describe('30_equip/39_assembler', function () {
             var bulksSet = n.normalize(skills);
             var eqcombs = c.combine(skills, bulksSet);
 
-            got = a.assemble(eqcombs).length;
+            var assems = a.assemble(eqcombs);
+            got = assems.length;
             exp = 0;
             assert(got === exp);
         });
@@ -168,8 +171,9 @@ describe('30_equip/39_assembler', function () {
             var bulksSet = n.normalize(skills);
             var eqcombs = c.combine(skills, bulksSet);
 
-            got = a.assemble(eqcombs).length;
-            exp = 27; // 頑シミュさんと同じ
+            var assems = a.assemble(eqcombs);
+            got = assems.length;
+            exp = 157; // 頑シミュさんと同じ
             assert(got === exp);
         });
     });
@@ -183,8 +187,10 @@ describe('30_equip/39_assembler', function () {
             var skills = [ '攻撃力UP【大】', '業物' ];
             var bulksSet = n.normalize(skills);
             var eqcombs = c.combine(skills, bulksSet);
-            got = a.assemble(eqcombs).length;
-            exp = 8;
+
+            var assems = a.assemble(eqcombs);
+            got = assems.length;
+            exp = 280;
             assert(got === exp);
         });
 
@@ -192,8 +198,10 @@ describe('30_equip/39_assembler', function () {
             var skills = [ '斬れ味レベル+1', '高級耳栓' ];
             var bulksSet = n.normalize(skills);
             var eqcombs = c.combine(skills, bulksSet);
-            got = a.assemble(eqcombs).length;
-            exp = 1427;
+
+            var assems = a.assemble(eqcombs);
+            got = assems.length;
+            exp = 1737; // 頑シミュさんと同じ
             assert(got === exp);
         });
 
@@ -201,7 +209,9 @@ describe('30_equip/39_assembler', function () {
             var skills = [ '攻撃力UP【大】', '業物', '集中', '見切り+1', '弱点特効' ];
             var bulksSet = n.normalize(skills);
             var eqcombs = c.combine(skills, bulksSet);
-            got = a.assemble(eqcombs).length;
+
+            var assems = a.assemble(eqcombs);
+            got = assems.length;
             exp = 0;
             assert(got === exp);
         });

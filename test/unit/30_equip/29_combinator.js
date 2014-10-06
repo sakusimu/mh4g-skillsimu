@@ -49,7 +49,8 @@ describe('30_equip/29_combinator', function () {
             var skills = [ '斬れ味レベル+1', '集中' ];
             var bulksSet = n.normalize(skills);
 
-            got = c.combine(skills, bulksSet).length;
+            var eqcombs = c.combine(skills, bulksSet);
+            got = eqcombs.length;
             exp = 6;
             assert(got === exp);
         });
@@ -74,7 +75,8 @@ describe('30_equip/29_combinator', function () {
             var skills = [ '斬れ味レベル+1', '攻撃力UP【大】', '耳栓' ];
             var bulksSet = n.normalize(skills);
 
-            got = c.combine(skills, bulksSet).length;
+            var eqcombs = c.combine(skills, bulksSet);
+            got = eqcombs.length;
             exp = 12;
             assert(got === exp);
         });
@@ -94,7 +96,8 @@ describe('30_equip/29_combinator', function () {
             var skills = [ '斬れ味レベル+1', '攻撃力UP【大】', '耳栓' ];
             var bulksSet = n.normalize(skills);
 
-            got = c.combine(skills, bulksSet).length;
+            var eqcombs = c.combine(skills, bulksSet);
+            got = eqcombs.length;
             exp = 0;
             assert(got === exp);
         });
@@ -118,7 +121,8 @@ describe('30_equip/29_combinator', function () {
             var skills = [ '真打', '集中', '弱点特効', '耳栓' ];
             var bulksSet = n.normalize(skills);
 
-            got = c.combine(skills, bulksSet).length;
+            var eqcombs = c.combine(skills, bulksSet);
+            got = eqcombs.length;
             exp = 141;
             assert(got === exp);
         });
@@ -131,7 +135,8 @@ describe('30_equip/29_combinator', function () {
         it("[ '攻撃力UP【大】', '業物' ]", function () {
             var skills = [ '攻撃力UP【大】', '業物' ];
             var bulksSet = n.normalize(skills);
-            got = c.combine(skills, bulksSet).length;
+            var eqcombs = c.combine(skills, bulksSet);
+            got = eqcombs.length;
             exp = 18;
             assert(got === exp);
         });
@@ -139,7 +144,8 @@ describe('30_equip/29_combinator', function () {
         it("[ '斬れ味レベル+1', '高級耳栓' ]", function () {
             var skills = [ '斬れ味レベル+1', '高級耳栓' ];
             var bulksSet = n.normalize(skills);
-            got = c.combine(skills, bulksSet).length;
+            var eqcombs = c.combine(skills, bulksSet);
+            got = eqcombs.length;
             exp = 418;
             assert(got === exp);
         });
@@ -147,7 +153,8 @@ describe('30_equip/29_combinator', function () {
         it("[ '攻撃力UP【大】', '業物', '集中', '見切り+1', '弱点特効' ]", function () {
             var skills = [ '攻撃力UP【大】', '業物', '集中', '見切り+1', '弱点特効' ];
             var bulksSet = n.normalize(skills);
-            got = c.combine(skills, bulksSet).length;
+            var eqcombs = c.combine(skills, bulksSet);
+            got = eqcombs.length;
             exp = 0;
             assert(got === exp, skills.join(', '));
         });

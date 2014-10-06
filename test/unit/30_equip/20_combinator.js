@@ -21,253 +21,277 @@ describe('30_equip/20_combinator', function () {
         assert(typeof c.initialize === 'function', 'has initialize()');
     });
 
-    it('_sortBulks', function () {
-        var bulks,
-            c = new Combinator();
+    describe('_sortBulks', function () {
+        var c = new Combinator();
 
-        bulks = [
-            { skillComb: { '攻撃': 3, '斬れ味': 2 } },
-            { skillComb: { '攻撃': 0, '斬れ味': 0 } },
-            { skillComb: { '攻撃': 0, '斬れ味': 1 } },
-            { skillComb: { '攻撃': -2, '斬れ味': 2 } },
-            { skillComb: { '攻撃': 0, '斬れ味': 6 } },
-            { skillComb: { '攻撃': 5, '斬れ味': 0 } },
-            { skillComb: { '攻撃': 1, '斬れ味': 3 } },
-            { skillComb: { '攻撃': 6, '斬れ味': 6 } },
-            { skillComb: { '攻撃': 1, '斬れ味': -3 } },
-            { skillComb: { '攻撃': 1, '斬れ味': 0 } },
-            { skillComb: { '攻撃': 4, '斬れ味': 1 } }
-        ];
-        got = c._sortBulks(bulks);
-        exp = [
-            { skillComb: { '攻撃': 6, '斬れ味': 6 } },
-            { skillComb: { '攻撃': 0, '斬れ味': 6 } },
-            { skillComb: { '攻撃': 3, '斬れ味': 2 } },
-            { skillComb: { '攻撃': 5, '斬れ味': 0 } },
-            { skillComb: { '攻撃': 4, '斬れ味': 1 } },
-            { skillComb: { '攻撃': 1, '斬れ味': 3 } },
-            { skillComb: { '攻撃': 0, '斬れ味': 1 } },
-            { skillComb: { '攻撃': 1, '斬れ味': 0 } },
-            { skillComb: { '攻撃': 0, '斬れ味': 0 } },
-            { skillComb: { '攻撃': -2, '斬れ味': 2 } },
-            { skillComb: { '攻撃': 1, '斬れ味': -3 } }
-        ];
-        assert.deepEqual(got, exp, "sort");
-
-        // 胴系統倍化
-        bulks = [
-            { skillComb: { '攻撃': 3, '斬れ味': 2 } },
-            { skillComb: { '攻撃': 0, '斬れ味': 0 } },
-            { skillComb: { '攻撃': 1, '斬れ味': 3 } },
-            { skillComb: { '胴系統倍化': 1 } },
-            { skillComb: { '攻撃': 4, '斬れ味': 1 } }
-        ];
-        got = c._sortBulks(bulks);
-        exp = [
-            { skillComb: { '胴系統倍化': 1 } },
-            { skillComb: { '攻撃': 3, '斬れ味': 2 } },
-            { skillComb: { '攻撃': 4, '斬れ味': 1 } },
-            { skillComb: { '攻撃': 1, '斬れ味': 3 } },
-            { skillComb: { '攻撃': 0, '斬れ味': 0 } }
-        ];
-        assert.deepEqual(got, exp, "torsoUp");
-    });
-
-    it('_makeBulksSetWithSlot0', function () {
-        var bulksSet,
-            c = new Combinator();
-
-        var bulks = [
-            { skillComb: { '攻撃': 3, '斬れ味': 2 }, equips: [ '3,2' ] },
-            { skillComb: { '攻撃': 5, '斬れ味': 0 }, equips: [ '5,0' ] },
-            { skillComb: { '攻撃': 0, '斬れ味': 1 }, equips: [ '0,1' ] },
-            { skillComb: { '攻撃': 0, '斬れ味': 6 }, equips: [ '0,6' ] },
-            { skillComb: { '攻撃': 1, '斬れ味': 3 }, equips: [ '1,3' ] },
-            { skillComb: { '攻撃': 1, '斬れ味': 0 }, equips: [ '1,0' ] },
-            { skillComb: { '攻撃': 4, '斬れ味': 1 }, equips: [ '4,1' ] }
-        ];
-        var slot0 = [
-            { skillComb: { '攻撃': 0, '斬れ味': 0 }, equips: [ 'slot0' ] }
-        ];
-
-        bulksSet = {
-            head : bulks,
-            body : bulks.concat(slot0),
-            arm  : bulks,
-            waist: bulks.concat(slot0),
-            leg  : bulks,
-            // weapon: undefined
-            oma  : null
-        };
-        got = c._makeBulksSetWithSlot0(bulksSet);
-        exp = [
-            { head : bulks,
-              body : slot0,
-              arm  : bulks,
-              waist: bulks.concat(slot0),
-              leg  : bulks,
-              weapon: null, oma: null },
-            { head : bulks,
-              body : bulks.concat(slot0),
-              arm  : bulks,
-              waist: slot0,
-              leg  : bulks,
-              weapon: null, oma: null }
-        ];
-        assert.deepEqual(got, exp, 'make');
-    });
-
-    it('_combineTorsoUp', function () {
-        var comb, bulk,
-            c = new Combinator();
-
-        var skillNames = [ '攻撃力UP【大】', '業物' ];
-        var bulksSet = {
-            head: [
+        it('sort', function () {
+            var bulks = [
+                { skillComb: { '攻撃': 3, '斬れ味': 2 } },
+                { skillComb: { '攻撃': 0, '斬れ味': 0 } },
+                { skillComb: { '攻撃': 0, '斬れ味': 1 } },
+                { skillComb: { '攻撃': -2, '斬れ味': 2 } },
+                { skillComb: { '攻撃': 0, '斬れ味': 6 } },
+                { skillComb: { '攻撃': 5, '斬れ味': 0 } },
                 { skillComb: { '攻撃': 1, '斬れ味': 3 } },
-                { skillComb: { '攻撃': 2, '斬れ味': 3 } },
-                { skillComb: { '攻撃': 0, '斬れ味': 4 } },
-                { skillComb: { '攻撃': 4, '斬れ味': 0 } } ],
-            body: [
-                { skillComb: { '攻撃': 5, '斬れ味': 1 } },
+                { skillComb: { '攻撃': 6, '斬れ味': 6 } },
+                { skillComb: { '攻撃': 1, '斬れ味': -3 } },
+                { skillComb: { '攻撃': 1, '斬れ味': 0 } },
+                { skillComb: { '攻撃': 4, '斬れ味': 1 } }
+            ];
+            got = c._sortBulks(bulks);
+            exp = [
+                { skillComb: { '攻撃': 6, '斬れ味': 6 } },
+                { skillComb: { '攻撃': 0, '斬れ味': 6 } },
+                { skillComb: { '攻撃': 3, '斬れ味': 2 } },
+                { skillComb: { '攻撃': 5, '斬れ味': 0 } },
                 { skillComb: { '攻撃': 4, '斬れ味': 1 } },
-                { skillComb: { '攻撃': 6, '斬れ味': 0 } } ],
-            arm: [
                 { skillComb: { '攻撃': 1, '斬れ味': 3 } },
-                { skillComb: { '攻撃': 2, '斬れ味': 3 } },
-                { skillComb: { '攻撃': 0, '斬れ味': 4 } },
-                { skillComb: { '攻撃': 4, '斬れ味': 0 } } ],
-            waist: [
-                { skillComb: { '胴系統倍化': 1 } } ],
-            leg: [
-                { skillComb: { '胴系統倍化': 1 } } ],
-            oma: [
-                { skillComb: { '攻撃': 3, '斬れ味': 1 } },
-                { skillComb: { '攻撃': 2, '斬れ味': 2 } } ]
-        };
-        var borderLine = new util.BorderLine(skillNames, bulksSet);
+                { skillComb: { '攻撃': 0, '斬れ味': 1 } },
+                { skillComb: { '攻撃': 1, '斬れ味': 0 } },
+                { skillComb: { '攻撃': 0, '斬れ味': 0 } },
+                { skillComb: { '攻撃': -2, '斬れ味': 2 } },
+                { skillComb: { '攻撃': 1, '斬れ味': -3 } }
+            ];
+            assert.deepEqual(got, exp);
+        });
 
-        comb = {
-            eqcombs: [
-                { head : [ '1,3' ],
-                  body : [ '5,1' ],
-                  arm  : [ '1,3' ],
-                  waist: [ 'torsoUp' ],
-                  bodySC: { '攻撃': 5, '斬れ味': 1 } },
-                { head : [ '2,3' ],
-                  body : [ '4,1' ],
-                  arm  : [ '2,3' ],
-                  waist: [ 'torsoUp' ],
-                  bodySC: { '攻撃': 4, '斬れ味': 1 } },
-                { head : [ '0,4' ],
-                  body : [ '6,0' ],
-                  arm  : [ '0,4' ],
-                  waist: [ 'torsoUp' ],
-                  bodySC: { '攻撃': 6, '斬れ味': 0 } }
-            ],
-            sumSC: { '攻撃': 12, '斬れ味': 8 }
-        };
-        bulk = { skillComb: { '胴系統倍化': 1 }, equips: [ 'torsoUp' ] };
-        got = c._combineTorsoUp(comb, bulk, borderLine, 'leg');
-        exp = [
-            {
+        it('torsoUp', function () {
+            var bulks = [
+                { skillComb: { '攻撃': 3, '斬れ味': 2 } },
+                { skillComb: { '攻撃': 0, '斬れ味': 0 } },
+                { skillComb: { '攻撃': 1, '斬れ味': 3 } },
+                { skillComb: { '胴系統倍化': 1 } },
+                { skillComb: { '攻撃': 4, '斬れ味': 1 } }
+            ];
+            got = c._sortBulks(bulks);
+            exp = [
+                { skillComb: { '胴系統倍化': 1 } },
+                { skillComb: { '攻撃': 3, '斬れ味': 2 } },
+                { skillComb: { '攻撃': 4, '斬れ味': 1 } },
+                { skillComb: { '攻撃': 1, '斬れ味': 3 } },
+                { skillComb: { '攻撃': 0, '斬れ味': 0 } }
+            ];
+            assert.deepEqual(got, exp);
+        });
+    });
+
+    describe('_makeBulksSetWithSlot0', function () {
+        var c = new Combinator();
+
+        it('make', function () {
+            var bulks = c._sortBulks([
+                { skillComb: { '攻撃': 3, '斬れ味': 2 }, equips: [ '3,2' ] },
+                { skillComb: { '攻撃': 5, '斬れ味': 0 }, equips: [ '5,0' ] },
+                { skillComb: { '攻撃': 0, '斬れ味': 1 }, equips: [ '0,1' ] },
+                { skillComb: { '攻撃': 0, '斬れ味': 6 }, equips: [ '0,6' ] },
+                { skillComb: { '攻撃': 1, '斬れ味': 3 }, equips: [ '1,3' ] },
+                { skillComb: { '攻撃': 1, '斬れ味': 0 }, equips: [ '1,0' ] },
+                { skillComb: { '攻撃': 4, '斬れ味': 1 }, equips: [ '4,1' ] }
+            ]);
+            var sp0 = [
+                { skillComb: { '攻撃': 0, '斬れ味': 0 }, equips: [ '0,0' ] }
+            ];
+            var torsoUp = [
+                { skillComb: { '胴系統倍化': 1 }, equips: [ 'torsoUp' ] }
+            ];
+
+            var bulksSet = {
+                head : bulks,
+                body : bulks.concat(sp0),
+                arm  : bulks,
+                waist: bulks.concat(sp0),
+                leg  : torsoUp.concat(bulks),
+                // weapon: undefined
+                oma  : null
+            };
+
+            got = c._makeBulksSetWithSp0(bulksSet);
+            exp = [
+                { head : bulks,
+                  body : sp0,
+                  arm  : bulks,
+                  waist: bulks.concat(sp0),
+                  leg  : torsoUp.concat(bulks),
+                  weapon: null, oma: null },
+                { head : bulks,
+                  body : bulks.concat(sp0),
+                  arm  : bulks,
+                  waist: sp0,
+                  leg  : torsoUp.concat(bulks),
+                  weapon: null, oma: null }
+            ];
+            assert.deepEqual(got, exp);
+        });
+    });
+
+    describe('_combineTorsoUp', function () {
+        var c = new Combinator();
+
+        it('combine', function () {
+            var skillNames = [ '攻撃力UP【大】', '業物' ];
+            var bulksSet = {
+                head: [
+                    { skillComb: { '攻撃': 1, '斬れ味': 3 } },
+                    { skillComb: { '攻撃': 2, '斬れ味': 3 } },
+                    { skillComb: { '攻撃': 0, '斬れ味': 4 } },
+                    { skillComb: { '攻撃': 4, '斬れ味': 0 } } ],
+                body: [
+                    { skillComb: { '攻撃': 5, '斬れ味': 1 } },
+                    { skillComb: { '攻撃': 4, '斬れ味': 1 } },
+                    { skillComb: { '攻撃': 6, '斬れ味': 0 } } ],
+                arm: [
+                    { skillComb: { '攻撃': 1, '斬れ味': 3 } },
+                    { skillComb: { '攻撃': 2, '斬れ味': 3 } },
+                    { skillComb: { '攻撃': 0, '斬れ味': 4 } },
+                    { skillComb: { '攻撃': 4, '斬れ味': 0 } } ],
+                waist: [
+                    { skillComb: { '胴系統倍化': 1 } } ],
+                leg: [
+                    { skillComb: { '胴系統倍化': 1 } } ],
+                oma: [
+                    { skillComb: { '攻撃': 3, '斬れ味': 1 } },
+                    { skillComb: { '攻撃': 2, '斬れ味': 2 } } ]
+            };
+            var borderLine = new util.BorderLine(skillNames, bulksSet);
+
+            var comb = {
                 eqcombs: [
                     { head : [ '1,3' ],
                       body : [ '5,1' ],
                       arm  : [ '1,3' ],
                       waist: [ 'torsoUp' ],
-                      leg  : [ 'torsoUp' ],
-                      bodySC: { '攻撃': 5, '斬れ味': 1 } }
-                ],
-                sumSC: { '攻撃': 17, '斬れ味': 9 }
-            },
-            {
-                eqcombs: [
+                      bodySC: { '攻撃': 5, '斬れ味': 1 } },
+                    { head : [ '2,3' ],
+                      body : [ '4,1' ],
+                      arm  : [ '2,3' ],
+                      waist: [ 'torsoUp' ],
+                      bodySC: { '攻撃': 4, '斬れ味': 1 } },
                     { head : [ '0,4' ],
                       body : [ '6,0' ],
                       arm  : [ '0,4' ],
                       waist: [ 'torsoUp' ],
-                      leg  : [ 'torsoUp' ],
                       bodySC: { '攻撃': 6, '斬れ味': 0 } }
                 ],
-                sumSC: { '攻撃': 18, '斬れ味': 8 }
-            }
-        ];
-        assert.deepEqual(got, exp, 'combine');
+                sumSC: { '攻撃': 12, '斬れ味': 8 }
+            };
+            var bulk = { skillComb: { '胴系統倍化': 1 }, equips: [ 'torsoUp' ] };
+            got = c._combineTorsoUp(comb, bulk, borderLine, 'leg');
+            exp = [
+                {
+                    eqcombs: [
+                        { head : [ '1,3' ],
+                          body : [ '5,1' ],
+                          arm  : [ '1,3' ],
+                          waist: [ 'torsoUp' ],
+                          leg  : [ 'torsoUp' ],
+                          bodySC: { '攻撃': 5, '斬れ味': 1 } }
+                    ],
+                    sumSC: { '攻撃': 17, '斬れ味': 9 }
+                },
+                {
+                    eqcombs: [
+                        { head : [ '0,4' ],
+                          body : [ '6,0' ],
+                          arm  : [ '0,4' ],
+                          waist: [ 'torsoUp' ],
+                          leg  : [ 'torsoUp' ],
+                          bodySC: { '攻撃': 6, '斬れ味': 0 } }
+                    ],
+                    sumSC: { '攻撃': 18, '斬れ味': 8 }
+                }
+            ];
+            assert.deepEqual(got, exp, 'combine');
+        });
     });
 
-    it('_newComb', function () {
-        var comb, bulk,
-            c = new Combinator();
+    describe('_newComb', function () {
+        var c = new Combinator();
 
-        comb = {
-            eqcombs: [
-                { head : [ 'head1' ],
-                  body : [ 'body1' ],
-                  bodySC: { '攻撃': 1, '斬れ味': 0 } },
-                { head : [ 'head2' ],
-                  body : [ 'body2' ],
-                  bodySC: { '攻撃': 0, '斬れ味': 1 } }
-            ],
-            sumSC: { '攻撃': 1, '斬れ味': 1 }
-        };
-        bulk = { skillComb: { '攻撃': 1, '斬れ味': 1 }, equips: [ 'arm1' ] };
-        got = c._newComb(comb, bulk, 'arm');
-        exp = {
-            eqcombs: [
-                { head : [ 'head1' ],
-                  body : [ 'body1' ],
-                  arm  : [ 'arm1' ],
-                  bodySC: { '攻撃': 1, '斬れ味': 0 } },
-                { head : [ 'head2' ],
-                  body : [ 'body2' ],
-                  arm  : [ 'arm1' ],
-                  bodySC: { '攻撃': 0, '斬れ味': 1 } }
-            ],
-            sumSC: { '攻撃': 2, '斬れ味': 2 }
-        };
-        assert.deepEqual(got, exp, 'new');
+        it('new', function () {
+            var comb = {
+                eqcombs: [
+                    { head : [ 'head1' ],
+                      body : [ 'body1' ],
+                      bodySC: { '攻撃': 1, '斬れ味': 0 } },
+                    { head : [ 'head2' ],
+                      body : [ 'body2' ],
+                      bodySC: { '攻撃': 0, '斬れ味': 1 } }
+                ],
+                sumSC: { '攻撃': 1, '斬れ味': 1 }
+            };
+            var bulk = { skillComb: { '攻撃': 1, '斬れ味': 1 }, equips: [ 'arm1' ] };
+            got = c._newComb(comb, bulk, 'arm');
+            exp = {
+                eqcombs: [
+                    { head : [ 'head1' ],
+                      body : [ 'body1' ],
+                      arm  : [ 'arm1' ],
+                      bodySC: { '攻撃': 1, '斬れ味': 0 } },
+                    { head : [ 'head2' ],
+                      body : [ 'body2' ],
+                      arm  : [ 'arm1' ],
+                      bodySC: { '攻撃': 0, '斬れ味': 1 } }
+                ],
+                sumSC: { '攻撃': 2, '斬れ味': 2 }
+            };
+            assert.deepEqual(got, exp, 'new comb');
 
-        got = comb;
-        exp = {
-            eqcombs: [
-                { head : [ 'head1' ],
-                  body : [ 'body1' ],
-                  bodySC: { '攻撃': 1, '斬れ味': 0 } },
-                { head : [ 'head2' ],
-                  body : [ 'body2' ],
-                  bodySC: { '攻撃': 0, '斬れ味': 1 } }
-            ],
-            sumSC: { '攻撃': 1, '斬れ味': 1 }
-        };
-        assert.deepEqual(got, exp, 'new: stable');
+            got = comb;
+            exp = {
+                eqcombs: [
+                    { head : [ 'head1' ],
+                      body : [ 'body1' ],
+                      bodySC: { '攻撃': 1, '斬れ味': 0 } },
+                    { head : [ 'head2' ],
+                      body : [ 'body2' ],
+                      bodySC: { '攻撃': 0, '斬れ味': 1 } }
+                ],
+                sumSC: { '攻撃': 1, '斬れ味': 1 }
+            };
+            assert.deepEqual(got, exp, 'stable');
+        });
 
-        got = c._newComb(comb, null, 'arm');
-        exp = {
-            eqcombs: [
-                { head : [ 'head1' ],
-                  body : [ 'body1' ],
-                  arm  : [],
-                  bodySC: { '攻撃': 1, '斬れ味': 0 } },
-                { head : [ 'head2' ],
-                  body : [ 'body2' ],
-                  arm  : [],
-                  bodySC: { '攻撃': 0, '斬れ味': 1 } }
-            ],
-            sumSC: { '攻撃': 1, '斬れ味': 1 }
-        };
-        assert.deepEqual(got, exp, 'new: bulk is null');
+        it('bulk is null', function () {
+            var comb = {
+                eqcombs: [
+                    { head : [ 'head1' ],
+                      body : [ 'body1' ],
+                      bodySC: { '攻撃': 1, '斬れ味': 0 } },
+                    { head : [ 'head2' ],
+                      body : [ 'body2' ],
+                      bodySC: { '攻撃': 0, '斬れ味': 1 } }
+                ],
+                sumSC: { '攻撃': 1, '斬れ味': 1 }
+            };
+            got = c._newComb(comb, null, 'arm');
+            exp = {
+                eqcombs: [
+                    { head : [ 'head1' ],
+                      body : [ 'body1' ],
+                      arm  : [],
+                      bodySC: { '攻撃': 1, '斬れ味': 0 } },
+                    { head : [ 'head2' ],
+                      body : [ 'body2' ],
+                      arm  : [],
+                      bodySC: { '攻撃': 0, '斬れ味': 1 } }
+                ],
+                sumSC: { '攻撃': 1, '斬れ味': 1 }
+            };
+            assert.deepEqual(got, exp);
+        });
 
-        bulk = { skillComb: { '攻撃': 1, '斬れ味': 1 }, equips: [ 'body1' ] };
-        got = c._newComb(null, bulk, 'body');
-        exp = {
-            eqcombs: [
-                { body : [ 'body1' ],
-                  bodySC: { '攻撃': 1, '斬れ味': 1 } }
-            ],
-            sumSC: { '攻撃': 1, '斬れ味': 1 }
-        };
-        assert.deepEqual(got, exp, 'new: comb is null');
+        it('comb is null', function () {
+            var bulk = { skillComb: { '攻撃': 1, '斬れ味': 1 }, equips: [ 'body1' ] };
+            got = c._newComb(null, bulk, 'body');
+            exp = {
+                eqcombs: [
+                    { body : [ 'body1' ],
+                      bodySC: { '攻撃': 1, '斬れ味': 1 } }
+                ],
+                sumSC: { '攻撃': 1, '斬れ味': 1 }
+            };
+            assert.deepEqual(got, exp);
+        });
     });
 
     describe('_combineEquip', function () {
@@ -595,178 +619,185 @@ describe('30_equip/20_combinator', function () {
         });
     });
 
-    it('_combineUsedSlot0', function () {
+    describe('_combineUsedSp0', function () {
         var c = new Combinator();
 
-        var skillNames = [ '攻撃力UP【大】', '業物' ];
-        var bulksSet = {
-            head: [
-                { skillComb: { '攻撃': 4, '斬れ味': 2 }, equips: [ '4,2' ] },
-                { skillComb: { '攻撃': 0, '斬れ味': 0 }, equips: [ 'slot0' ] } ],
-            body: [
-                { skillComb: { '攻撃': 8, '斬れ味': 0 }, equips: [ '8,0' ] },
-                { skillComb: { '攻撃': 6, '斬れ味': 2 }, equips: [ '6,2' ] } ],
-            arm: [
-                { skillComb: { '攻撃': 4, '斬れ味': 2 }, equips: [ '4,2' ] },
-                { skillComb: { '攻撃': 0, '斬れ味': 0 }, equips: [ 'slot0' ] } ],
-            waist: [
-                { skillComb: { '攻撃': 8, '斬れ味': 0 }, equips: [ '8,0' ] },
-                { skillComb: { '攻撃': 6, '斬れ味': 2 }, equips: [ '6,2' ] } ],
-            leg: [
-                { skillComb: { '攻撃': 4, '斬れ味': 4 }, equips: [ '4,4' ] },
-                { skillComb: { '攻撃': 5, '斬れ味': 3 }, equips: [ '5,3' ] } ]
-        };
-        got = c._combineUsedSlot0(skillNames, bulksSet);
-        exp = [
-            {
-                eqcombs: [
-                    { body  : [ '6,2' ],
-                      head  : [ 'slot0' ],
-                      arm   : [ '4,2' ],
-                      waist : [ '6,2' ],
-                      leg   : [ '4,4' ],
-                      weapon: [],
-                      oma   : [],
-                      bodySC: { '攻撃': 6, '斬れ味': 2 } }
-                ],
-                sumSC: { '攻撃': 20, '斬れ味': 10 }
-            }
-            // 先に頭に slot0 を使った組み合わせが見つかるので↓は出てこない
-            //{
-            //    eqcombs: [
-            //        { body  : [ '6,2' ],
-            //          head  : [ '4,2' ],
-            //          arm   : [ 'slot0' ],
-            //          waist : [ '6,2' ],
-            //          leg   : [ '4,4' ],
-            //          weapon: [],
-            //          oma   : [],
-            //          bodySC: { '攻撃': 6, '斬れ味': 2 } }
-            //    ],
-            //    sumSC: { '攻撃': 20, '斬れ味': 10 }
-            //}
-        ];
-        assert.deepEqual(got, exp, 'combine');
+        it('combine', function () {
+            var skillNames = [ '攻撃力UP【大】', '業物' ];
+            var bulksSet = {
+                head: [
+                    { skillComb: { '攻撃': 4, '斬れ味': 2 }, equips: [ '4,2' ] },
+                    { skillComb: { '攻撃': 0, '斬れ味': 0 }, equips: [ '0,0' ] } ],
+                body: [
+                    { skillComb: { '攻撃': 8, '斬れ味': 0 }, equips: [ '8,0' ] },
+                    { skillComb: { '攻撃': 6, '斬れ味': 2 }, equips: [ '6,2' ] } ],
+                arm: [
+                    { skillComb: { '攻撃': 4, '斬れ味': 2 }, equips: [ '4,2' ] },
+                    { skillComb: { '攻撃': 0, '斬れ味': 0 }, equips: [ '0,0' ] } ],
+                waist: [
+                    { skillComb: { '攻撃': 8, '斬れ味': 0 }, equips: [ '8,0' ] },
+                    { skillComb: { '攻撃': 6, '斬れ味': 2 }, equips: [ '6,2' ] } ],
+                leg: [
+                    { skillComb: { '攻撃': 4, '斬れ味': 4 }, equips: [ '4,4' ] },
+                    { skillComb: { '攻撃': 5, '斬れ味': 3 }, equips: [ '5,3' ] } ]
+            };
+            got = c._combineUsedSp0(skillNames, bulksSet);
+            exp = [
+                {
+                    eqcombs: [
+                        { body  : [ '6,2' ],
+                          head  : [ '0,0' ],
+                          arm   : [ '4,2' ],
+                          waist : [ '6,2' ],
+                          leg   : [ '4,4' ],
+                          weapon: [],
+                          oma   : [],
+                          bodySC: { '攻撃': 6, '斬れ味': 2 } }
+                    ],
+                    sumSC: { '攻撃': 20, '斬れ味': 10 }
+                }
+                // 先に頭にポイント 0 を使った組み合わせが見つかるので↓は出てこない
+                //{
+                //    eqcombs: [
+                //        { body  : [ '6,2' ],
+                //          head  : [ '4,2' ],
+                //          arm   : [ '0,0' ],
+                //          waist : [ '6,2' ],
+                //          leg   : [ '4,4' ],
+                //          weapon: [],
+                //          oma   : [],
+                //          bodySC: { '攻撃': 6, '斬れ味': 2 } }
+                //    ],
+                //    sumSC: { '攻撃': 20, '斬れ味': 10 }
+                //}
+            ];
+            assert.deepEqual(got, exp);
+        });
     });
 
-    it('_compress', function () {
-        var combs,
-            c = new Combinator();
+    describe('_compress', function () {
+        var c = new Combinator();
 
-        combs = [
-            { eqcombs: [ 'eqcomb1' ], sumSC: { a: 2, b: 0 } },
-            { eqcombs: [ 'eqcomb1' ], sumSC: { a: 0, b: 2 } },
-            { eqcombs: [ 'eqcomb2' ], sumSC: { a: 2, b: 0 } },
-            { eqcombs: [ 'eqcomb2' ], sumSC: { a: 0, b: 1 } }
-        ];
-        got = c._compress(combs);
-        exp = [
-            { eqcombs: [ 'eqcomb1', 'eqcomb2' ], sumSC: { a: 2, b: 0 } },
-            { eqcombs: [ 'eqcomb1' ], sumSC: { a: 0, b: 2 } },
-            { eqcombs: [ 'eqcomb2' ], sumSC: { a: 0, b: 1 } }
-        ];
-        assert.deepEqual(got, exp, 'compress');
+        it('compress', function () {
+            var combs = [
+                { eqcombs: [ 'eqcomb1' ], sumSC: { a: 2, b: 0 } },
+                { eqcombs: [ 'eqcomb1' ], sumSC: { a: 0, b: 2 } },
+                { eqcombs: [ 'eqcomb2' ], sumSC: { a: 2, b: 0 } },
+                { eqcombs: [ 'eqcomb2' ], sumSC: { a: 0, b: 1 } }
+            ];
+            got = c._compress(combs);
+            exp = [
+                { eqcombs: [ 'eqcomb1', 'eqcomb2' ], sumSC: { a: 2, b: 0 } },
+                { eqcombs: [ 'eqcomb1' ], sumSC: { a: 0, b: 2 } },
+                { eqcombs: [ 'eqcomb2' ], sumSC: { a: 0, b: 1 } }
+            ];
+            assert.deepEqual(got, exp);
+        });
 
-        combs = [
-            { eqcombs: [], sumSC: null },
-            { eqcombs: [], sumSC: { a: 1 } }
-        ];
-        got = c._compress(combs);
-        exp = [
-            { eqcombs: [], sumSC: null },
-            { eqcombs: [], sumSC: { a: 1 } }
-        ];
-        assert.deepEqual(got, exp, 'within null');
+        it('within null', function () {
+            var combs = [
+                { eqcombs: [], sumSC: null },
+                { eqcombs: [], sumSC: { a: 1 } }
+            ];
+            got = c._compress(combs);
+            exp = [
+                { eqcombs: [], sumSC: null },
+                { eqcombs: [], sumSC: { a: 1 } }
+            ];
+            assert.deepEqual(got, exp);
+        });
     });
 
-    it('_sortCombs', function () {
-        var combs,
-            c = new Combinator();
+    describe('_sortCombs', function () {
+        var c = new Combinator();
 
-        combs = [
-            { sumSC: { a: 1, b: 0 } },
-            { sumSC: { a: 0, b: 2 } },
-            { sumSC: { a: 3, b: 0 } },
-            { sumSC: { a: 1, b: 1 } },
-            { sumSC: null },
-            { sumSC: { a: 2, b: 0 } }
-        ];
-        got = c._sortCombs(combs);
-        exp = [
-            { sumSC: { a: 3, b: 0 } },
-            { sumSC: { a: 0, b: 2 } },
-            { sumSC: { a: 1, b: 1 } },
-            { sumSC: { a: 2, b: 0 } },
-            { sumSC: { a: 1, b: 0 } },
-            { sumSC: null }
-        ];
-        assert.deepEqual(got, exp, 'sort');
+        it('sort', function () {
+            var combs = [
+                { sumSC: { a: 1, b: 0 } },
+                { sumSC: { a: 0, b: 2 } },
+                { sumSC: { a: 3, b: 0 } },
+                { sumSC: { a: 1, b: 1 } },
+                { sumSC: null },
+                { sumSC: { a: 2, b: 0 } }
+            ];
+            got = c._sortCombs(combs);
+            exp = [
+                { sumSC: { a: 3, b: 0 } },
+                { sumSC: { a: 0, b: 2 } },
+                { sumSC: { a: 1, b: 1 } },
+                { sumSC: { a: 2, b: 0 } },
+                { sumSC: { a: 1, b: 0 } },
+                { sumSC: null }
+            ];
+            assert.deepEqual(got, exp, 'sort');
+        });
     });
 
-    it('_brushUp', function () {
-        var combs,
-            c = new Combinator();
+    describe('_brushUp', function () {
+        var c = new Combinator();
 
-        combs = [
-            {
-                eqcombs: [
-                    { head  : [ 'head1' ],
-                      body  : [ 'body1' ],
-                      arm   : [ 'arm1' ],
-                      waist : [ 'waist1' ],
-                      leg   : [ 'leg1' ],
-                      weapon: [ 'weapon1' ],
-                      oma   : [ 'oma1' ],
-                      bodySC: { '攻撃': 1, '斬れ味': 1 } },
-                    { head  : [ 'head2' ],
-                      body  : [ 'body2' ],
-                      arm   : [ 'arm2' ],
-                      waist : [ 'waist2' ],
-                      leg   : [ 'leg2' ],
-                      //weapon: undefined,
-                      oma   : null,
-                      bodySC: {} }
-                ],
-                sumSC: {}
-            },
-            {
-                eqcombs: [
-                    { head  : [ 'head3' ],
-                      body  : [ 'body3' ],
-                      arm   : [ 'arm3' ],
-                      waist : [ 'waist3' ],
-                      leg   : [ 'leg3' ],
-                      weapon: [ 'weapon3' ],
-                      oma   : [ 'oma3' ],
-                      bodySC: {} }
-                ],
-                sumSC: {}
-            }
-        ];
-        got = c._brushUp(combs);
-        exp = [
-            { head  : [ 'head1' ],
-              body  : [ 'body1' ],
-              arm   : [ 'arm1' ],
-              waist : [ 'waist1' ],
-              leg   : [ 'leg1' ],
-              weapon: [ 'weapon1' ],
-              oma   : [ 'oma1' ] },
-            { head  : [ 'head2' ],
-              body  : [ 'body2' ],
-              arm   : [ 'arm2' ],
-              waist : [ 'waist2' ],
-              leg   : [ 'leg2' ],
-              weapon: [],
-              oma   : [] },
-            { head  : [ 'head3' ],
-              body  : [ 'body3' ],
-              arm   : [ 'arm3' ],
-              waist : [ 'waist3' ],
-              leg   : [ 'leg3' ],
-              weapon: [ 'weapon3' ],
-              oma   : [ 'oma3' ] }
-        ];
-        assert.deepEqual(got, exp, 'brush up');
+        it('brush up', function () {
+            var combs = [
+                {
+                    eqcombs: [
+                        { head  : [ 'head1' ],
+                          body  : [ 'body1' ],
+                          arm   : [ 'arm1' ],
+                          waist : [ 'waist1' ],
+                          leg   : [ 'leg1' ],
+                          weapon: [ 'weapon1' ],
+                          oma   : [ 'oma1' ],
+                          bodySC: { '攻撃': 1, '斬れ味': 1 } },
+                        { head  : [ 'head2' ],
+                          body  : [ 'body2' ],
+                          arm   : [ 'arm2' ],
+                          waist : [ 'waist2' ],
+                          leg   : [ 'leg2' ],
+                          //weapon: undefined,
+                          oma   : null,
+                          bodySC: {} }
+                    ],
+                    sumSC: {}
+                },
+                {
+                    eqcombs: [
+                        { head  : [ 'head3' ],
+                          body  : [ 'body3' ],
+                          arm   : [ 'arm3' ],
+                          waist : [ 'waist3' ],
+                          leg   : [ 'leg3' ],
+                          weapon: [ 'weapon3' ],
+                          oma   : [ 'oma3' ],
+                          bodySC: {} }
+                    ],
+                    sumSC: {}
+                }
+            ];
+            got = c._brushUp(combs);
+            exp = [
+                { head  : [ 'head1' ],
+                  body  : [ 'body1' ],
+                  arm   : [ 'arm1' ],
+                  waist : [ 'waist1' ],
+                  leg   : [ 'leg1' ],
+                  weapon: [ 'weapon1' ],
+                  oma   : [ 'oma1' ] },
+                { head  : [ 'head2' ],
+                  body  : [ 'body2' ],
+                  arm   : [ 'arm2' ],
+                  waist : [ 'waist2' ],
+                  leg   : [ 'leg2' ],
+                  weapon: [],
+                  oma   : [] },
+                { head  : [ 'head3' ],
+                  body  : [ 'body3' ],
+                  arm   : [ 'arm3' ],
+                  waist : [ 'waist3' ],
+                  leg   : [ 'leg3' ],
+                  weapon: [ 'weapon3' ],
+                  oma   : [ 'oma3' ] }
+            ];
+            assert.deepEqual(got, exp);
+        });
     });
 });

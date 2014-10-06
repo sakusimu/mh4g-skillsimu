@@ -39,7 +39,7 @@ describe('90_simulator', function () {
 
         it('simulate', function () {
             got = simu.simulateEquip([ '斬れ味レベル+1', '高級耳栓' ]).length;
-            exp = 1427;
+            exp = 1737; // 頑シミュさんと同じ
             assert(got === exp);
         });
     });
