@@ -14,47 +14,49 @@ describe('40_deco/19_normalizer', function () {
         var n = new Normalizer();
 
         it('normalize', function () {
-            var equipSet = {
-                head : myapp.equip('head', 'ユクモノカサ・天'), // 匠+2, 研ぎ師+3
-                body : myapp.equip('body', '三眼の首飾り'),
-                arm  : myapp.equip('arm', 'ユクモノコテ・天'),  // 匠+1, 研ぎ師+3
-                waist: myapp.equip('waist', 'バンギスコイル'),
-                leg  : myapp.equip('leg', 'ユクモノハカマ・天') // 匠+1, 研ぎ師+1
+            var equip = {
+                head : { name: 'ユクモノカサ・天', slot: 2,
+                         skillComb: { '匠': 2, '研ぎ師': 3, '回復量': 1, '加護': 1 } },
+                body : { name: '三眼の首飾り', slot: 3, skillComb: {} },
+                arm  : { name: 'ユクモノコテ・天', slot: 2,
+                         skillComb: { '匠': 1, '研ぎ師': 3, '回復量': 2, '加護': 3 } },
+                waist: { name: 'バンギスコイル', slot: 0, skillComb: { '胴系統倍化': 1 } },
+                leg  : { name: 'ユクモノハカマ・天', slot: 2,
+                         skillComb: { '匠': 1, '研ぎ師': 1, '回復量': 2, '加護': 2 } }
             };
-            var normalized = n.normalize([ '斬れ味レベル+1', '砥石使用高速化' ], equipSet);
-            got = normalized.decombsSet;
+            got = n.normalize([ '斬れ味レベル+1', '砥石使用高速化' ], equip);
             exp = {
                 head: [
-                    { names: [], slot: 0, skillComb: { '匠': 0, '研ぎ師': 0 } },
-                    { names: [ '研磨珠【１】' ], slot: 1, skillComb: { '匠': 0, '研ぎ師': 2 } },
-                    { names: [ '研磨珠【１】', '研磨珠【１】' ],
+                    { decos: [], slot: 0, skillComb: { '匠': 0, '研ぎ師': 0 } },
+                    { decos: [ '研磨珠【１】' ], slot: 1, skillComb: { '匠': 0, '研ぎ師': 2 } },
+                    { decos: [ '研磨珠【１】', '研磨珠【１】' ],
                       slot: 2, skillComb: { '匠': 0, '研ぎ師': 4 } },
-                    { names: [ '匠珠【２】' ], slot: 2, skillComb: { '匠': 1, '研ぎ師': 0 } } ],
+                    { decos: [ '匠珠【２】' ], slot: 2, skillComb: { '匠': 1, '研ぎ師': 0 } } ],
                 body: [
-                    { names: [], slot: 0, skillComb: { '匠': 0, '研ぎ師': 0 } },
-                    { names: [ '研磨珠【１】' ], slot: 1, skillComb: { '匠': 0, '研ぎ師': 2 } },
-                    { names: [ '研磨珠【１】', '研磨珠【１】' ],
+                    { decos: [], slot: 0, skillComb: { '匠': 0, '研ぎ師': 0 } },
+                    { decos: [ '研磨珠【１】' ], slot: 1, skillComb: { '匠': 0, '研ぎ師': 2 } },
+                    { decos: [ '研磨珠【１】', '研磨珠【１】' ],
                       slot: 2, skillComb: { '匠': 0, '研ぎ師': 4 } },
-                    { names: [ '匠珠【２】' ], slot: 2, skillComb: { '匠': 1, '研ぎ師': 0 } },
-                    { names: [ '研磨珠【１】', '研磨珠【１】', '研磨珠【１】' ],
+                    { decos: [ '匠珠【２】' ], slot: 2, skillComb: { '匠': 1, '研ぎ師': 0 } },
+                    { decos: [ '研磨珠【１】', '研磨珠【１】', '研磨珠【１】' ],
                       slot: 3, skillComb: { '匠': 0, '研ぎ師': 6 } },
-                    { names: [ '匠珠【２】', '研磨珠【１】' ],
+                    { decos: [ '匠珠【２】', '研磨珠【１】' ],
                       slot: 3, skillComb: { '匠': 1, '研ぎ師': 2 } },
-                    { names: [ '匠珠【３】' ], slot: 3, skillComb: { '匠': 2, '研ぎ師': 0 } } ],
+                    { decos: [ '匠珠【３】' ], slot: 3, skillComb: { '匠': 2, '研ぎ師': 0 } } ],
                 arm: [
-                    { names: [], slot: 0, skillComb: { '匠': 0, '研ぎ師': 0 } },
-                    { names: [ '研磨珠【１】' ], slot: 1, skillComb: { '匠': 0, '研ぎ師': 2 } },
-                    { names: [ '研磨珠【１】', '研磨珠【１】' ],
+                    { decos: [], slot: 0, skillComb: { '匠': 0, '研ぎ師': 0 } },
+                    { decos: [ '研磨珠【１】' ], slot: 1, skillComb: { '匠': 0, '研ぎ師': 2 } },
+                    { decos: [ '研磨珠【１】', '研磨珠【１】' ],
                       slot: 2, skillComb: { '匠': 0, '研ぎ師': 4 } },
-                    { names: [ '匠珠【２】' ], slot: 2, skillComb: { '匠': 1, '研ぎ師': 0 } } ],
+                    { decos: [ '匠珠【２】' ], slot: 2, skillComb: { '匠': 1, '研ぎ師': 0 } } ],
                 waist: [
-                    { names: [], slot: 0, skillComb: { '匠': 0, '研ぎ師': 0, '胴系統倍化': 1 } } ],
+                    { decos: [], slot: 0, skillComb: { '匠': 0, '研ぎ師': 0, '胴系統倍化': 1 } } ],
                 leg: [
-                    { names: [], slot: 0, skillComb: { '匠': 0, '研ぎ師': 0 } },
-                    { names: [ '研磨珠【１】' ], slot: 1, skillComb: { '匠': 0, '研ぎ師': 2 } },
-                    { names: [ '研磨珠【１】', '研磨珠【１】' ],
+                    { decos: [], slot: 0, skillComb: { '匠': 0, '研ぎ師': 0 } },
+                    { decos: [ '研磨珠【１】' ], slot: 1, skillComb: { '匠': 0, '研ぎ師': 2 } },
+                    { decos: [ '研磨珠【１】', '研磨珠【１】' ],
                       slot: 2, skillComb: { '匠': 0, '研ぎ師': 4 } },
-                    { names: [ '匠珠【２】' ], slot: 2, skillComb: { '匠': 1, '研ぎ師': 0 } } ],
+                    { decos: [ '匠珠【２】' ], slot: 2, skillComb: { '匠': 1, '研ぎ師': 0 } } ],
                 weapon: [],
                 oma: []
             };
@@ -62,62 +64,64 @@ describe('40_deco/19_normalizer', function () {
         });
 
         it('slotN, torsoUp, weapon, oma', function () {
-            var omas = [ myapp.oma([ '龍の護石',3,'匠',4,'氷耐性',-5 ]) ];
-            var equipSet = {
-                head  : myapp.equip('head', 'ユクモノカサ・天'),
-                body  : { name: 'slot3' },
-                arm   : { name: 'slot0' },
-                waist : { name: '胴系統倍化' },
-                leg   : myapp.equip('leg', 'ユクモノハカマ・天'),
-                weapon: { name: 'slot2' },
-                oma   : omas[0]
+            var equip = {
+                head  : { name: 'ユクモノカサ・天', slot: 2,
+                          skillComb: { '匠': 2, '研ぎ師': 3, '回復量': 1, '加護': 1 } },
+                body  : { name: 'slot3', slot: 3, skillComb: {} },
+                arm   : { name: 'slot0', slot: 0, skillComb: {} },
+                waist : { name: '胴系統倍化', slot: 0, skillComb: { '胴系統倍化': 1 } },
+                leg   : { name: 'ユクモノハカマ・天', slot: 2,
+                          skillComb: { '匠': 1, '研ぎ師': 1, '回復量': 2, '加護': 2 } },
+                weapon: { name: 'slot2', slot: 2, skillComb: {} },
+                oma   : { name: '龍の護石(スロ3,匠+4,氷耐性-5)', slot: 3,
+                          skillComb: { '匠': 4, '氷耐性': -5 } }
             };
-            var normalized = n.normalize([ '斬れ味レベル+1', '砥石使用高速化' ], equipSet);
-            got = normalized.decombsSet;
+            got = n.normalize([ '斬れ味レベル+1', '砥石使用高速化' ], equip);
             exp = {
                 head: [
-                    { names: [], slot: 0, skillComb: { '匠': 0, '研ぎ師': 0 } },
-                    { names: [ '研磨珠【１】' ], slot: 1, skillComb: { '匠': 0, '研ぎ師': 2 } },
-                    { names: [ '研磨珠【１】', '研磨珠【１】' ],
+                    { decos: [], slot: 0, skillComb: { '匠': 0, '研ぎ師': 0 } },
+                    { decos: [ '研磨珠【１】' ], slot: 1, skillComb: { '匠': 0, '研ぎ師': 2 } },
+                    { decos: [ '研磨珠【１】', '研磨珠【１】' ],
                       slot: 2, skillComb: { '匠': 0, '研ぎ師': 4 } },
-                    { names: [ '匠珠【２】' ], slot: 2, skillComb: { '匠': 1, '研ぎ師': 0 } } ],
+                    { decos: [ '匠珠【２】' ], slot: 2, skillComb: { '匠': 1, '研ぎ師': 0 } } ],
                 body: [
-                    { names: [], slot: 0, skillComb: { '匠': 0, '研ぎ師': 0 } },
-                    { names: [ '研磨珠【１】' ], slot: 1, skillComb: { '匠': 0, '研ぎ師': 2 } },
-                    { names: [ '研磨珠【１】', '研磨珠【１】' ],
+                    { decos: [], slot: 0, skillComb: { '匠': 0, '研ぎ師': 0 } },
+                    { decos: [ '研磨珠【１】' ], slot: 1, skillComb: { '匠': 0, '研ぎ師': 2 } },
+                    { decos: [ '研磨珠【１】', '研磨珠【１】' ],
                       slot: 2, skillComb: { '匠': 0, '研ぎ師': 4 } },
-                    { names: [ '匠珠【２】' ], slot: 2, skillComb: { '匠': 1, '研ぎ師': 0 } },
-                    { names: [ '研磨珠【１】', '研磨珠【１】', '研磨珠【１】' ],
+                    { decos: [ '匠珠【２】' ], slot: 2, skillComb: { '匠': 1, '研ぎ師': 0 } },
+                    { decos: [ '研磨珠【１】', '研磨珠【１】', '研磨珠【１】' ],
                       slot: 3, skillComb: { '匠': 0, '研ぎ師': 6 } },
-                    { names: [ '匠珠【２】', '研磨珠【１】' ],
+                    { decos: [ '匠珠【２】', '研磨珠【１】' ],
                       slot: 3, skillComb: { '匠': 1, '研ぎ師': 2 } },
-                    { names: [ '匠珠【３】' ], slot: 3, skillComb: { '匠': 2, '研ぎ師': 0 } } ],
-                arm: [],
+                    { decos: [ '匠珠【３】' ], slot: 3, skillComb: { '匠': 2, '研ぎ師': 0 } } ],
+                arm: [
+                    { decos: [], slot: 0, skillComb: { '匠': 0, '研ぎ師': 0 } } ],
                 waist: [
-                    { names: [], slot: 0, skillComb: { '匠': 0, '研ぎ師': 0, '胴系統倍化': 1 } } ],
+                    { decos: [], slot: 0, skillComb: { '匠': 0, '研ぎ師': 0, '胴系統倍化': 1 } } ],
                 leg: [
-                    { names: [], slot: 0, skillComb: { '匠': 0, '研ぎ師': 0 } },
-                    { names: [ '研磨珠【１】' ], slot: 1, skillComb: { '匠': 0, '研ぎ師': 2 } },
-                    { names: [ '研磨珠【１】', '研磨珠【１】' ],
+                    { decos: [], slot: 0, skillComb: { '匠': 0, '研ぎ師': 0 } },
+                    { decos: [ '研磨珠【１】' ], slot: 1, skillComb: { '匠': 0, '研ぎ師': 2 } },
+                    { decos: [ '研磨珠【１】', '研磨珠【１】' ],
                       slot: 2, skillComb: { '匠': 0, '研ぎ師': 4 } },
-                    { names: [ '匠珠【２】' ], slot: 2, skillComb: { '匠': 1, '研ぎ師': 0 } } ],
+                    { decos: [ '匠珠【２】' ], slot: 2, skillComb: { '匠': 1, '研ぎ師': 0 } } ],
                 weapon: [
-                    { names: [], slot: 0, skillComb: { '匠': 0, '研ぎ師': 0 } },
-                    { names: [ '研磨珠【１】' ], slot: 1, skillComb: { '匠': 0, '研ぎ師': 2 } },
-                    { names: [ '研磨珠【１】', '研磨珠【１】' ],
+                    { decos: [], slot: 0, skillComb: { '匠': 0, '研ぎ師': 0 } },
+                    { decos: [ '研磨珠【１】' ], slot: 1, skillComb: { '匠': 0, '研ぎ師': 2 } },
+                    { decos: [ '研磨珠【１】', '研磨珠【１】' ],
                       slot: 2, skillComb: { '匠': 0, '研ぎ師': 4 } },
-                    { names: [ '匠珠【２】' ], slot: 2, skillComb: { '匠': 1, '研ぎ師': 0 } } ],
+                    { decos: [ '匠珠【２】' ], slot: 2, skillComb: { '匠': 1, '研ぎ師': 0 } } ],
                 oma: [
-                    { names: [], slot: 0, skillComb: { '匠': 0, '研ぎ師': 0 } },
-                    { names: [ '研磨珠【１】' ], slot: 1, skillComb: { '匠': 0, '研ぎ師': 2 } },
-                    { names: [ '研磨珠【１】', '研磨珠【１】' ],
+                    { decos: [], slot: 0, skillComb: { '匠': 0, '研ぎ師': 0 } },
+                    { decos: [ '研磨珠【１】' ], slot: 1, skillComb: { '匠': 0, '研ぎ師': 2 } },
+                    { decos: [ '研磨珠【１】', '研磨珠【１】' ],
                       slot: 2, skillComb: { '匠': 0, '研ぎ師': 4 } },
-                    { names: [ '匠珠【２】' ], slot: 2, skillComb: { '匠': 1, '研ぎ師': 0 } },
-                    { names: [ '研磨珠【１】', '研磨珠【１】', '研磨珠【１】' ],
+                    { decos: [ '匠珠【２】' ], slot: 2, skillComb: { '匠': 1, '研ぎ師': 0 } },
+                    { decos: [ '研磨珠【１】', '研磨珠【１】', '研磨珠【１】' ],
                       slot: 3, skillComb: { '匠': 0, '研ぎ師': 6 } },
-                    { names: [ '匠珠【２】', '研磨珠【１】' ],
+                    { decos: [ '匠珠【２】', '研磨珠【１】' ],
                       slot: 3, skillComb: { '匠': 1, '研ぎ師': 2 } },
-                    { names: [ '匠珠【３】' ], slot: 3, skillComb: { '匠': 2, '研ぎ師': 0 } } ]
+                    { decos: [ '匠珠【３】' ], slot: 3, skillComb: { '匠': 2, '研ぎ師': 0 } } ]
             };
             assert.deepEqual(got, exp);
         });
@@ -140,13 +144,7 @@ describe('40_deco/19_normalizer', function () {
             assert.deepEqual(got, null, 'skillNames, null');
             got = n.normalize([ '攻撃力UP【大】' ], {});
             exp = {
-                decombsSet: {
-                    head: [], body: [], arm: [], waist: [],leg: [], weapon: [], oma: []
-                },
-                equipSet: {
-                    head: null, body: null, arm: null, waist: null, leg: null,
-                    weapon: null, oma: null
-                }
+                head: [], body: [], arm: [], waist: [],leg: [], weapon: [], oma: []
             };
             assert.deepEqual(got, exp, 'skillNames, {}');
         });

@@ -323,56 +323,56 @@ describe('40_deco/20_combinator', function () {
 
         var decombSets = [
             // a1*3, a3*2, b2*2
-            { body  : { names: [ 'a3' ] },
-              head  : { names: [ 'a1' ] },
-              arm   : { names: [ 'a1', 'a1' ] },
-              waist : { names: [] },
-              leg   : { names: [ 'b2' ] },
-              weapon: { names: [ 'b2' ] },
-              oma   : { names: [ 'a3' ] } },
+            { body  : { decos: [ 'a3' ] },
+              head  : { decos: [ 'a1' ] },
+              arm   : { decos: [ 'a1', 'a1' ] },
+              waist : { decos: [] },
+              leg   : { decos: [ 'b2' ] },
+              weapon: { decos: [ 'b2' ] },
+              oma   : { decos: [ 'a3' ] } },
             // a1*3, a3*2, b2*2
-            { body  : { names: [ 'a3' ] },
-              head  : { names: [ 'a1' ] },
-              arm   : { names: [ 'a1', 'a1' ] },
+            { body  : { decos: [ 'a3' ] },
+              head  : { decos: [ 'a1' ] },
+              arm   : { decos: [ 'a1', 'a1' ] },
               waist : null,
-              leg   : { names: [ 'b2' ] },
-              weapon: { names: [ 'b2' ] },
-              oma   : { names: [ 'a3' ] } },
+              leg   : { decos: [ 'b2' ] },
+              weapon: { decos: [ 'b2' ] },
+              oma   : { decos: [ 'a3' ] } },
             // a1*3, a3*2, b2*2
-            { body  : { names: [ 'a3' ] },
-              head  : { names: [ 'a1' ] },
-              arm   : { names: [ 'b2' ] },
-              waist : { names: [] },
-              leg   : { names: [ 'a1', 'a1' ] },
-              weapon: { names: [ 'b2' ] },
-              oma: { names: [ 'a3' ] } },
+            { body  : { decos: [ 'a3' ] },
+              head  : { decos: [ 'a1' ] },
+              arm   : { decos: [ 'b2' ] },
+              waist : { decos: [] },
+              leg   : { decos: [ 'a1', 'a1' ] },
+              weapon: { decos: [ 'b2' ] },
+              oma: { decos: [ 'a3' ] } },
             // a1*2, a2*1, a3*2, b2*2
-            { body  : { names: [ 'a3' ] },
-              head  : { names: [ 'a1' ] },
-              arm   : { names: [ 'a1', 'a2' ] },
-              waist : { names: [] },
-              leg   : { names: [ 'b2' ] },
-              weapon: { names: [ 'b2' ] },
-              oma   : { names: [ 'a3' ] } }
+            { body  : { decos: [ 'a3' ] },
+              head  : { decos: [ 'a1' ] },
+              arm   : { decos: [ 'a1', 'a2' ] },
+              waist : { decos: [] },
+              leg   : { decos: [ 'b2' ] },
+              weapon: { decos: [ 'b2' ] },
+              oma   : { decos: [ 'a3' ] } }
         ];
         got = c._removeOverlap(decombSets);
         exp = [
             // a1*3, a3*2, b2*2
-            { body  : { names: [ 'a3' ] },
-              head  : { names: [ 'a1' ] },
-              arm   : { names: [ 'a1', 'a1' ] },
-              waist : { names: [] },
-              leg   : { names: [ 'b2' ] },
-              weapon: { names: [ 'b2' ] },
-              oma   : { names: [ 'a3' ] } },
+            { body  : { decos: [ 'a3' ] },
+              head  : { decos: [ 'a1' ] },
+              arm   : { decos: [ 'a1', 'a1' ] },
+              waist : { decos: [] },
+              leg   : { decos: [ 'b2' ] },
+              weapon: { decos: [ 'b2' ] },
+              oma   : { decos: [ 'a3' ] } },
             // a1*2, a2*1, a3*2, b2*2
-            { body  : { names: [ 'a3' ] },
-              head  : { names: [ 'a1' ] },
-              arm   : { names: [ 'a1', 'a2' ] },
-              waist : { names: [] },
-              leg   : { names: [ 'b2' ] },
-              weapon: { names: [ 'b2' ] },
-              oma   : { names: [ 'a3' ] } }
+            { body  : { decos: [ 'a3' ] },
+              head  : { decos: [ 'a1' ] },
+              arm   : { decos: [ 'a1', 'a2' ] },
+              waist : { decos: [] },
+              leg   : { decos: [ 'b2' ] },
+              weapon: { decos: [ 'b2' ] },
+              oma   : { decos: [ 'a3' ] } }
         ];
         assert.deepEqual(got, exp, 'remove');
     });

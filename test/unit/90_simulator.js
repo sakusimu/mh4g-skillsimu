@@ -51,16 +51,16 @@ describe('90_simulator', function () {
 
         it('simulate', function () {
             // 装備に胴系統倍化、武器スロ、お守りがある場合
-            var equipSet = {
+            var equip = {
                 head  : myapp.equip('head', 'ユクモノカサ・天'),  // スロ2
                 body  : myapp.equip('body', '三眼の首飾り'),      // スロ3
                 arm   : myapp.equip('arm', 'ユクモノコテ・天'),   // スロ2
                 waist : myapp.equip('waist', 'バンギスコイル'),   // 胴系統倍化
                 leg   : myapp.equip('leg', 'ユクモノハカマ・天'), // スロ2
-                weapon: { name: 'slot2' },
+                weapon: { name: 'slot2', slot: 2, skillComb: {} },
                 oma   : omas[0]
             };
-            got = simu.simulateDeco([ '斬れ味レベル+1', '高級耳栓' ], equipSet).length;
+            got = simu.simulateDeco([ '斬れ味レベル+1', '高級耳栓' ], equip).length;
             exp = 3;
             assert(got === exp);
         });
