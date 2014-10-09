@@ -13,14 +13,14 @@ describe('40_deco/29_combinator', function () {
     });
 
     // 頑シミュさんの装飾品検索の結果と比較しやすくする
-    var simplify = function (decombSets) {
-        return _.map(decombSets, function (decombSet) {
-            var torsoUp = _.some(decombSet, function (decomb) {
-                if (decomb == null) return false;
-                return decomb.skillComb['胴系統倍化'] ? true : false;
+    var simplify = function (decombs) {
+        return _.map(decombs, function (decomb) {
+            var torsoUp = _.some(decomb, function (comb) {
+                if (comb == null) return false;
+                return comb.skillComb['胴系統倍化'] ? true : false;
             });
-            var names = _.map(decombSet, function (decomb, part) {
-                var names = decomb ? decomb.decos : [];
+            var names = _.map(decomb, function (comb, part) {
+                var names = comb ? comb.decos : [];
                 if (torsoUp && part === 'body')
                     names = _.map(names, function (n) { return n += '(胴)'; });
                 return names;
@@ -51,8 +51,8 @@ describe('40_deco/29_combinator', function () {
             };
             var bulksSet = n.normalize(skills, equip);
 
-            var decombSets = c.combine(skills, bulksSet, equip);
-            got = simplify(decombSets);
+            var decombs = c.combine(skills, bulksSet, equip);
+            got = simplify(decombs);
             exp = [
                 '匠珠【３】,防音珠【１】,防音珠【１】,防音珠【１】,防音珠【１】,防音珠【１】,防音珠【１】,防音珠【１】,防音珠【３】(胴)',
                 '匠珠【２】,匠珠【２】,防音珠【１】,防音珠【１】,防音珠【１】,防音珠【３】,防音珠【３】(胴)',
@@ -76,8 +76,8 @@ describe('40_deco/29_combinator', function () {
             };
             var bulksSet = n.normalize(skills, equip);
 
-            var decombSets = c.combine(skills, bulksSet, equip);
-            got = simplify(decombSets);
+            var decombs = c.combine(skills, bulksSet, equip);
+            got = simplify(decombs);
             exp = [
                 '匠珠【３】,匠珠【３】,匠珠【３】,研磨珠【１】,研磨珠【１】,研磨珠【１】,研磨珠【１】,研磨珠【１】',
                 '匠珠【２】,匠珠【２】,匠珠【３】,匠珠【３】,研磨珠【１】,研磨珠【１】,研磨珠【１】,研磨珠【１】,研磨珠【１】'
@@ -104,8 +104,8 @@ describe('40_deco/29_combinator', function () {
             };
             var bulksSet = n.normalize(skills, equip);
 
-            var decombSets = c.combine(skills, bulksSet, equip);
-            got = simplify(decombSets);
+            var decombs = c.combine(skills, bulksSet, equip);
+            got = simplify(decombs);
             exp = [
                 '匠珠【２】,匠珠【３】,防音珠【１】,防音珠【３】',
                 '匠珠【２】,匠珠【３】,防音珠【１】,防音珠【１】,防音珠【１】,防音珠【１】,防音珠【１】'
@@ -133,12 +133,9 @@ describe('40_deco/29_combinator', function () {
             };
             var bulksSet = n.normalize(skills, equip);
 
-            var decombSets = c.combine(skills, bulksSet, equip);
-            got = decombSets;
-            exp = [
-                { body: null, head: null, arm: null, waist: null, leg: null,
-                  weapon: null, oma: null }
-            ];
+            var decombs = c.combine(skills, bulksSet, equip);
+            got = decombs;
+            exp = [];
             assert.deepEqual(got, exp);
         });
 

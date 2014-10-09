@@ -29,7 +29,6 @@ describe('40_deco/39_assembler', function () {
         };
 
         it('torsoUp, weaponSlot, oma', function () {
-            // 装備に胴系統倍化、武器スロ、お守りがある場合
             var skills = [ '斬れ味レベル+1', '高級耳栓' ];
             var equip = {
                 head  : { name: 'ユクモノカサ・天', slot: 2,
@@ -45,9 +44,9 @@ describe('40_deco/39_assembler', function () {
                           skillComb: { '匠': 4, '氷耐性': -5 } }
             };
             var bulksSet = n.normalize(skills, equip);
-            var decombSets = c.combine(skills, bulksSet, equip);
+            var decombs = c.combine(skills, bulksSet, equip);
 
-            var assems = a.assemble(decombSets);
+            var assems = a.assemble(decombs);
             got = sorter(assems);
             exp = [
                 {
@@ -98,9 +97,9 @@ describe('40_deco/39_assembler', function () {
                           skillComb: { '匠': 4, '氷耐性': -5 } }
             };
             var bulksSet = n.normalize(skills, equip);
-            var decombSets = c.combine(skills, bulksSet, equip);
+            var decombs = c.combine(skills, bulksSet, equip);
 
-            var assems = a.assemble(decombSets);
+            var assems = a.assemble(decombs);
             got = sorter(assems);
             exp = [
                 {
@@ -123,6 +122,17 @@ describe('40_deco/39_assembler', function () {
                 }
             ];
             assert.deepEqual(got, exp);
+        });
+
+        it('null or etc', function () {
+            got = a.assemble();
+            assert.deepEqual(got, [], 'nothing in');
+            got = a.assemble(undefined);
+            assert.deepEqual(got, [], 'undefined');
+            got = a.assemble(null);
+            assert.deepEqual(got, [], 'null');
+            got = a.assemble([]);
+            assert.deepEqual(got, [], '[]');
         });
     });
 });
