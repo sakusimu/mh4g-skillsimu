@@ -75,16 +75,16 @@ module.exports = function(grunt) {
         },
 
         testdata: {
-            mh4: {
+            mh4g: {
                 dest: 'tmp/testdata.js',
                 urls: {
-                    'equip_head' : 'http://sakusimu.net/data/mh4/equip_head.json',
-                    'equip_body' : 'http://sakusimu.net/data/mh4/equip_body.json',
-                    'equip_arm'  : 'http://sakusimu.net/data/mh4/equip_arm.json',
-                    'equip_waist': 'http://sakusimu.net/data/mh4/equip_waist.json',
-                    'equip_leg'  : 'http://sakusimu.net/data/mh4/equip_leg.json',
-                    'deco' : 'http://sakusimu.net/data/mh4/deco.json',
-                    'skill': 'http://sakusimu.net/data/mh4/skill.json'
+                    'equip_head' : 'http://sakusimu.net/data/mh4g/equip_head.json',
+                    'equip_body' : 'http://sakusimu.net/data/mh4g/equip_body.json',
+                    'equip_arm'  : 'http://sakusimu.net/data/mh4g/equip_arm.json',
+                    'equip_waist': 'http://sakusimu.net/data/mh4g/equip_waist.json',
+                    'equip_leg'  : 'http://sakusimu.net/data/mh4g/equip_leg.json',
+                    'deco' : 'http://sakusimu.net/data/mh4g/deco.json',
+                    'skill': 'http://sakusimu.net/data/mh4g/skill.json'
                 }
             }
         },
@@ -116,7 +116,7 @@ module.exports = function(grunt) {
                 singleRun: true,
                 options: {
                     files: [
-                        '<%= testdata.mh4.dest %>',
+                        '<%= testdata.mh4g.dest %>',
                         '<%= browserify.test.dest %>'
                     ]
                 }
