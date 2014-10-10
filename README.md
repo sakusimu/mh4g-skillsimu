@@ -1,32 +1,30 @@
-mh4-skillsimu
+mh4g-skillsimu
 =============
 
-Skill Simulator for MH4
+Skill Simulator for MH4G
 
 Skill Simulator find combinations of equipments for activated skills.
 
-mh4g-skillsimu is [here](https://github.com/sakusimu/mh4g-skillsimu).
-
 How to build
 ------------
-Before you can build mh4-skillsimu, you must install and configure the following dependencies on your machine:
+Before you can build mh4g-skillsimu, you must install and configure the following dependencies on your machine:
 * Git
 * Node.js
 * Grunt
 
-At first, clone `mh4-skillsimu` from github repository.
+At first, clone `mh4g-skillsimu` from github repository.
 
-    $ git clone --depth=10 https://github.com/sakusimu/mh4-skillsimu
+    $ git clone --depth=10 https://github.com/sakusimu/mh4g-skillsimu
 
 And change directory.
 
-    $ cd mh4-skillsimu
+    $ cd mh4g-skillsimu
 
 Install dependence mudules.
 
     $ npm install
 
-Build your `mh4-skillsimu.js` in `dist` directory.
+Build your `mh4g-skillsimu.js` in `dist` directory.
 
     $ grunt dist
 
