@@ -1,6 +1,6 @@
 'use strict';
 
-exports.VERSION = '0.5.0';
+exports.VERSION = '0.5.1';
 exports.Simulator = require('./lib/simulator.js');
 exports.data = require('./lib/data.js');
 exports.util = require('./lib/util.js');
