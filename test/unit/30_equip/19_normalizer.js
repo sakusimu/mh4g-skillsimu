@@ -12,9 +12,9 @@ describe('30_equip/19_normalizer', function () {
         myapp.initialize();
     });
 
-    var sorter = function (actiCombs) {
-        return _.sortBy(actiCombs, function (comb) {
-            return _.reduce(comb.skillComb, function (memo, pt, skill) {
+    var sorter = function (bulks) {
+        return _.sortBy(bulks, function (bulk) {
+            return _.reduce(bulk.skillComb, function (memo, pt, skill) {
                 return memo + skill + pt;
             }, '');
         });

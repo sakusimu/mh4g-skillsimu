@@ -13,14 +13,14 @@ describe('40_deco/29_combinator', function () {
     });
 
     // 頑シミュさんの装飾品検索の結果と比較しやすくする
-    var simplify = function (decombSets) {
-        return _.map(decombSets, function (decombSet) {
-            var torsoUp = _.some(decombSet, function (decomb) {
-                if (decomb == null) return false;
-                return decomb.skillComb['胴系統倍化'] ? true : false;
+    var simplify = function (decombs) {
+        return _.map(decombs, function (decomb) {
+            var torsoUp = _.some(decomb, function (comb) {
+                if (comb == null) return false;
+                return comb.skillComb['胴系統倍化'] ? true : false;
             });
-            var names = _.map(decombSet, function (decomb, part) {
-                var names = decomb ? decomb.names : [];
+            var names = _.map(decomb, function (comb, part) {
+                var names = comb ? comb.decos : [];
                 if (torsoUp && part === 'body')
                     names = _.map(names, function (n) { return n += '(胴)'; });
                 return names;
@@ -34,23 +34,25 @@ describe('40_deco/29_combinator', function () {
         var n = new Normalizer(),
             c = new Combinator();
 
-        var omas = [ myapp.oma([ '龍の護石',3,'匠',4,'氷耐性',-5 ]) ];
-
         it('torsoUp, weaponSlot, oma', function () {
-            // 装備に胴系統倍化、武器スロ、お守りがある場合
             var skills = [ '斬れ味レベル+1', '高級耳栓' ];
-            var equipSet = {
-                head  : myapp.equip('head', 'ユクモノカサ・天'),  // スロ2
-                body  : myapp.equip('body', '三眼の首飾り'),      // スロ3
-                arm   : myapp.equip('arm', 'ユクモノコテ・天'),   // スロ2
-                waist : myapp.equip('waist', 'バンギスコイル'),   // 胴系統倍化
-                leg   : myapp.equip('leg', 'ユクモノハカマ・天'), // スロ2
-                weapon: { name: 'slot2' },
-                oma   : omas[0]
+            var equip = {
+                head  : { name: 'ユクモノカサ・天', slot: 2,
+                          skillComb: { '匠': 2, '研ぎ師': 3, '回復量': 1, '加護': 1 } },
+                body  : { name: '三眼の首飾り', slot: 3, skillComb: {} },
+                arm   : { name: 'ユクモノコテ・天', slot: 2,
+                          skillComb: { '匠': 1, '研ぎ師': 3, '回復量': 2, '加護': 3 } },
+                waist : { name: 'バンギスコイル', slot: 0, skillComb: { '胴系統倍化': 1 } },
+                leg   : { name: 'ユクモノハカマ・天', slot: 2,
+                          skillComb: { '匠': 1, '研ぎ師': 1, '回復量': 2, '加護': 2 } },
+                weapon: { name: 'slot2', slot: 2, skillComb: {} },
+                oma   : { name: '龍の護石(スロ3,匠+4,氷耐性-5)', slot: 3,
+                          skillComb: { '匠': 4, '氷耐性': -5 } }
             };
-            var normalized = n.normalize(skills, equipSet);
-            var decombSets = c.combine(skills, normalized);
-            got = simplify(decombSets);
+            var bulksSet = n.normalize(skills, equip);
+
+            var decombs = c.combine(skills, bulksSet, equip);
+            got = simplify(decombs);
             exp = [
                 '匠珠【３】,防音珠【１】,防音珠【１】,防音珠【１】,防音珠【１】,防音珠【１】,防音珠【１】,防音珠【１】,防音珠【３】(胴)',
                 '匠珠【２】,匠珠【２】,防音珠【１】,防音珠【１】,防音珠【１】,防音珠【３】,防音珠【３】(胴)',
@@ -62,18 +64,20 @@ describe('40_deco/29_combinator', function () {
         it('all slot3', function () {
             // ALL三眼, 武器スロ3, お守り(匠4,スロ3)
             var skills = [ '斬れ味レベル+1', '砥石使用高速化' ];
-            var equipSet = {
-                head  : myapp.equip('head', '三眼のピアス'),
-                body  : myapp.equip('body', '三眼の首飾り'),
-                arm   : myapp.equip('arm', '三眼の腕輪'),
-                waist : myapp.equip('waist', '三眼の腰飾り'),
-                leg   : myapp.equip('leg', '三眼の足輪'),
-                weapon: { name: 'slot3' },
-                oma   : omas[0]
+            var equip = {
+                head  : { name: '三眼のピアス', slot: 3, skillComb: {} },
+                body  : { name: '三眼の首飾り', slot: 3, skillComb: {} },
+                arm   : { name: '三眼の腕輪', slot: 3, skillComb: {} },
+                waist : { name: '三眼の腰飾り', slot: 3, skillComb: {} },
+                leg   : { name: '三眼の足輪', slot: 3, skillComb: {} },
+                weapon: { name: 'slot3', slot: 3, skillComb: {} },
+                oma   : { name: '龍の護石(スロ3,匠+4,氷耐性-5)', slot: 3,
+                          skillComb: { '匠': 4, '氷耐性': -5 } }
             };
-            var normalized = n.normalize(skills, equipSet);
-            var decombSets = c.combine(skills, normalized);
-            got = simplify(decombSets);
+            var bulksSet = n.normalize(skills, equip);
+
+            var decombs = c.combine(skills, bulksSet, equip);
+            got = simplify(decombs);
             exp = [
                 '匠珠【３】,匠珠【３】,匠珠【３】,研磨珠【１】,研磨珠【１】,研磨珠【１】,研磨珠【１】,研磨珠【１】',
                 '匠珠【２】,匠珠【２】,匠珠【３】,匠珠【３】,研磨珠【１】,研磨珠【１】,研磨珠【１】,研磨珠【１】,研磨珠【１】'
@@ -84,18 +88,24 @@ describe('40_deco/29_combinator', function () {
         it('slot3 appear later', function () {
             // 後半にスロ3が出てくるパターン(前半のスロ1は使わないスロとして処理できるか)
             var skills = [ '斬れ味レベル+1', '高級耳栓' ];
-            var equipSet = {
-                head  : myapp.equip('head', 'ミヅハ【烏帽子】'),  // スロ1
-                body  : myapp.equip('body', 'エクスゼロメイル'),  // スロ1
-                arm   : myapp.equip('arm', 'EXレックスアーム'),   // スロ2
-                waist : myapp.equip('waist', 'クシャナアンダ'),   // スロ3
-                leg   : myapp.equip('leg', 'ゾディアスグリーヴ'), // スロ3
+            var equip = {
+                head : { name: 'ミヅハ【烏帽子】', slot: 1,
+                         skillComb: { '匠': 1, '聴覚保護': 5, '風圧': 4, '耐暑': -2 } },
+                body : { name: 'エクスゼロメイル', slot: 1,
+                         skillComb: { '聴覚保護': 3, '研ぎ師': -2, '食事': 3 } },
+                arm  : { name: 'EXレックスアーム', slot: 2,
+                         skillComb: { '匠': 2, '聴覚保護': 2, '研ぎ師': -2, '食いしん坊': 2 } },
+                waist: { name: 'クシャナアンダ', slot: 3,
+                         skillComb: { '匠': 2, '溜め短縮': 2, '毒': -2 } },
+                leg  : { name: 'ゾディアスグリーヴ', slot: 3,
+                         skillComb: { '剣術': 1, '匠': 2, '乗り': -3 } },
                 weapon: null,
-                oma   : null
+                oma: null
             };
-            var normalized = n.normalize(skills, equipSet);
-            var decombSets = c.combine(skills, normalized);
-            got = simplify(decombSets);
+            var bulksSet = n.normalize(skills, equip);
+
+            var decombs = c.combine(skills, bulksSet, equip);
+            got = simplify(decombs);
             exp = [
                 '匠珠【２】,匠珠【３】,防音珠【１】,防音珠【３】',
                 '匠珠【２】,匠珠【３】,防音珠【１】,防音珠【１】,防音珠【１】,防音珠【１】,防音珠【１】'
@@ -106,22 +116,26 @@ describe('40_deco/29_combinator', function () {
         it('already activate', function () {
             // 既にスキルが発動
             var skills = [ '斬れ味レベル+1' ];
-            var equipSet = {
-                head  : myapp.equip('head', 'ユクモノカサ・天'),
-                body  : myapp.equip('body', 'ユクモノドウギ・天'),
-                arm   : myapp.equip('arm', 'ユクモノコテ・天'),
-                waist : myapp.equip('waist', 'ユクモノオビ・天'),
-                leg   : myapp.equip('leg', 'ユクモノハカマ・天'),
+            var equip = {
+                head  : { name: 'ユクモノカサ・天', slot: 2,
+                          skillComb: { '匠': 2, '研ぎ師': 3, '回復量': 1, '加護': 1 } },
+                body  : { name: 'ユクモノドウギ・天', slot: 2,
+                          skillComb: { '匠': 1, '研ぎ師': 1, '回復量': 2, '加護': 2 } },
+                arm   : { name: 'ユクモノコテ・天', slot: 2,
+                          skillComb: { '匠': 1, '研ぎ師': 3, '回復量': 2, '加護': 3 } },
+                waist : { name: 'ユクモノオビ・天', slot: 2,
+                          skillComb: { '匠': 1, '研ぎ師': 2, '回復量': 3, '加護': 2 } },
+                leg   : { name: 'ユクモノハカマ・天', slot: 2,
+                          skillComb: { '匠': 1, '研ぎ師': 1, '回復量': 2, '加護': 2 } },
                 weapon: null,
-                oma   : omas[0]
+                oma   : { name: '龍の護石(スロ3,匠+4,氷耐性-5)', slot: 3,
+                          skillComb: { '匠': 4, '氷耐性': -5 } }
             };
-            var normalized = n.normalize(skills, equipSet);
-            var decombSets = c.combine(skills, normalized);
-            got = decombSets;
-            exp = [
-                { body: null, head: null, arm: null, waist: null, leg: null,
-                  weapon: null, oma: null }
-            ];
+            var bulksSet = n.normalize(skills, equip);
+
+            var decombs = c.combine(skills, bulksSet, equip);
+            got = decombs;
+            exp = [];
             assert.deepEqual(got, exp);
         });
 

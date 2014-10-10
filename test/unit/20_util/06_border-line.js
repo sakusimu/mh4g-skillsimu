@@ -20,28 +20,46 @@ describe('20_util/06_border-line', function () {
         assert(typeof bl.initialize === 'function', 'has initialize()');
     });
 
-    it('_goal', function () {
+    describe('_goal', function () {
         var bl = new BorderLine();
 
-        got = bl._goal([ '攻撃力UP【大】', '業物' ]);
-        exp = { '攻撃': 20, '斬れ味': 10 };
-        assert.deepEqual(got, exp, "[ '攻撃力UP【大】', '業物' ]");
+        it('goal', function () {
+            got = bl._goal([ '攻撃力UP【大】', '業物' ]);
+            exp = { '攻撃': 20, '斬れ味': 10 };
+            assert.deepEqual(got, exp, "[ '攻撃力UP【大】', '業物' ]");
 
-        got = bl._goal([ 'なまくら' ]);
-        exp = { '斬れ味': -10 };
-        assert.deepEqual(got, exp, "[ 'なまくら' ]");
+            got = bl._goal([ 'なまくら' ]);
+            exp = { '斬れ味': -10 };
+            assert.deepEqual(got, exp, "[ 'なまくら' ]");
+        });
 
-        got = bl._goal();
-        assert(got === null, 'nothing in');
-        got = bl._goal(undefined);
-        assert(got === null, 'undefined');
-        got = bl._goal(null);
-        assert(got === null, 'null');
-        got = bl._goal(null);
-        assert(got === null, 'null');
+        it('subtracted', function () {
+            got = bl._goal([ '攻撃力UP【大】', '業物' ], { '攻撃': 5 });
+            exp = { '攻撃': 15, '斬れ味': 10 };
+            assert.deepEqual(got, exp, "[ '攻撃力UP【大】', '業物' ]");
 
-        try { bl._goal([ '攻撃大' ]); } catch (e) { got = e.message; }
-        assert(got === 'skill not found: 攻撃大');
+            got = bl._goal([ '攻撃力UP【大】' ], { '攻撃': 5, '斬れ味': 5 });
+            exp = { '攻撃': 15 };
+            assert.deepEqual(got, exp, "[ '攻撃力UP【大】' ]");
+
+            got = bl._goal([ 'なまくら' ], { '斬れ味': 5 });
+            exp = { '斬れ味': -15 };
+            assert.deepEqual(got, exp, "[ 'なまくら' ]");
+        });
+
+        it('null or etc', function () {
+            got = bl._goal();
+            assert(got === null, 'nothing in');
+            got = bl._goal(undefined);
+            assert(got === null, 'undefined');
+            got = bl._goal(null);
+            assert(got === null, 'null');
+            got = bl._goal(null);
+            assert(got === null, 'null');
+
+            try { bl._goal([ '攻撃大' ]); } catch (e) { got = e.message; }
+            assert(got === 'skill not found: 攻撃大');
+        });
     });
 
     describe('_calcMaxEachSkillPoint', function () {
@@ -434,6 +452,35 @@ describe('20_util/06_border-line', function () {
             assert.deepEqual(got, exp, 'calcEach');
             got = bl.calcSum('body', null);
             exp = 4; // 30 - (11 + 5) - 6 - 4
+            assert(got === exp, 'calcSum');
+        });
+
+        it('with subtracted', function () {
+            var skillNames = [ '攻撃力UP【大】', '業物' ];
+            var subtracted = { '攻撃': 3, '斬れ味': 3 };
+            var bulksSet = {
+                head: [
+                    { skillComb: { '胴系統倍化': 1 } } ],
+                body: [
+                    { skillComb: { '攻撃': 4, '斬れ味': 2 } } ],
+                arm: null,
+                waist: [
+                    { skillComb: { '攻撃': 5, '斬れ味': 1 } },
+                    { skillComb: { '攻撃': 3, '斬れ味': 2 } } ],
+                leg: [
+                    { skillComb: { '攻撃': 5, '斬れ味': 0 } },
+                    { skillComb: { '攻撃': 3, '斬れ味': 3 } },
+                    { skillComb: { '攻撃': 0, '斬れ味': 4 } },
+                    { skillComb: { '胴系統倍化': 1 } } ]
+            };
+            var bl = new BorderLine(skillNames, bulksSet, subtracted);
+            var sc = { '攻撃': (4+4+0), '斬れ味': (2+2+0) };
+            got = bl.calcEach('waist', sc);
+            // 攻撃: (20-3) - (4+4+0) - (5), 斬れ味: (10-3) - (2+2+0) - (4)
+            exp = { '攻撃': 4, '斬れ味': -1 };
+            assert.deepEqual(got, exp, 'calcEach');
+            got = bl.calcSum('waist', sc);
+            exp = 6; // (30-3-3) - (8 + 4) - 6(胴系統倍化)
             assert(got === exp, 'calcSum');
         });
     });

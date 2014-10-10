@@ -7,24 +7,24 @@ var _ = require('underscore'),
 
 var DEBUG = false;
 
-var simulate = function (skillNames, equipSet) {
+var simulate = function (skillNames, equip) {
     var n = new Normalizer(),
         c = new Combinator(),
         a = new Assembler();
 
     var start = Date.now();
-    var normalized = n.normalize(skillNames, equipSet);
+    var bulksSet = n.normalize(skillNames, equip);
     var ndone = Date.now();
-    var decombSets = c.combine(skillNames, normalized);
+    var decombs = c.combine(skillNames, bulksSet, equip);
     var cdone = Date.now();
-    var assems = a.assemble(decombSets);
+    var assems = a.assemble(decombs);
     var adone = Date.now();
 
-    if (DEBUG) console.log(simplify(decombSets));
+    if (DEBUG) console.log(simplify(decombs));
 
     console.log('>', '[ ' + skillNames.join(', ') + ' ]');
-    console.log('n:', resultNormalizer(normalized));
-    console.log('c:', decombSets.length);
+    console.log('n:', resultNormalizer(bulksSet));
+    console.log('c:', decombs.length);
     console.log('a:', assems.length);
 
     var time = [
@@ -35,20 +35,26 @@ var simulate = function (skillNames, equipSet) {
     console.log('time:', (adone - start), '(' + time + ')');
 };
 
-var resultNormalizer = function (normalized) {
+var resultNormalizer = function (bulksSet) {
     var list = [];
-    for (var part in normalized.decombsSet) {
-        var decombs = normalized.decombsSet[part];
-        list.push(part + ': ' + decombs.length);
+    for (var part in bulksSet) {
+        var bulks = bulksSet[part];
+        list.push(part + ': ' + bulks.length);
     }
     return '[ ' + list.join(', ') + ' ]';
 };
 
-var simplify = function (decombSets) {
-    return _.map(decombSets, function (decombSet) {
-        var names = _.map(decombSet, function (decomb, part) {
-            var names = decomb.names;
-            if (part === 'body') names = _.map(names, function (n) { return n += '(胴)'; });
+// 頑シミュさんの装飾品検索の結果と比較しやすくする
+var simplify = function (decombs) {
+    return _.map(decombs, function (decomb) {
+        var torsoUp = _.some(decomb, function (comb) {
+            if (comb == null) return false;
+            return comb.skillComb['胴系統倍化'] ? true : false;
+        });
+        var names = _.map(decomb, function (comb, part) {
+            var names = comb ? comb.decos : [];
+            if (torsoUp && part === 'body')
+                names = _.map(names, function (n) { return n += '(胴)'; });
             return names;
         });
         names = _.flatten(names);
@@ -56,34 +62,34 @@ var simplify = function (decombSets) {
     });
 };
 
-var equipSet, omas;
+var equip, omas;
 
 omas = [ myapp.oma([ '龍の護石',3,'匠',4,'氷耐性',-5 ]) ];
 
 myapp.setup({ context: { hr: 1, vs: 6 } }); // 装備を村のみにしぼる
 
-equipSet = {
+equip = {
     head  : myapp.equip('head', 'ガララキャップ'),  // スロ2
     body  : myapp.equip('body', 'レックスメイル'),  // スロ2
     arm   : myapp.equip('arm', 'ガルルガアーム'),   // スロ3
     waist : myapp.equip('waist', 'ゴアフォールド'), // スロ1
     leg   : myapp.equip('leg', 'アークグリーヴ'),   // スロ2
-    weapon: { name: 'slot3' },
+    weapon: { name: 'slot3', slot: 3 },
     oma   : omas[0]
 };
-simulate([ '斬れ味レベル+1', '攻撃力UP【大】', '耳栓' ], equipSet);
+simulate([ '斬れ味レベル+1', '攻撃力UP【大】', '耳栓' ], equip);
 
 myapp.initialize();
 
-equipSet = {
+equip = {
     head  : myapp.equip('head', '三眼のピアス'),
     body  : myapp.equip('body', '三眼の首飾り'),
     arm   : myapp.equip('arm', '三眼の腕輪'),
     waist : myapp.equip('waist', '三眼の腰飾り'),
     leg   : myapp.equip('leg', '三眼の足輪'),
-    weapon: { name: 'slot3' },
+    weapon: { name: 'slot3', slot: 3 },
     oma   : omas[0]
 };
 
-simulate([ '斬れ味レベル+1', '砥石使用高速化' ], equipSet);
-simulate([ '斬れ味レベル+1', '高級耳栓' ], equipSet);
+simulate([ '斬れ味レベル+1', '砥石使用高速化' ], equip);
+simulate([ '斬れ味レベル+1', '高級耳栓' ], equip);
