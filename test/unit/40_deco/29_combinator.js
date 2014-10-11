@@ -17,7 +17,7 @@ describe('40_deco/29_combinator', function () {
         return _.map(decombs, function (decomb) {
             var torsoUp = _.some(decomb, function (comb) {
                 if (comb == null) return false;
-                return comb.skillComb['胴系統倍化'] ? true : false;
+                return comb.skillComb['胴系統倍加'] ? true : false;
             });
             var names = _.map(decomb, function (comb, part) {
                 var names = comb ? comb.decos : [];
@@ -42,7 +42,7 @@ describe('40_deco/29_combinator', function () {
                 body  : { name: '三眼の首飾り', slot: 3, skillComb: {} },
                 arm   : { name: 'ユクモノコテ・天', slot: 2,
                           skillComb: { '匠': 1, '研ぎ師': 3, '回復量': 2, '加護': 3 } },
-                waist : { name: 'バンギスコイル', slot: 0, skillComb: { '胴系統倍化': 1 } },
+                waist : { name: 'バンギスコイル', slot: 0, skillComb: { '胴系統倍加': 1 } },
                 leg   : { name: 'ユクモノハカマ・天', slot: 2,
                           skillComb: { '匠': 1, '研ぎ師': 1, '回復量': 2, '加護': 2 } },
                 weapon: { name: 'slot2', slot: 2, skillComb: {} },

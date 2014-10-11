@@ -80,7 +80,7 @@ describe('30_equip/19_normalizer', function () {
                 { name: 'slot1', slot: 1, skillComb: {} },
                 { name: 'slot2', slot: 2, skillComb: {} },
                 { name: 'slot3', slot: 3, skillComb: {} },
-                { name: '胴系統倍化', slot: 0, skillComb: { '胴系統倍化': 1 } }
+                { name: '胴系統倍加', slot: 0, skillComb: { '胴系統倍加': 1 } }
             ];
             n.initialize();
 
@@ -104,7 +104,7 @@ describe('30_equip/19_normalizer', function () {
                 { skillComb: { '溜め短縮': 3, '痛撃': 1 }, equips: [ 'クシャナハディ' ] },
                 { skillComb: { '溜め短縮': 4, '痛撃': 0 },
                   equips: [ 'クシャナハディ', 'slot3' ] },
-                { skillComb: { '胴系統倍化': 1 }, equips: [ '胴系統倍化' ] }
+                { skillComb: { '胴系統倍加': 1 }, equips: [ '胴系統倍加' ] }
             ]);
             assert.deepEqual(got, exp);
         });

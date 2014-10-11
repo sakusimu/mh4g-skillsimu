@@ -123,21 +123,21 @@ describe('20_util/06_border-line', function () {
                 head: [
                     { skillComb: { 'a': 1, 'b': 0 } },
                     { skillComb: { 'a': 0, 'b': 1 } },
-                    { skillComb: { '胴系統倍化': 1 } } ],
+                    { skillComb: { '胴系統倍加': 1 } } ],
                 body: [
                     { skillComb: { 'a': 2, 'b': 2 } } ],
                 arm: [
                     { skillComb: { 'a': 1, 'b': 0 } },
                     { skillComb: {         'b': 2 } },
                     { skillComb: { 'a': 5, 'b': 0 } },
-                    { skillComb: { '胴系統倍化': 1 } } ],
+                    { skillComb: { '胴系統倍加': 1 } } ],
                 waist: [
                     { skillComb: { 'a': 1, 'b': 0 } },
                     { skillComb: {         'b': 3 } },
-                    // ↓胴系統倍化があるので、他のスキルのポイントは無視される
-                    { skillComb: { 'a': 9, 'b': 0, '胴系統倍化': 1 } } ],
+                    // ↓胴系統倍加があるので、他のスキルのポイントは無視される
+                    { skillComb: { 'a': 9, 'b': 0, '胴系統倍加': 1 } } ],
                 leg: [
-                    { skillComb: { '胴系統倍化': 1 } } ]
+                    { skillComb: { '胴系統倍加': 1 } } ]
             };
             got = bl._calcMaxEachSkillPoint(bulksSet);
             exp = {
@@ -152,20 +152,20 @@ describe('20_util/06_border-line', function () {
                 head: [
                     { skillComb: { 'a': 1, 'b': 0 } },
                     { skillComb: { 'a': 0, 'b': 1 } },
-                    { skillComb: { '胴系統倍化': 1 } } ],
+                    { skillComb: { '胴系統倍加': 1 } } ],
                 body: null,
                 arm: [
                     { skillComb: { 'a': 1, 'b': 0 } },
                     { skillComb: {         'b': 2 } },
                     { skillComb: { 'a': 5, 'b': 0 } },
-                    { skillComb: { '胴系統倍化': 1 } } ],
+                    { skillComb: { '胴系統倍加': 1 } } ],
                 waist: [
                     { skillComb: { 'a': 1, 'b': 0 } },
                     { skillComb: {         'b': 3 } },
-                    // ↓胴系統倍化があるので、他のスキルのポイントは無視される
-                    { skillComb: { 'a': 9, 'b': 0, '胴系統倍化': 1 } } ],
+                    // ↓胴系統倍加があるので、他のスキルのポイントは無視される
+                    { skillComb: { 'a': 9, 'b': 0, '胴系統倍加': 1 } } ],
                 leg: [
-                    { skillComb: { '胴系統倍化': 1 } } ]
+                    { skillComb: { '胴系統倍加': 1 } } ]
             };
             got = bl._calcMaxEachSkillPoint(bulksSet);
             exp = {
@@ -239,21 +239,21 @@ describe('20_util/06_border-line', function () {
                 head: [
                     { skillComb: { 'a': 1, 'b': 0 } },
                     { skillComb: { 'a': 0, 'b': 1 } },
-                    { skillComb: { '胴系統倍化': 1 } } ],
+                    { skillComb: { '胴系統倍加': 1 } } ],
                 body: [
                     { skillComb: { 'a': 2, 'b': 2 } } ],
                 arm: [
                     { skillComb: { 'a': 1, 'b': 0 } },
                     { skillComb: {         'b': 2 } },
                     { skillComb: { 'a': 5, 'b': 0 } },
-                    { skillComb: { '胴系統倍化': 1 } } ],
+                    { skillComb: { '胴系統倍加': 1 } } ],
                 waist: [
                     { skillComb: { 'a': 1, 'b': 0 } },
                     { skillComb: {         'b': 3 } },
-                    // ↓胴系統倍化があるので、他のスキルのポイントは無視される
-                    { skillComb: { 'a': 9, 'b': 0, '胴系統倍化': 1 } } ],
+                    // ↓胴系統倍加があるので、他のスキルのポイントは無視される
+                    { skillComb: { 'a': 9, 'b': 0, '胴系統倍加': 1 } } ],
                 leg: [
-                    { skillComb: { '胴系統倍化': 1 } } ]
+                    { skillComb: { '胴系統倍加': 1 } } ]
             };
             got = bl._calcMaxSumSkillPoint(bulksSet);
             exp = { head: 4, body: 4, arm: 5, waist: 4, leg: 4, weapon: 0, oma: 0 };
@@ -265,20 +265,20 @@ describe('20_util/06_border-line', function () {
                 head: [
                     { skillComb: { 'a': 1, 'b': 0 } },
                     { skillComb: { 'a': 0, 'b': 1 } },
-                    { skillComb: { '胴系統倍化': 1 } } ],
+                    { skillComb: { '胴系統倍加': 1 } } ],
                 body: null,
                 arm: [
                     { skillComb: { 'a': 1, 'b': 0 } },
                     { skillComb: {         'b': 2 } },
                     { skillComb: { 'a': 5, 'b': 0 } },
-                    { skillComb: { '胴系統倍化': 1 } } ],
+                    { skillComb: { '胴系統倍加': 1 } } ],
                 waist: [
                     { skillComb: { 'a': 1, 'b': 0 } },
                     { skillComb: {         'b': 3 } },
-                    // ↓胴系統倍化があるので、他のスキルのポイントは無視される
-                    { skillComb: { 'a': 9, 'b': 0, '胴系統倍化': 1 } } ],
+                    // ↓胴系統倍加があるので、他のスキルのポイントは無視される
+                    { skillComb: { 'a': 9, 'b': 0, '胴系統倍加': 1 } } ],
                 leg: [
-                    { skillComb: { '胴系統倍化': 1 } } ]
+                    { skillComb: { '胴系統倍加': 1 } } ]
             };
             got = bl._calcMaxSumSkillPoint(bulksSet);
             exp = { head: 1, body: 0, arm: 5, waist: 3, leg: 0, weapon: 0, oma: 0 };
@@ -370,7 +370,7 @@ describe('20_util/06_border-line', function () {
             var skillNames = [ '攻撃力UP【大】', '業物' ];
             var bulksSet = {
                 head: [
-                    { skillComb: { '胴系統倍化': 1 } } ],
+                    { skillComb: { '胴系統倍加': 1 } } ],
                 body: [
                     { skillComb: { '攻撃': 4, '斬れ味': 2 } } ],
                 arm: [
@@ -382,7 +382,7 @@ describe('20_util/06_border-line', function () {
                     { skillComb: { '攻撃': 5, '斬れ味': 0 } },
                     { skillComb: { '攻撃': 3, '斬れ味': 3 } },
                     { skillComb: { '攻撃': 0, '斬れ味': 4 } },
-                    { skillComb: { '胴系統倍化': 1 } } ]
+                    { skillComb: { '胴系統倍加': 1 } } ]
             };
             var bl = new BorderLine(skillNames, bulksSet);
             var sc = { '攻撃': (4+4+3), '斬れ味': (2+2+3) };
@@ -391,7 +391,7 @@ describe('20_util/06_border-line', function () {
             exp = { '攻撃': 4, '斬れ味': -1 };
             assert.deepEqual(got, exp, 'calcEach');
             got = bl.calcSum('waist', sc);
-            exp = 6; // 30 - (11 + 7) - 6(胴系統倍化)
+            exp = 6; // 30 - (11 + 7) - 6(胴系統倍加)
             assert(got === exp, 'calcSum');
         });
 
@@ -399,7 +399,7 @@ describe('20_util/06_border-line', function () {
             var skillNames = [ '攻撃力UP【大】', '業物' ];
             var bulksSet = {
                 head: [
-                    { skillComb: { '胴系統倍化': 1 } } ],
+                    { skillComb: { '胴系統倍加': 1 } } ],
                 body: null,
                 arm: [
                     { skillComb: { '攻撃': 8, '斬れ味': 3 } } ],
@@ -409,7 +409,7 @@ describe('20_util/06_border-line', function () {
                     { skillComb: { '攻撃': 5, '斬れ味': 0 } },
                     { skillComb: { '攻撃': 4, '斬れ味': 2 } },
                     { skillComb: { '攻撃': 0, '斬れ味': 4 } },
-                    { skillComb: { '胴系統倍化': 1 } } ],
+                    { skillComb: { '胴系統倍加': 1 } } ],
                 oma: [
                     { skillComb: { '攻撃': 4, '斬れ味': 3 } } ]
             };
@@ -460,7 +460,7 @@ describe('20_util/06_border-line', function () {
             var subtracted = { '攻撃': 3, '斬れ味': 3 };
             var bulksSet = {
                 head: [
-                    { skillComb: { '胴系統倍化': 1 } } ],
+                    { skillComb: { '胴系統倍加': 1 } } ],
                 body: [
                     { skillComb: { '攻撃': 4, '斬れ味': 2 } } ],
                 arm: null,
@@ -471,7 +471,7 @@ describe('20_util/06_border-line', function () {
                     { skillComb: { '攻撃': 5, '斬れ味': 0 } },
                     { skillComb: { '攻撃': 3, '斬れ味': 3 } },
                     { skillComb: { '攻撃': 0, '斬れ味': 4 } },
-                    { skillComb: { '胴系統倍化': 1 } } ]
+                    { skillComb: { '胴系統倍加': 1 } } ]
             };
             var bl = new BorderLine(skillNames, bulksSet, subtracted);
             var sc = { '攻撃': (4+4+0), '斬れ味': (2+2+0) };
@@ -480,7 +480,7 @@ describe('20_util/06_border-line', function () {
             exp = { '攻撃': 4, '斬れ味': -1 };
             assert.deepEqual(got, exp, 'calcEach');
             got = bl.calcSum('waist', sc);
-            exp = 6; // (30-3-3) - (8 + 4) - 6(胴系統倍化)
+            exp = 6; // (30-3-3) - (8 + 4) - 6(胴系統倍加)
             assert(got === exp, 'calcSum');
         });
     });

@@ -49,7 +49,7 @@ var simplify = function (decombs) {
     return _.map(decombs, function (decomb) {
         var torsoUp = _.some(decomb, function (comb) {
             if (comb == null) return false;
-            return comb.skillComb['胴系統倍化'] ? true : false;
+            return comb.skillComb['胴系統倍加'] ? true : false;
         });
         var names = _.map(decomb, function (comb, part) {
             var names = comb ? comb.decos : [];

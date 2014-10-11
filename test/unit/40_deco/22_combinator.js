@@ -75,7 +75,7 @@ describe('40_deco/22_combinator', function () {
                     { skillComb: { '攻撃': 1, '斬れ味': 1 }, decos: [ '1,1' ], slot: 2 },
                     { skillComb: { '攻撃': 0, '斬れ味': 2 }, decos: [ '0,2' ], slot: 2 } ],
                 leg: [
-                    { skillComb: { '胴系統倍化': 1 }, decos: [ 'torsoUp' ], slot: 0 } ],
+                    { skillComb: { '胴系統倍加': 1 }, decos: [ 'torsoUp' ], slot: 0 } ],
                 weapon: [
                     { skillComb: { '攻撃': 0, '斬れ味': 2 }, decos: [ '0,2' ], slot: 2 } ],
                 oma: [
@@ -377,7 +377,7 @@ describe('40_deco/22_combinator', function () {
                 { body : { skillComb: { '攻撃': 1, '斬れ味': 1 } },
                   head : { skillComb: { '攻撃': 0, '斬れ味': 4 } },
                   arm  : { skillComb: { '攻撃': 2, '斬れ味': 0 } },
-                  waist: { skillComb: { '胴系統倍化': 1 } },
+                  waist: { skillComb: { '胴系統倍加': 1 } },
                   leg  : { skillComb: { '攻撃': 0, '斬れ味': 4 } },
                   // weapon がない
                   oma  : { skillComb: { '攻撃': 2, '斬れ味': 0 } } },
@@ -385,7 +385,7 @@ describe('40_deco/22_combinator', function () {
                 { body  : { skillComb: { '攻撃': 1, '斬れ味': 1 } },
                   head  : { skillComb: { '攻撃': 0, '斬れ味': 4 } },
                   arm   : { skillComb: { '攻撃': 2, '斬れ味': 0 } },
-                  waist : { skillComb: { '胴系統倍化': 1 } },
+                  waist : { skillComb: { '胴系統倍加': 1 } },
                   leg   : { skillComb: { '攻撃': 0, '斬れ味': 4 } },
                   weapon: { skillComb: { '攻撃': 1, '斬れ味': 0 } },
                   oma   : { skillComb: { '攻撃': 2, '斬れ味': 0 } } }

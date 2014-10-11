@@ -32,9 +32,9 @@ describe('30_equip/21_combinator', function () {
                     { skillComb: { '攻撃': 0, '斬れ味': 4 } },
                     { skillComb: { '攻撃': 4, '斬れ味': 0 } } ],
                 waist: [
-                    { skillComb: { '胴系統倍化': 1 } } ],
+                    { skillComb: { '胴系統倍加': 1 } } ],
                 leg: [
-                    { skillComb: { '胴系統倍化': 1 } } ],
+                    { skillComb: { '胴系統倍加': 1 } } ],
                 oma: [
                     { skillComb: { '攻撃': 3, '斬れ味': 1 } },
                     { skillComb: { '攻撃': 2, '斬れ味': 2 } } ]
@@ -61,7 +61,7 @@ describe('30_equip/21_combinator', function () {
                 ],
                 sumSC: { '攻撃': 12, '斬れ味': 8 }
             };
-            var bulk = { skillComb: { '胴系統倍化': 1 }, equips: [ 'torsoUp' ] };
+            var bulk = { skillComb: { '胴系統倍加': 1 }, equips: [ 'torsoUp' ] };
             got = c._combineTorsoUp(comb, bulk, borderLine, 'leg');
             exp = [
                 {
@@ -173,9 +173,9 @@ describe('30_equip/21_combinator', function () {
                 arm: [
                     { skillComb: { '攻撃': 1, '斬れ味': 3 }, equips: [ '1,3' ] } ],
                 waist: [
-                    { skillComb: { '胴系統倍化': 1 }, equips: [ 'torsoUp' ] } ],
+                    { skillComb: { '胴系統倍加': 1 }, equips: [ 'torsoUp' ] } ],
                 leg: [
-                    { skillComb: { '胴系統倍化': 1 }, equips: [ 'torsoUp' ] },
+                    { skillComb: { '胴系統倍加': 1 }, equips: [ 'torsoUp' ] },
                     { skillComb: { '攻撃': 3, '斬れ味': 2 }, equips: [ '3,2' ] },
                     { skillComb: { '攻撃': 6, '斬れ味': 0 }, equips: [ '6,0' ] },
                     { skillComb: { '攻撃': 0, '斬れ味': 4 }, equips: [ '0,4' ] },
@@ -196,9 +196,9 @@ describe('30_equip/21_combinator', function () {
                 ],
                 sumSC: { '攻撃': 12, '斬れ味': 8 }
             };
-            // 胴系統倍化は先にあってもOK
+            // 胴系統倍加は先にあってもOK
             var bulks = [
-                { skillComb: { '胴系統倍化': 1 }, equips: [ 'torsoUp' ] },
+                { skillComb: { '胴系統倍加': 1 }, equips: [ 'torsoUp' ] },
                 { skillComb: { '攻撃': 6, '斬れ味': 0 }, equips: [ '6,0' ] },
                 { skillComb: { '攻撃': 4, '斬れ味': 1 }, equips: [ '4,1' ] },
                 { skillComb: { '攻撃': 3, '斬れ味': 2 }, equips: [ '3,2' ] },

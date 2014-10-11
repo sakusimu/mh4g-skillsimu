@@ -50,12 +50,12 @@ describe('90_simulator', function () {
         var omas = [ myapp.oma([ '龍の護石',3,'匠',4,'氷耐性',-5 ]) ];
 
         it('simulate', function () {
-            // 装備に胴系統倍化、武器スロ、お守りがある場合
+            // 装備に胴系統倍加、武器スロ、お守りがある場合
             var equip = {
                 head  : myapp.equip('head', 'ユクモノカサ・天'),  // スロ2
                 body  : myapp.equip('body', '三眼の首飾り'),      // スロ3
                 arm   : myapp.equip('arm', 'ユクモノコテ・天'),   // スロ2
-                waist : myapp.equip('waist', 'バンギスコイル'),   // 胴系統倍化
+                waist : myapp.equip('waist', 'バンギスコイル'),   // 胴系統倍加
                 leg   : myapp.equip('leg', 'ユクモノハカマ・天'), // スロ2
                 weapon: { name: 'slot2', slot: 2, skillComb: {} },
                 oma   : omas[0]

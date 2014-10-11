@@ -59,12 +59,12 @@ describe('30_equip/20_combinator', function () {
                 { skillComb: { '攻撃': 3, '斬れ味': 2 } },
                 { skillComb: { '攻撃': 0, '斬れ味': 0 } },
                 { skillComb: { '攻撃': 1, '斬れ味': 3 } },
-                { skillComb: { '胴系統倍化': 1 } },
+                { skillComb: { '胴系統倍加': 1 } },
                 { skillComb: { '攻撃': 4, '斬れ味': 1 } }
             ];
             got = c._sortBulks(bulks);
             exp = [
-                { skillComb: { '胴系統倍化': 1 } },
+                { skillComb: { '胴系統倍加': 1 } },
                 { skillComb: { '攻撃': 3, '斬れ味': 2 } },
                 { skillComb: { '攻撃': 4, '斬れ味': 1 } },
                 { skillComb: { '攻撃': 1, '斬れ味': 3 } },
@@ -91,7 +91,7 @@ describe('30_equip/20_combinator', function () {
                 { skillComb: { '攻撃': 0, '斬れ味': 0 }, equips: [ '0,0' ] }
             ];
             var torsoUp = [
-                { skillComb: { '胴系統倍化': 1 }, equips: [ 'torsoUp' ] }
+                { skillComb: { '胴系統倍加': 1 }, equips: [ 'torsoUp' ] }
             ];
 
             var bulksSet = {

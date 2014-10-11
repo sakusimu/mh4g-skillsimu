@@ -20,7 +20,7 @@ describe('40_deco/19_normalizer', function () {
                 body : { name: '三眼の首飾り', slot: 3, skillComb: {} },
                 arm  : { name: 'ユクモノコテ・天', slot: 2,
                          skillComb: { '匠': 1, '研ぎ師': 3, '回復量': 2, '加護': 3 } },
-                waist: { name: 'バンギスコイル', slot: 0, skillComb: { '胴系統倍化': 1 } },
+                waist: { name: 'バンギスコイル', slot: 0, skillComb: { '胴系統倍加': 1 } },
                 leg  : { name: 'ユクモノハカマ・天', slot: 2,
                          skillComb: { '匠': 1, '研ぎ師': 1, '回復量': 2, '加護': 2 } }
             };
@@ -50,7 +50,7 @@ describe('40_deco/19_normalizer', function () {
                       slot: 2, skillComb: { '匠': 0, '研ぎ師': 4 } },
                     { decos: [ '匠珠【２】' ], slot: 2, skillComb: { '匠': 1, '研ぎ師': 0 } } ],
                 waist: [
-                    { decos: [], slot: 0, skillComb: { '匠': 0, '研ぎ師': 0, '胴系統倍化': 1 } } ],
+                    { decos: [], slot: 0, skillComb: { '匠': 0, '研ぎ師': 0, '胴系統倍加': 1 } } ],
                 leg: [
                     { decos: [], slot: 0, skillComb: { '匠': 0, '研ぎ師': 0 } },
                     { decos: [ '研磨珠【１】' ], slot: 1, skillComb: { '匠': 0, '研ぎ師': 2 } },
@@ -69,7 +69,7 @@ describe('40_deco/19_normalizer', function () {
                           skillComb: { '匠': 2, '研ぎ師': 3, '回復量': 1, '加護': 1 } },
                 body  : { name: 'slot3', slot: 3, skillComb: {} },
                 arm   : { name: 'slot0', slot: 0, skillComb: {} },
-                waist : { name: '胴系統倍化', slot: 0, skillComb: { '胴系統倍化': 1 } },
+                waist : { name: '胴系統倍加', slot: 0, skillComb: { '胴系統倍加': 1 } },
                 leg   : { name: 'ユクモノハカマ・天', slot: 2,
                           skillComb: { '匠': 1, '研ぎ師': 1, '回復量': 2, '加護': 2 } },
                 weapon: { name: 'slot2', slot: 2, skillComb: {} },
@@ -98,7 +98,7 @@ describe('40_deco/19_normalizer', function () {
                 arm: [
                     { decos: [], slot: 0, skillComb: { '匠': 0, '研ぎ師': 0 } } ],
                 waist: [
-                    { decos: [], slot: 0, skillComb: { '匠': 0, '研ぎ師': 0, '胴系統倍化': 1 } } ],
+                    { decos: [], slot: 0, skillComb: { '匠': 0, '研ぎ師': 0, '胴系統倍加': 1 } } ],
                 leg: [
                     { decos: [], slot: 0, skillComb: { '匠': 0, '研ぎ師': 0 } },
                     { decos: [ '研磨珠【１】' ], slot: 1, skillComb: { '匠': 0, '研ぎ師': 2 } },
