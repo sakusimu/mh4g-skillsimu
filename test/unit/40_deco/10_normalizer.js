@@ -85,9 +85,9 @@ describe('40_deco/10_normalizer', function () {
 
         it('torsoUp', function () {
             var decoCombsBySlot = util.deco.combs([ '匠' ]);
-            var equip = { name: 'torsoUp', slot: 0, skillComb: { '胴系統倍化': 1 } };
+            var equip = { name: 'torsoUp', slot: 0, skillComb: { '胴系統倍加': 1 } };
             got = n._normalize1(decoCombsBySlot, equip);
-            exp = [ { decos: [], slot: 0, skillComb: { '胴系統倍化': 1 } } ];
+            exp = [ { decos: [], slot: 0, skillComb: { '胴系統倍加': 1 } } ];
             assert.deepEqual(got, exp);
         });
 

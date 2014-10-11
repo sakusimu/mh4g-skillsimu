@@ -36,7 +36,7 @@ describe('40_deco/39_assembler', function () {
                 body  : { name: '三眼の首飾り', slot: 3, skillComb: {} },
                 arm   : { name: 'ユクモノコテ・天', slot: 2,
                           skillComb: { '匠': 1, '研ぎ師': 3, '回復量': 2, '加護': 3 } },
-                waist : { name: 'バンギスコイル', slot: 0, skillComb: { '胴系統倍化': 1 } },
+                waist : { name: 'バンギスコイル', slot: 0, skillComb: { '胴系統倍加': 1 } },
                 leg   : { name: 'ユクモノハカマ・天', slot: 2,
                           skillComb: { '匠': 1, '研ぎ師': 1, '回復量': 2, '加護': 2 } },
                 weapon: { name: 'slot2', slot: 2, skillComb: {} },

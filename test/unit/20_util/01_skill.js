@@ -14,6 +14,55 @@ describe('20_util/01_skill', function () {
         assert(typeof sutil === 'object', 'is object');
     });
 
+    it('isTorsoUp', function () {
+        got = sutil.isTorsoUp('胴系統倍加');
+        exp = true;
+        assert(got === exp, '胴系統倍加');
+        got = sutil.isTorsoUp('胴系統倍化');
+        exp = true;
+        assert(got === exp, '胴系統倍化');
+
+        got = sutil.isTorsoUp('攻撃');
+        exp = false;
+        assert(got === exp, '攻撃');
+        got = sutil.isTorsoUp('');
+        exp = false;
+        assert(got === exp, 'empty string');
+
+        got = sutil.isTorsoUp();
+        exp = false;
+        assert(got === exp, 'nothing in');
+        got = sutil.isTorsoUp(null);
+        exp = false;
+        assert(got === exp, 'null');
+    });
+
+    it('hasTorsoUp', function () {
+        got = sutil.hasTorsoUp({ '胴系統倍加': 1 });
+        exp = true;
+        assert(got === exp, '胴系統倍加');
+        got = sutil.hasTorsoUp({ '胴系統倍化': 1 });
+        exp = true;
+        assert(got === exp, '胴系統倍化');
+
+        got = sutil.hasTorsoUp({ '攻撃': 4 });
+        exp = false;
+        assert(got === exp, '攻撃');
+        got = sutil.hasTorsoUp({ '': 4 });
+        exp = false;
+        assert(got === exp, 'empty string');
+
+        got = sutil.hasTorsoUp();
+        exp = false;
+        assert(got === exp, 'nothing in');
+        got = sutil.hasTorsoUp(null);
+        exp = false;
+        assert(got === exp, 'null');
+        got = sutil.hasTorsoUp({});
+        exp = false;
+        assert(got === exp, '{}');
+    });
+
     it('compact', function () {
         got = sutil.compact([ 'a' ], { a: 1, b: 2 });
         exp = { a: 1 };
@@ -46,14 +95,14 @@ describe('20_util/01_skill', function () {
         exp = {};
         assert.deepEqual(got, exp, 'null, null');
 
-        got = sutil.compact([ 'a' ], { a: 1, b: 2, '胴系統倍化': 1 });
-        exp = { a: 1, '胴系統倍化': 1 };
+        got = sutil.compact([ 'a' ], { a: 1, b: 2, '胴系統倍加': 1 });
+        exp = { a: 1, '胴系統倍加': 1 };
         assert.deepEqual(got, exp, 'torso up 1');
-        got = sutil.compact([ 'a' ], { '胴系統倍化': 1 });
-        exp = { a: 0, '胴系統倍化': 1 };
+        got = sutil.compact([ 'a' ], { '胴系統倍加': 1 });
+        exp = { a: 0, '胴系統倍加': 1 };
         assert.deepEqual(got, exp, 'torso up 2');
-        got = sutil.compact([], { '胴系統倍化': 1 });
-        exp = { '胴系統倍化': 1 };
+        got = sutil.compact([], { '胴系統倍加': 1 });
+        exp = { '胴系統倍加': 1 };
         assert.deepEqual(got, exp, 'torso up 3');
 
         got = sutil.compact([ 'a' ], [ { a: 1, b: 2 }, { a: 2, b: 1 } ]);
@@ -62,8 +111,8 @@ describe('20_util/01_skill', function () {
         got = sutil.compact([ 'b' ], [ { a: 1 }, null ]);
         exp = [ { b: 0 }, { b: 0 } ];
         assert.deepEqual(got, exp, 'list: null');
-        got = sutil.compact([ 'a', 'c' ], [ { a: 1, b: 2 }, { '胴系統倍化': 1 } ]);
-        exp = [ { a: 1, c: 0 }, { a: 0, c: 0, '胴系統倍化': 1 } ];
+        got = sutil.compact([ 'a', 'c' ], [ { a: 1, b: 2 }, { '胴系統倍加': 1 } ]);
+        exp = [ { a: 1, c: 0 }, { a: 0, c: 0, '胴系統倍加': 1 } ];
         assert.deepEqual(got, exp, 'list: torso up');
         got = sutil.compact([ 'a' ], []);
         exp = [ { a: 0 } ];
@@ -162,14 +211,14 @@ describe('20_util/01_skill', function () {
         exp = { a: 1, b: -2 };
         assert.deepEqual(got, exp, 'remove');
 
-        got = sutil.join([ { a: 1, '胴系統倍化': 1 }, { a: 1 } ]);
-        exp = { a: 2, '胴系統倍化': 1 };
+        got = sutil.join([ { a: 1, '胴系統倍加': 1 }, { a: 1 } ]);
+        exp = { a: 2, '胴系統倍加': 1 };
         assert.deepEqual(got, exp, 'torso up 1');
-        got = sutil.join([ { a: 1, b: -1 }, { '胴系統倍化': 1 } ]);
-        exp = { a: 1, b: -1, '胴系統倍化': 1 };
+        got = sutil.join([ { a: 1, b: -1 }, { '胴系統倍加': 1 } ]);
+        exp = { a: 1, b: -1, '胴系統倍加': 1 };
         assert.deepEqual(got, exp, 'torso up 2');
-        got = sutil.join([ { a: 1, '胴系統倍化': 1 }, { '胴系統倍化': 1 } ]);
-        exp = { a: 1, '胴系統倍化': 1 };
+        got = sutil.join([ { a: 1, '胴系統倍加': 1 }, { '胴系統倍加': 1 } ]);
+        exp = { a: 1, '胴系統倍加': 1 };
         assert.deepEqual(got, exp, 'torso up 3');
 
         got = sutil.join([ { a: 1 }, undefined ]);
@@ -233,7 +282,7 @@ describe('20_util/01_skill', function () {
         exp = 5;
         assert(got === exp, 'many');
 
-        got = sutil.sum({ a: 1, b: 1, '胴系統倍化': 1, 'c': 1 });
+        got = sutil.sum({ a: 1, b: 1, '胴系統倍加': 1, 'c': 1 });
         exp = 3;
         assert(got === exp, 'torso up');
 
@@ -265,7 +314,7 @@ describe('20_util/01_skill', function () {
             head: { skillComb: { a: 1 } },
             body: { skillComb: { a: 1, b: 1 } },
             arm: { skillComb: { b: 1 } },
-            waist: { skillComb: { '胴系統倍化': 1 } },
+            waist: { skillComb: { '胴系統倍加': 1 } },
             leg: { skillComb: { c: 1 } },
             weapon: {},
             oma: null
@@ -278,7 +327,7 @@ describe('20_util/01_skill', function () {
             head: { skillComb: { a: 1 } },
             body: null,
             arm: { skillComb: { b: 1 } },
-            waist: { skillComb: { '胴系統倍化': 1 } },
+            waist: { skillComb: { '胴系統倍加': 1 } },
             leg: { skillComb: { c: 1 } },
             weapon: {},
             oma: null
@@ -291,7 +340,7 @@ describe('20_util/01_skill', function () {
             { skillComb: { a: 1, b: 1 } },
             { skillComb: { a: 1 } },
             { skillComb: { b: 1 } },
-            { skillComb: { '胴系統倍化': 1 } },
+            { skillComb: { '胴系統倍加': 1 } },
             { skillComb: { c: 1 } },
             {},
             null
@@ -304,7 +353,7 @@ describe('20_util/01_skill', function () {
             null,
             { skillComb: { a: 1 } },
             { skillComb: { b: 1 } },
-            { skillComb: { '胴系統倍化': 1 } },
+            { skillComb: { '胴系統倍加': 1 } },
             { skillComb: { c: 1 } },
             {},
             null

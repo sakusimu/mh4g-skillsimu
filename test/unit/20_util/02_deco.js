@@ -214,8 +214,8 @@ describe('20_util/02_deco', function () {
         });
 
         it('torsoUp', function () {
-            // 胴系統倍化が含まれている場合
-            got = dutil.combs([ '攻撃', '胴系統倍化' ]);
+            // 胴系統倍加が含まれている場合
+            got = dutil.combs([ '攻撃', '胴系統倍加' ]);
             got = name(got);
             exp = [
                 [],
@@ -225,7 +225,7 @@ describe('20_util/02_deco', function () {
                   [ '攻撃珠【２】', '攻撃珠【１】' ],
                   [ '攻撃珠【３】' ] ]
             ];
-            assert.deepEqual(got, exp, "[ '攻撃', '胴系統倍化' ]");
+            assert.deepEqual(got, exp, "[ '攻撃', '胴系統倍加' ]");
         });
 
         it('no 3 slot', function () {

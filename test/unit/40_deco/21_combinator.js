@@ -30,7 +30,7 @@ describe('40_deco/21_combinator', function () {
                     { skillComb: { '攻撃': 1, '斬れ味': 1 }, decos: [ '1,1' ], slot: 2 },
                     { skillComb: { '攻撃': 0, '斬れ味': 2 }, decos: [ '0,2' ], slot: 2 } ],
                 leg: [
-                    { skillComb: { '胴系統倍化': 1 }, decos: [ 'torsoUp' ], slot: 0 } ],
+                    { skillComb: { '胴系統倍加': 1 }, decos: [ 'torsoUp' ], slot: 0 } ],
                 oma: [
                     { skillComb: { '攻撃': 0, '斬れ味': 1 }, decos: [ '0,1' ], slot: 1 } ]
             };
@@ -205,7 +205,7 @@ describe('40_deco/21_combinator', function () {
         it('torsoUp', function () {
             var bulksSet = {
                 head: [
-                    { skillComb: { '胴系統倍化': 1 }, decos: [ 'torsoUp' ], slot: 0 } ],
+                    { skillComb: { '胴系統倍加': 1 }, decos: [ 'torsoUp' ], slot: 0 } ],
                 body: [
                     { skillComb: { '攻撃': 3, '斬れ味': 1 }, decos: [ '3,1' ], slot: 3 } ],
                 arm: [
@@ -214,7 +214,7 @@ describe('40_deco/21_combinator', function () {
                     { skillComb: { '攻撃': 3, '斬れ味': 1 }, decos: [ '1,3' ], slot: 3 } ],
                 leg: [
                     { skillComb: { '攻撃': 0, '斬れ味': 0 }, decos: [ '0,0' ], slot: 0 },
-                    { skillComb: { '胴系統倍化': 1 }, decos: [ 'torsoUp' ], slot: 0 },
+                    { skillComb: { '胴系統倍加': 1 }, decos: [ 'torsoUp' ], slot: 0 },
                     { skillComb: { '攻撃': 1, '斬れ味': 1 }, decos: [ '1,1' ], slot: 2 },
                     { skillComb: { '攻撃': 3, '斬れ味': 0 }, decos: [ '3,0' ], slot: 2 },
                     { skillComb: { '攻撃': 3, '斬れ味': 1 }, decos: [ '3,1' ], slot: 3 } ],

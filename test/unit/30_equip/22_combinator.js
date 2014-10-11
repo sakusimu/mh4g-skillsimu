@@ -69,7 +69,7 @@ describe('30_equip/22_combinator', function () {
                     { skillComb: { '攻撃': 3, '匠': 3, '聴覚保護': 1 }, equips: [ '3,3,1' ] },
                     { skillComb: { '攻撃': 4, '匠': 3, '聴覚保護': 0 }, equips: [ '4,3,0' ] } ],
                 waist: [
-                    { skillComb: { '胴系統倍化': 1 }, equips: [ 'torsoUp' ] } ],
+                    { skillComb: { '胴系統倍加': 1 }, equips: [ 'torsoUp' ] } ],
                 leg: [
                     { skillComb: { '攻撃': 7, '匠': 0, '聴覚保護': 1 }, equips: [ '7,0,1' ] },
                     { skillComb: { '攻撃': 4, '匠': 2, '聴覚保護': 2 }, equips: [ '4,2,2' ] },

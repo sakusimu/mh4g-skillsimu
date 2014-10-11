@@ -43,7 +43,7 @@ describe('20_util/05_comb', function () {
         got = cutil.activates(sc, goal);
         assert(got === false, 'case 4');
 
-        sc   = { a: 20, b: 10, '胴系統倍化': 1 };
+        sc   = { a: 20, b: 10, '胴系統倍加': 1 };
         goal = { a: 20, b: 10 };
         got = cutil.activates(sc, goal);
         assert(got === true, 'torsoUp');
@@ -82,7 +82,7 @@ describe('20_util/05_comb', function () {
         got = cutil.justActivates(sc, goal);
         assert(got === false, 'case 4');
 
-        sc   = { a: 20, b: 10, '胴系統倍化': 1 };
+        sc   = { a: 20, b: 10, '胴系統倍加': 1 };
         goal = { a: 20, b: 10 };
         got = cutil.justActivates(sc, goal);
         assert(got === true, 'torsoUp');
