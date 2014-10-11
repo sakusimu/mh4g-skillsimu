@@ -14,6 +14,55 @@ describe('20_util/01_skill', function () {
         assert(typeof sutil === 'object', 'is object');
     });
 
+    it('isTorsoUp', function () {
+        got = sutil.isTorsoUp('胴系統倍加');
+        exp = true;
+        assert(got === exp, '胴系統倍加');
+        got = sutil.isTorsoUp('胴系統倍化');
+        exp = true;
+        assert(got === exp, '胴系統倍化');
+
+        got = sutil.isTorsoUp('攻撃');
+        exp = false;
+        assert(got === exp, '攻撃');
+        got = sutil.isTorsoUp('');
+        exp = false;
+        assert(got === exp, 'empty string');
+
+        got = sutil.isTorsoUp();
+        exp = false;
+        assert(got === exp, 'nothing in');
+        got = sutil.isTorsoUp(null);
+        exp = false;
+        assert(got === exp, 'null');
+    });
+
+    it('hasTorsoUp', function () {
+        got = sutil.hasTorsoUp({ '胴系統倍加': 1 });
+        exp = true;
+        assert(got === exp, '胴系統倍加');
+        got = sutil.hasTorsoUp({ '胴系統倍化': 1 });
+        exp = true;
+        assert(got === exp, '胴系統倍化');
+
+        got = sutil.hasTorsoUp({ '攻撃': 4 });
+        exp = false;
+        assert(got === exp, '攻撃');
+        got = sutil.hasTorsoUp({ '': 4 });
+        exp = false;
+        assert(got === exp, 'empty string');
+
+        got = sutil.hasTorsoUp();
+        exp = false;
+        assert(got === exp, 'nothing in');
+        got = sutil.hasTorsoUp(null);
+        exp = false;
+        assert(got === exp, 'null');
+        got = sutil.hasTorsoUp({});
+        exp = false;
+        assert(got === exp, '{}');
+    });
+
     it('compact', function () {
         got = sutil.compact([ 'a' ], { a: 1, b: 2 });
         exp = { a: 1 };
