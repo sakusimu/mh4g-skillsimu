@@ -1,5 +1,6 @@
 mh4g-skillsimu
 =============
+**Deprecated: Use [mh-skillsimu](https://github.com/sakusimu/mh-skillsimu/) instead.**
 
 Skill Simulator for MH4G
 
